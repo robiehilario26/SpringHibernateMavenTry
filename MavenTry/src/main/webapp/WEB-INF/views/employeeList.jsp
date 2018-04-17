@@ -74,7 +74,7 @@
 									</span>
 								</div>
 								<div>Lorem ipsum dolor sit amet, consectetur adipiscing
-									elit. Pellentesque eleifend...</div>
+									elit. Pellentesque eleifend..</div>
 						</a></li>
 						<li class="divider"></li>
 						<li><a href="#">
@@ -231,8 +231,8 @@
 						<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
 						</li>
 						<li class="divider"></li>
-						<li><a href="<c:url value='/' />"><i class="fa fa-sign-out fa-fw"></i>
-								Logout</a></li>
+						<li><a href="<c:url value='/' />"><i
+								class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 					</ul> <!-- /.dropdown-user --></li>
 				<!-- /.dropdown -->
 			</ul>
