@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LoginController {
 
 	
-	/* This method will set Login form to be the first page to be load. */
-	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
-	public String loginForm() {
-		return "login";
-	}
+//	/* This method will set Login form to be the first page to be load. */
+//	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
+//	public String loginForm() {
+//		return "login";
+//	}
 }
