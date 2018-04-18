@@ -72,6 +72,7 @@ function searchEmployeeDetailViaAjax(elem) {
 	$.ajax({
 		url : '' + myContext + '/search-employee-by-ajax',
 		type : "GET",
+		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		data : dataParameter,
 		error : function() {
@@ -281,6 +282,7 @@ function validateAndInsertUsingAjax(action, message) {
 		data : "id=" + id + "&name=" + name + "&address=" + address
 				+ "&salary=" + salary + "&joiningDate=" + joiningDate + "&ssn="
 				+ ssn,
+		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		success : function(response) {
 			var stringResponse = JSON.stringify(response)
