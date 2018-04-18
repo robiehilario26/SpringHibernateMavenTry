@@ -99,7 +99,10 @@ public class AppController {
 		model.addAttribute("employee", employee);
 		model.addAttribute("edit", false);
 		model.addAttribute("errorStatus", false);
-
+		
+		/* Display login name in view page */
+		model.addAttribute("loggedinuser", getPrincipal());
+		
 		return "employeeList";
 	}
 
@@ -254,12 +257,7 @@ public class AppController {
 
 		return res;
 	}
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * This method will provide the medium to add a new user.
 	 */
@@ -285,27 +283,31 @@ public class AppController {
 		}
 
 		/*
-		 * Preferred way to achieve uniqueness of field [sso] should be implementing custom @Unique annotation 
-		 * and applying it on field [sso] of Model class [User].
+		 * Preferred way to achieve uniqueness of field [sso] should be
+		 * implementing custom @Unique annotation and applying it on field [sso]
+		 * of Model class [User].
 		 * 
-		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
-		 * framework as well while still using internationalized messages.
-		 * 
+		 * Below mentioned peace of code [if block] is to demonstrate that you
+		 * can fill custom errors outside the validation framework as well while
+		 * still using internationalized messages.
 		 */
-		if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-			FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-		    result.addError(ssoError);
+		if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
+			FieldError ssoError = new FieldError("user", "ssoId",
+					messageSource.getMessage("non.unique.ssoId",
+							new String[] { user.getSsoId() },
+							Locale.getDefault()));
+			result.addError(ssoError);
 			return "registration";
 		}
-		
+
 		userService.saveUser(user);
 
-		model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " registered successfully");
+		model.addAttribute("success", "User " + user.getFirstName() + " "
+				+ user.getLastName() + " registered successfully");
 		model.addAttribute("loggedinuser", getPrincipal());
-		//return "success";
+		// return "success";
 		return "registrationsuccess";
 	}
-
 
 	/**
 	 * This method will provide the medium to update an existing user.
@@ -318,7 +320,7 @@ public class AppController {
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "registration";
 	}
-	
+
 	/**
 	 * This method will be called on form submission, handling POST request for
 	 * updating user in database. It also validates the user input
@@ -331,22 +333,25 @@ public class AppController {
 			return "registration";
 		}
 
-		/*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-		if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-			FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-		    result.addError(ssoError);
-			return "registration";
-		}*/
-
+		/*
+		 * //Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in
+		 * UI which is a unique key to a User.
+		 * if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
+		 * FieldError ssoError =new
+		 * FieldError("user","ssoId",messageSource.getMessage
+		 * ("non.unique.ssoId", new String[]{user.getSsoId()},
+		 * Locale.getDefault())); result.addError(ssoError); return
+		 * "registration"; }
+		 */
 
 		userService.updateUser(user);
 
-		model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " updated successfully");
+		model.addAttribute("success", "User " + user.getFirstName() + " "
+				+ user.getLastName() + " updated successfully");
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "registrationsuccess";
 	}
 
-	
 	/**
 	 * This method will delete an user by it's SSOID value.
 	 */
@@ -355,8 +360,6 @@ public class AppController {
 		userService.deleteUserBySSO(ssoId);
 		return "redirect:/list";
 	}
-	
-	
 
 	/**
 	 * This method will provide UserProfile list to views
@@ -379,25 +382,42 @@ public class AppController {
 	 * This method handles login GET requests. If users is already logged-in and
 	 * tries to goto login page again, will be redirected to list page.
 	 */
-	@RequestMapping(value =  "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage() {
 		if (isCurrentAuthenticationAnonymous()) {
 			return "login";
 		} else {
-			return "redirect:/list";
+			// return "redirect:/list"; // orignal code
+			return "employeeList";
 		}
 	}
-	
+
 	/**
 	 * This method will list all existing users.
 	 */
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
 
+		// List<User> users = userService.findAllUsers();
+		// model.addAttribute("users", users);
+		model.addAttribute("loggedinuser", getPrincipal());
+		System.out.println("getPrincipal " + getPrincipal().toString());
+		// return "userslist";
+		return "redirect:/getEmployeeList";
+	}
+
+	/**
+	 * This method will list all existing users.
+	 */
+	@RequestMapping(value = { "/listV1" }, method = RequestMethod.GET)
+	public String listUsersV1(ModelMap model) {
+
 		List<User> users = userService.findAllUsers();
 		model.addAttribute("users", users);
 		model.addAttribute("loggedinuser", getPrincipal());
+		System.out.println("getPrincipal " + getPrincipal().toString());
 		return "userslist";
+
 	}
 
 	/**
