@@ -255,7 +255,7 @@
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li><a href="<c:url value='/getEmployeeList' />">List</a></li>
-								<li><a href="morris.html">Users</a></li>
+								<li><a href="<c:url value='/listV1' />">Users</a></li>
 							</ul> <!-- /.nav-second-level --></li>
 						<li><a href="tables.html"><i class="fa fa-table fa-fw"></i>
 								Tables</a></li>

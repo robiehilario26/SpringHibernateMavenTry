@@ -221,7 +221,7 @@
 	<div class="modal fade" id="modalDeleteEmployee" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
-		<form name="deleteForm" id="deleteForm" method="POST">
+		<form name="deleteForm" id="deleteForm" method="GET">
 			<div class="modal-dialog modal-sm" role="document">
 				<div class="modal-content">
 					<div class="modal-header">

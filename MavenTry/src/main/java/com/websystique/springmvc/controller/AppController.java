@@ -137,7 +137,7 @@ public class AppController {
 	 * This method will delete an employee by it's SSN value sing ajax with
 	 * annotation @RequestParam.
 	 */
-	@RequestMapping(value = { "/delete-employee-by-ajax" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/delete-employee-by-ajax" }, method = RequestMethod.GET, produces = "application/json")
 	public String ajaxDeleteEmployee(@RequestParam String ssn, ModelMap model) {
 		/* Delete employee by Ssn id */
 		service.deleteEmployeeBySsn(ssn);
@@ -149,7 +149,7 @@ public class AppController {
 	 * If result has error detected. If no error occured in result it will
 	 * insert the fields into database
 	 */
-	@RequestMapping(value = "/ajaxAddEmployee", method = RequestMethod.POST)
+	@RequestMapping(value = "/ajaxAddEmployee", method = RequestMethod.GET , produces = "application/json")
 	public @ResponseBody JsonResponse AddEmployee(
 			@ModelAttribute(value = "employee") Employee employee,
 			BindingResult result) {
@@ -177,7 +177,7 @@ public class AppController {
 	 * If result has error detected. If no error occured in result it will
 	 * insert the fields into database
 	 */
-	@RequestMapping(value = "/ajaxEditEmployee", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/ajaxEditEmployee", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody JsonResponse updateEmployee(
 			@ModelAttribute(value = "employee") @Valid Employee employee,
 			BindingResult result) {
@@ -415,7 +415,8 @@ public class AppController {
 		List<User> users = userService.findAllUsers();
 		model.addAttribute("users", users);
 		model.addAttribute("loggedinuser", getPrincipal());
-		return "userslist";
+		/*return "userslist";*/
+		return "userListV1";
 
 	}
 
@@ -465,3 +466,6 @@ public class AppController {
 	}
 
 }
+
+
+

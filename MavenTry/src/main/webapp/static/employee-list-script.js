@@ -135,11 +135,18 @@ function deleteViaAjax() {
 	};
 	$.ajax({
 		url : '' + myContext + '/delete-employee-by-ajax',
-		type : "POST",
+		type : "GET",
+		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		data : dataParameter,
-		error : function(e) {
-			console.log("ERROR: ", e);
+		error : function(xhr, desc, err) {
+			$("#btnEmployeeDelete").prop('disabled', false);
+			if (xhr.status == 500) {
+				alert('Error: ' + "Server not respond ");
+			}
+			if (xhr.status == 403) {
+				alert('Error: ' + "Access Denied");
+			}
 		},
 		success : function(response) {
 
@@ -277,7 +284,7 @@ function validateAndInsertUsingAjax(action, message) {
 
 	$.ajax({
 
-		type : "POST",
+		type : "GET",
 		url : myContext + '/' + action,
 		data : "id=" + id + "&name=" + name + "&address=" + address
 				+ "&salary=" + salary + "&joiningDate=" + joiningDate + "&ssn="
@@ -362,12 +369,19 @@ function validateAndInsertUsingAjax(action, message) {
 
 		},
 
-		error : function(e) {
+		/* xhr.status shows server respond */
+		error : function(xhr, desc, err) {
 			/*
 			 * Enable button to make ajax request again after response return
 			 */
+
 			$("#btnEmployee").prop('disabled', false);
-			alert('Error: ' + "Server not respond");
+			if (xhr.status == 500) {
+				alert('Error: ' + "Server not respond ");
+			}
+			if (xhr.status == 403) {
+				alert('Error: ' + "Access Denied");
+			}
 
 		}
 
