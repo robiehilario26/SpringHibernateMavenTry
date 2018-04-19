@@ -70,7 +70,7 @@
 					<div class="panel panel-default">
 						<!-- The code below hide as for now, remove when no further usage in final release -->
 						<div class="panel-heading" style="display: none">${success}</div>
-						<%@include file="authheader.jsp"%>
+						
 						<!-- Display success message here when successfully insert data -->
 						<div id="info" class="panel-heading success" style="display: none"></div>
 

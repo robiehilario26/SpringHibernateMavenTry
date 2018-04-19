@@ -99,10 +99,10 @@ public class AppController {
 		model.addAttribute("employee", employee);
 		model.addAttribute("edit", false);
 		model.addAttribute("errorStatus", false);
-		
+
 		/* Display login name in view page */
 		model.addAttribute("loggedinuser", getPrincipal());
-		
+
 		return "employeeList";
 	}
 
@@ -388,7 +388,7 @@ public class AppController {
 			return "login";
 		} else {
 			// return "redirect:/list"; // orignal code
-			return "employeeList";
+			return "redirect:/getEmployeeList";
 		}
 	}
 
@@ -415,7 +415,6 @@ public class AppController {
 		List<User> users = userService.findAllUsers();
 		model.addAttribute("users", users);
 		model.addAttribute("loggedinuser", getPrincipal());
-		System.out.println("getPrincipal " + getPrincipal().toString());
 		return "userslist";
 
 	}
