@@ -202,11 +202,20 @@
 				<li><a href="<c:url value='/home' />"><i
 						class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
 				<li class="active"><a href="#"><i
-						class="fa fa-bar-chart-o fa-fw"></i> Employee <span
+						class="fa fa-bar-chart-o fa-fw"></i> People <span
 						class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
-						<li><a href="<c:url value='/getEmployeeList' />">List</a></li>
+						<li><a href="<c:url value='/getEmployeeList' />">Employee List</a></li>
 						<li><a href="<c:url value='listV1' />">Users</a></li>
+						<li><a href="<c:url value='#' />">Cargo User</a></li>
+						<li><a href="<c:url value='#' />">Customers</a></li>
+					</ul> <!-- /.nav-second-level --></li>
+				<li><a href="#"><i
+						class="fa fa-bar-chart-o fa-fw"></i> Delivery <span
+						class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li><a href="<c:url value='#' />">Delivery Request</a></li>
+						<li><a href="<c:url value='#' />">Beeding</a></li>
 					</ul> <!-- /.nav-second-level --></li>
 				<li><a href="tables.html"><i class="fa fa-table fa-fw"></i>
 						Tables</a></li>
