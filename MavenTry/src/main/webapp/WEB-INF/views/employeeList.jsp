@@ -151,7 +151,7 @@
 				</div>
 
 				<!-- Form Text field -->
-				<form:form method="POST" modelAttribute="employee" name="myform"
+				<form:form method="GET" modelAttribute="employee" name="myform"
 					id="myform">
 					<form:input type="hidden" path="id" id="id" name="id" />
 					<div class="modal-body">

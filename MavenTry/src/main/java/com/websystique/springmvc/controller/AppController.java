@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -149,7 +150,8 @@ public class AppController {
 	 * If result has error detected. If no error occured in result it will
 	 * insert the fields into database
 	 */
-	@RequestMapping(value = "/ajaxAddEmployee", method = RequestMethod.GET , produces = "application/json")
+
+	@RequestMapping(value = "/ajaxAddEmployee", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody JsonResponse AddEmployee(
 			@ModelAttribute(value = "employee") Employee employee,
 			BindingResult result) {
@@ -415,7 +417,7 @@ public class AppController {
 		List<User> users = userService.findAllUsers();
 		model.addAttribute("users", users);
 		model.addAttribute("loggedinuser", getPrincipal());
-		/*return "userslist";*/
+		/* return "userslist"; */
 		return "userListV1";
 
 	}
@@ -466,6 +468,3 @@ public class AppController {
 	}
 
 }
-
-
-

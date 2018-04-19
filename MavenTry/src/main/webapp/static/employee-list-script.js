@@ -65,6 +65,9 @@ function searchEmployeeDetailViaAjax(elem) {
 	/* Change class of attr of button */
 	$("#btnEmployee").attr('class', 'btn btn-success');
 
+	/* Disable button to prevent unnecessary submit */
+	$("#btnEmployee").prop('disabled', true);
+
 	/* Set Parameters */
 	var dataParameter = {
 		ssn : id,
@@ -82,8 +85,6 @@ function searchEmployeeDetailViaAjax(elem) {
 
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
-
-			console.log("stringResponse " + stringResponse);
 
 			/* Parse json response to get value of each key */
 			var obj = JSON.parse(stringResponse);
@@ -105,6 +106,9 @@ function searchEmployeeDetailViaAjax(elem) {
 			// .replace(/\]/g, "");
 			/* Set Date format to YYYY-MM-dd */
 			$("#joiningDate").val(obj.joiningDate);
+
+			/* Enable button to submit */
+			$("#btnEmployee").prop('disabled', false);
 
 		}
 	});
@@ -186,8 +190,6 @@ function populateDataTable() {
 			.done(
 					function(data) {
 						var dataToString = JSON.stringify(data);
-						console.log("dataToString " + dataToString);
-
 						$('#dataTables-example')
 								.dataTable(
 										{
@@ -275,8 +277,6 @@ function validateAndInsertUsingAjax(action, message) {
 	var joiningDate = $('#joiningDate').val();
 	var ssn = $('#ssn').val();
 
-	console.log(joiningDate);
-
 	/* Set parameters value */
 	var setParameters = "name=" + name + "&address=";
 	setParameters += "&salary=" + salary + "&joiningDate=" + joiningDate;
@@ -291,9 +291,9 @@ function validateAndInsertUsingAjax(action, message) {
 				+ ssn,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
+		crossDomain : "TRUE",
 		success : function(response) {
 			var stringResponse = JSON.stringify(response)
-			console.log("response ajax " + stringResponse);
 			// we have the response
 
 			var obj = JSON.parse(stringResponse);

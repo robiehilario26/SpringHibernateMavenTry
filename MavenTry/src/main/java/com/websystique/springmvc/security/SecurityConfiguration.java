@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/", "/list", "/getEmployeeList")
 				.access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
 				.antMatchers("/newuser/**", "/delete-user-*",
-						"/ajaxEditEmployee", "/delete-employee-by-ajax", "/listV1")
+						"/ajaxEditEmployee", "/ajaxAddEmployee", "/delete-employee-by-ajax", "/listV1")
 				.access("hasRole('ADMIN')").antMatchers("/edit-user-*")
 				.access("hasRole('ADMIN') or hasRole('DBA')").and().formLogin()
 				.loginPage("/login").loginProcessingUrl("/login")
