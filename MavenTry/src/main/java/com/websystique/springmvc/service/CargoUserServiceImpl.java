@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.websystique.springmvc.dao.CargoUserDao;
 import com.websystique.springmvc.model.CargoUser;
-import com.websystique.springmvc.model.Employee;
 
 @Service("cargoUserService")
 @Transactional
@@ -30,7 +29,7 @@ public class CargoUserServiceImpl implements CargoUserService {
 
 	@Override
 	public void updateCargoEmployee(CargoUser cargoUser) {
-		CargoUser entity = dao.findById(cargoUser.getId());
+		CargoUser entity = dao.findById(cargoUser.getCargo_id());
 		entity.setCargo_driver(cargoUser.getCargo_driver());
 		entity.setCargo_vehicletype(cargoUser.getCargo_vehicletype());
 		entity.setCargo_company(cargoUser.getCargo_company());
@@ -47,6 +46,11 @@ public class CargoUserServiceImpl implements CargoUserService {
 	@Override
 	public List<CargoUser> cargoList() {
 		return dao.cargoList();
+	}
+
+	@Override
+	public CargoUser findCargoUserById(int id) {
+				return dao.findCargoUserById(id);
 	}
 
 }

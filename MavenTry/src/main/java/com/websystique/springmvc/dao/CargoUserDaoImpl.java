@@ -8,7 +8,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.websystique.springmvc.model.CargoUser;
-import com.websystique.springmvc.model.Employee;
+import com.websystique.springmvc.model.User;
+
 
 @Repository("cargoUserDao")
 public class CargoUserDaoImpl extends AbstractDao<Integer, CargoUser> implements
@@ -27,10 +28,10 @@ public class CargoUserDaoImpl extends AbstractDao<Integer, CargoUser> implements
 
 	@Override
 	public void deleteCargoEmployeeById(int cargo_id) {
-		Query query = getSession().createQuery(
-				"delete from table_cargo where cargo_id = :cargo_id");
-		query.setInteger("cargo_id", cargo_id);
-		query.executeUpdate();
+		Criteria crit = createEntityCriteria();
+		crit.add(Restrictions.eq("cargo_id", cargo_id));
+		CargoUser cargoUser = (CargoUser)crit.uniqueResult();
+		delete(cargoUser);
 
 	}
 
@@ -41,5 +42,14 @@ public class CargoUserDaoImpl extends AbstractDao<Integer, CargoUser> implements
 		Criteria criteria = createEntityCriteria();
 		return (List<CargoUser>) criteria.list();
 	}
+
+	@Override
+	public CargoUser findCargoUserById(int id) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("cargo_id", id));
+		return (CargoUser) criteria.uniqueResult();
+	}
+	
+	
 
 }

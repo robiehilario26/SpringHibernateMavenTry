@@ -14,19 +14,20 @@ public class CargoUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int cargo_id;
 
-	@Size(min = 3, max = 50)
+	@Size(min = 1, max = 50)
 	@Column(name = "CARGO_DRIVER", nullable = false)
 	private String cargo_driver;
 
-	@Size(min = 3, max = 200)
+	@Size(min = 1, max = 200)
 	@Column(name = "CARGO_VEHICLETYPE", nullable = false)
 	private String cargo_vehicletype;
 
-	@Size(min = 3, max = 200)
+	@Size(min = 1, max = 200)
 	@Column(name = "CARGO_COMPANY", nullable = false)
 	private String cargo_company;
+
 
 	@Override
 	public int hashCode() {
@@ -34,7 +35,7 @@ public class CargoUser {
 		int result = 1;
 		result = prime * result
 				+ ((cargo_company == null) ? 0 : cargo_company.hashCode());
-		result = prime * result + id;
+		result = prime * result + cargo_id;
 		return result;
 	}
 
@@ -52,17 +53,17 @@ public class CargoUser {
 				return false;
 		} else if (!cargo_company.equals(other.cargo_company))
 			return false;
-		if (id != other.id)
+		if (cargo_id != other.cargo_id)
 			return false;
 		return true;
 	}
 
-	public int getId() {
-		return id;
+	public int getCargo_id() {
+		return cargo_id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setCargo_id(int cargo_id) {
+		this.cargo_id = cargo_id;
 	}
 
 	public String getCargo_driver() {
@@ -91,9 +92,13 @@ public class CargoUser {
 
 	@Override
 	public String toString() {
-		return "CargoUser [id=" + id + ", cargo_driver=" + cargo_driver
+		return "CargoUser [cargo_id=" + cargo_id + ", cargo_driver=" + cargo_driver
 				+ ", cargo_vehicletype=" + cargo_vehicletype
 				+ ", cargo_company=" + cargo_company + "]";
+	}
+
+	public CargoUser() {
+		
 	}
 
 	

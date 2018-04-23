@@ -63,8 +63,8 @@
 				<div class="col-lg-12">
 					<div>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#modalAddEmployee" onClick="addEmployee()">Add
-							Employee</button>
+							data-target="#modalAddCargoUser" onClick="addCargoUser()">Add
+							Cargo User</button>
 					</div>
 
 					<div class="panel panel-default">
@@ -87,18 +87,11 @@
 										<th>Cargo Driver</th>
 										<th>Vehicle Type Date</th>
 										<th>Company</th>
-
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${users}" var="user">
-										<tr>
-											<td>${user.cargo_driver}</td>
-											<td>${user.cargo_vehicletype}</td>
-											<td>${user.cargo_company}</td>
-																					
-										</tr>
-									</c:forEach>
+
 								</tbody>
 							</table>
 
@@ -125,7 +118,7 @@
 
 
 	<!-- Register Modal -->
-	<div class="modal fade" id="modalAddEmployee" tabindex="-1"
+	<div class="modal fade" id="modalAddCargoUser" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
@@ -140,34 +133,33 @@
 				</div>
 
 				<!-- Form Text field -->
-				<form:form method="POST" modelAttribute="cargoUser" name="myform"
+				<form:form method="GET" modelAttribute="cargoUser" name="myform"
 					id="myform">
-					<form:input type="hidden" path="id" id="id" />
+					<form:input type="text" path="cargo_id" id="cargo_id" />
 					<div class="modal-body">
-
 
 						<!-- Input Cargo Driver Name -->
 						<div>
 							<label for="name">Name: </label>
-							<form:input path="cargo_driver" id="cargo_driver" class="form-control"
-								placeholder="Full name" />
+							<form:input path="cargo_driver" id="cargo_driver"
+								class="form-control" placeholder="Full name" />
 							<form:errors path="cargo_driver" cssClass="error" />
 						</div>
 
-						
+
 						<div>
 							<!-- Input Vechicle Type -->
 							<label for="type">Vehicle Type: </label>
-							<form:input path="cargo_vehicletype" id="cargo_vehicletype" class="form-control"
-								placeholder="Vechile type" />
+							<form:input path="cargo_vehicletype" id="cargo_vehicletype"
+								class="form-control" placeholder="Vechile type" />
 							<form:errors path="cargo_vehicletype" cssClass="error" />
 						</div>
 
 						<div>
 							<!-- Input Company -->
 							<label for="type">Company: </label>
-							<form:input path="cargo_company" id="cargo_company" class="form-control"
-								placeholder="Company name" />
+							<form:input path="cargo_company" id="cargo_company"
+								class="form-control" placeholder="Company name" />
 							<form:errors path="cargo_company" cssClass="error" />
 						</div>
 
@@ -182,8 +174,8 @@
 							data-dismiss="modal">Close</button>
 
 						<!-- Register button -->
-						<input type="submit" class="btn btn-primary" value="Register"
-							id="btnEmployee"/>
+						<input type="button" class="btn btn-primary" value="Register"
+							id="btnCargo" onClick="insertOrUpdate()" />
 
 					</div>
 				</form:form>
@@ -193,7 +185,7 @@
 
 
 	<!-- Delete Modal -->
-	<div class="modal fade" id="modalDeleteEmployee" tabindex="-1"
+	<div class="modal fade" id="modalDeleteCargoUser" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
 		<form name="deleteForm" id="deleteForm" method="GET">
@@ -209,9 +201,9 @@
 
 					<div class="modal-body">
 						<!-- Hidden input field for id -->
-						<input type="hidden" id="deleteId" />
+						<input type="text" id="deleteId" />
 
-						<h4>Delete this employee?</h4>
+						<h4>Delete this record?</h4>
 					</div>
 
 					<div class="modal-footer">
@@ -221,7 +213,7 @@
 							data-dismiss="modal">Close</button>
 						<!-- Close button -->
 
-						<input type="button" id="btnEmployeeDelete" class="btn btn-danger"
+						<input type="button" id="btnCargoDelete" class="btn btn-danger"
 							onClick="deleteViaAjax()" value="Delete" />
 
 					</div>
@@ -256,12 +248,20 @@
 	<!-- Custom Theme JavaScript -->
 	<script src="<c:url value="/static/dist/js/sb-admin-2.js" />"></script>
 
+	<script>
+		/* Global variable for getting page context */
+		var myContext = "${pageContext.request.contextPath}";
+	</script>
+
+	<!-- Custom function Javascript -->
+	<script type="text/javascript"
+		src="<c:url value="/static/cargo-user-script.js" />"></script>
+
+
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
 	<script>
 		$(document).ready(function() {
-			$('#dataTables-example').DataTable({
-				responsive : true
-			});
+			populateCargoDataTable();
 		});
 	</script>
 

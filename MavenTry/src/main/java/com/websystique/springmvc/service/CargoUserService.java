@@ -16,5 +16,7 @@ public interface CargoUserService {
 	
 	List<CargoUser> cargoList();
 	
+	CargoUser findCargoUserById(int id);
+	
 	
 }

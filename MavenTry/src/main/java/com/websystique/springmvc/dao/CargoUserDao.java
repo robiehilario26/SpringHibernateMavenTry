@@ -13,5 +13,7 @@ public interface CargoUserDao {
 	void deleteCargoEmployeeById(int id);
 
 	List<CargoUser> cargoList();
+	
+	CargoUser findCargoUserById(int id);
 
 }
