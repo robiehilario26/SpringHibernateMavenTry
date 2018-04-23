@@ -207,7 +207,7 @@
 					<ul class="nav nav-second-level">
 						<li><a href="<c:url value='/getEmployeeList' />">Employee List</a></li>
 						<li><a href="<c:url value='listV1' />">Users</a></li>
-						<li><a href="<c:url value='#' />">Cargo User</a></li>
+						<li><a href="<c:url value='/cargo' />">Cargo User</a></li>
 						<li><a href="<c:url value='#' />">Customers</a></li>
 					</ul> <!-- /.nav-second-level --></li>
 				<li><a href="#"><i
