@@ -131,7 +131,6 @@ public class DeliveryController {
 		/* If result is success it will insert into the employee table */
 		if (res.getStatus().equalsIgnoreCase("success")) {
 			/* Update Employee details into database */
-			System.out.println("cargo " + cargoUser.toString());
 			cargoUserService.updateCargoEmployee(cargoUser);
 		}
 		return res;

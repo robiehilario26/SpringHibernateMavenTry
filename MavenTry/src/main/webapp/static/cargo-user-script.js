@@ -297,7 +297,7 @@ function validateAndInsertUsingAjax(action, message) {
 				 * Enable button to make ajax request again after response
 				 * return
 				 */
-				$("#btnEmployee").prop('disabled', false);
+				$("#btnCargo").prop('disabled', false);
 
 				var errorInfo = "";
 
@@ -326,7 +326,7 @@ function validateAndInsertUsingAjax(action, message) {
 			 * Enable button to make ajax request again after response return
 			 */
 
-			$("#btnEmployee").prop('disabled', false);
+			$("#btnCargo").prop('disabled', false);
 			if (xhr.status == 500) {
 				alert('Error: ' + "Server not respond ");
 			}

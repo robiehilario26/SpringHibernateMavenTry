@@ -135,7 +135,7 @@
 				<!-- Form Text field -->
 				<form:form method="GET" modelAttribute="cargoUser" name="myform"
 					id="myform">
-					<form:input type="text" path="cargo_id" id="cargo_id" />
+					<form:input type="hidden" path="cargo_id" id="cargo_id" />
 					<div class="modal-body">
 
 						<!-- Input Cargo Driver Name -->
@@ -201,7 +201,7 @@
 
 					<div class="modal-body">
 						<!-- Hidden input field for id -->
-						<input type="text" id="deleteId" />
+						<input type="hidden" id="deleteId" />
 
 						<h4>Delete this record?</h4>
 					</div>
