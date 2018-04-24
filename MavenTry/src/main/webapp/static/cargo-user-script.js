@@ -27,15 +27,25 @@ function clearTextField() {
 	$("#cargo_id").val("0");
 	$("#cargo_driver").val(null);
 	$("#cargo_vehicletype").val(null);
+	$("#truck_plate_number").val(null);
 	$("#cargo_company").val(null);
+
+	/* Clear error validation message */
+	$("#error").empty();
 
 }
 
-/* Fetch employee information via cargo user id using json response using @RequestParam */
+/*
+ * Fetch employee information via cargo user id using json response using
+ * @RequestParam
+ */
 function searchCargoDetailViaAjax(elem) {
 	var stringResponse;
 	var id = elem.id;
-		
+	
+	/* Clear error validation message */
+	$("#error").empty();
+
 	/* Get id value in hidden input text field */
 	$("#cargo_id").val(id);
 
@@ -73,6 +83,7 @@ function searchCargoDetailViaAjax(elem) {
 			$("#cargo_id").val(obj.cargo_id);
 			$("#cargo_driver").val(obj.cargo_driver);
 			$("#cargo_vehicletype").val(obj.cargo_vehicletype);
+			$("#truck_plate_number").val(obj.truck_plate_number);
 			$("#cargo_company").val(obj.cargo_company);
 
 			/* Enable button to submit */
@@ -83,7 +94,7 @@ function searchCargoDetailViaAjax(elem) {
 
 }
 
-/* Fetch Employee Ssn id */
+/* Fetch Cargo User id */
 function fetchDeleteId(obj) {
 	var id = obj.id;
 	/* Set hidden text field value */
@@ -91,7 +102,7 @@ function fetchDeleteId(obj) {
 
 }
 
-/* Delete Employee by Ssn id */
+/* Delete Cargo User by id */
 function deleteViaAjax() {
 	var stringResponse;
 
@@ -103,7 +114,7 @@ function deleteViaAjax() {
 
 	/* Set Parameters */
 	var dataParameter = {
-			cargo_id : id,
+		cargo_id : id,
 	};
 	$.ajax({
 		url : '' + myContext + '/delete-cargo-user-by-ajax',
@@ -136,7 +147,7 @@ function deleteViaAjax() {
 
 }
 
-/* Populate DataTable of list of all employee existed using ajax */
+/* Populate DataTable of list of all Cargo User existed using ajax */
 function populateCargoDataTable() {
 	$("#dataTables-example").dataTable().fnDestroy();
 
@@ -172,6 +183,10 @@ function populateCargoDataTable() {
 													},
 													{
 														"data" : "cargo_company"
+													},
+
+													{
+														"data" : "truck_plate_number"
 													},
 
 													{
@@ -230,20 +245,22 @@ function insertOrUpdate() {
 function validateAndInsertUsingAjax(action, message) {
 
 	/* Disable button to prevent redundant ajax request */
-	$("#btnCargoUser").prop('disabled', true);
+	$("#btnCargo").prop('disabled', true);
 
 	/* get the text field form values */
 	var id = $('#cargo_id').val();
 	var name = $('#cargo_driver').val();
 	var vehicle = $('#cargo_vehicletype').val();
+	var plate_no = $('#truck_plate_number').val();
 	var company = $('#cargo_company').val();
 
 	$.ajax({
 
 		type : "GET",
 		url : myContext + '/' + action,
-		data : "cargo_id=" + id + "&cargo_driver=" + name + "&cargo_vehicletype="
-				+ vehicle + "&cargo_company=" + company,
+		data : "cargo_id=" + id + "&cargo_driver=" + name
+				+ "&cargo_vehicletype=" + vehicle + "&truck_plate_number="
+				+ plate_no + "&cargo_company=" + company,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		crossDomain : "TRUE",
@@ -271,6 +288,9 @@ function validateAndInsertUsingAjax(action, message) {
 
 					userInfo += "<br><li><b>Vehicle</b> : "
 							+ obj.result[i].cargo_vehicletype;
+
+					userInfo += "<br><li><b>Plate number</b> : "
+							+ obj.result[i].truck_plate_number;
 
 					userInfo += "<br><li><b>Company</b> : "
 							+ obj.result[i].cargo_company;

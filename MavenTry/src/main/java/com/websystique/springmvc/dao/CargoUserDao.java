@@ -6,14 +6,14 @@ import com.websystique.springmvc.model.CargoUser;
 
 public interface CargoUserDao {
 
-	CargoUser findById(int id);
+	CargoUser findById(Integer id);
 
 	void saveCargoEmployee(CargoUser cargoUser);
 
-	void deleteCargoEmployeeById(int id);
+	void deleteCargoEmployeeById(Integer id);
 
 	List<CargoUser> cargoList();
 	
-	CargoUser findCargoUserById(int id);
+	CargoUser findCargoUserByPlateNumber(String id);
 
 }

@@ -85,7 +85,8 @@
 								<thead>
 									<tr>
 										<th>Cargo Driver</th>
-										<th>Vehicle Type Date</th>
+										<th>Vehicle Type</th>
+										<th>Plate Number</th>
 										<th>Company</th>
 										<th>Action</th>
 									</tr>
@@ -124,8 +125,7 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Add
-						employee</h5>
+					<h3 class="modal-title" id="exampleModalLongTitle"></h3>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -146,13 +146,22 @@
 							<form:errors path="cargo_driver" cssClass="error" />
 						</div>
 
+						<div>
+							<!-- Select Vechicle Type -->
+							<label for="type">Vehicle Type: </label>
+							<form:select path="cargo_vehicletype" id="cargo_vehicletype"
+								name="cargo_vehicletype" class="form-control">
+								<form:option value="" label="--- Select Type ---" />
+								<form:options items="${truckType}" />
+							</form:select>
+						</div>
 
 						<div>
-							<!-- Input Vechicle Type -->
-							<label for="type">Vehicle Type: </label>
-							<form:input path="cargo_vehicletype" id="cargo_vehicletype"
-								class="form-control" placeholder="Vechile type" />
-							<form:errors path="cargo_vehicletype" cssClass="error" />
+							<!-- Input Vechicle plate number -->
+							<label for="type">Vehicle Plate number: </label>
+							<form:input path="truck_plate_number" id="truck_plate_number"
+								class="form-control" placeholder="Vehicle Plate number" />
+							<form:errors path="truck_plate_number" cssClass="error" />
 						</div>
 
 						<div>
@@ -162,6 +171,7 @@
 								class="form-control" placeholder="Company name" />
 							<form:errors path="cargo_company" cssClass="error" />
 						</div>
+
 
 						<div id="error" class="error"></div>
 

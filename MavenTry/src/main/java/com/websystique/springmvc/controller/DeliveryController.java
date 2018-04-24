@@ -9,9 +9,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,10 +34,11 @@ import com.websystique.springmvc.service.UserProfileService;
 public class DeliveryController {
 
 	private List<CargoUser> cargoList = new ArrayList<CargoUser>();
+	private List<String> cargoType = new ArrayList<String>();
 
 	@Autowired
 	CargoUserService cargoUserService;
-	
+
 	@Autowired
 	UserProfileService userProfileService;
 
@@ -56,8 +54,12 @@ public class DeliveryController {
 	@RequestMapping(value = { "/cargo" }, method = RequestMethod.GET)
 	public String listCargoUsers(ModelMap model) {
 
+		/* Call method */
+		setTruckType();
+		model.addAttribute("truckType", cargoType);
+
 		// List<CargoUser> users = cargoUserService.cargoList();
-		// model.addAttribute("users", users);
+		// model.addAttribute("names", cargoType);
 
 		CargoUser cargoUser = new CargoUser();
 		model.addAttribute("cargoUser", cargoUser);
@@ -185,14 +187,31 @@ public class DeliveryController {
 
 		/* Set error message if text field is empty */
 
-		ValidationUtils.rejectIfEmpty(result, "cargo_driver",
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "cargo_driver",
 				"Name cannot be empty.");
 
-		ValidationUtils.rejectIfEmpty(result, "cargo_vehicletype",
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "cargo_vehicletype",
 				"Vehicle type cannot be empty.");
 
-		ValidationUtils.rejectIfEmpty(result, "cargo_company",
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "truck_plate_number",
+				"Vehicle plate number cannot be empty.");
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "cargo_company",
 				"Company cannot be empty.");
+
+		/* Check if plate number input is already exist or used by other */
+		if (!cargoUserService.isPlateNumberUnique(cargoUser.getCargo_id(),
+				cargoUser.getTruck_plate_number())) {
+
+			 /* Set status to fail */
+			 res.setStatus("FAIL");
+			
+			 /* Set error message if Ssn id already exist */
+			 result.rejectValue("truck_plate_number",
+			 "Plate number already exist, Please fill in different value");
+			 res.setResult(result.getAllErrors());
+		
+		}
 
 		if (result.hasErrors()) {
 
@@ -210,7 +229,7 @@ public class DeliveryController {
 			System.out.println("cargoUser " + cargoUser.toString());
 
 			cargoList.clear(); /* Clear array list */
-			cargoList.add(cargoUser); /* Add employee model object into list */
+			cargoList.add(cargoUser); /* Add cargoUser model object into list */
 			res.setStatus("SUCCESS"); /* Set status to success */
 			res.setResult(cargoList); /* Return object into list */
 
@@ -218,7 +237,7 @@ public class DeliveryController {
 
 		return res;
 	}
-	
+
 	/**
 	 * This method will provide UserProfile list to views
 	 */
@@ -226,32 +245,22 @@ public class DeliveryController {
 	public List<UserProfile> initializeProfiles() {
 		return userProfileService.findAll();
 	}
-	
-	
-	/**
-	 * This method returns the principal[user-name] of logged-in user.
-	 */
-	private String getPrincipal() {
-		String userName = null;
-		Object principal = SecurityContextHolder.getContext()
-				.getAuthentication().getPrincipal();
 
-		if (principal instanceof UserDetails) {
-			userName = ((UserDetails) principal).getUsername();
-		} else {
-			userName = principal.toString();
-		}
-		return userName;
-	}
-
-	/**
-	 * This method returns true if users is already authenticated [logged-in],
-	 * else false.
+	/*
+	 * Add different type of trucks into array list
+	 * 
+	 * Note: As for now the Type of trucks as project is int testing stage only
 	 */
-	private boolean isCurrentAuthenticationAnonymous() {
-		final Authentication authentication = SecurityContextHolder
-				.getContext().getAuthentication();
-		return authenticationTrustResolver.isAnonymous(authentication);
+	public void setTruckType() {
+		/* Clear Array list before adding items */
+		cargoType.clear();
+
+		/* Add items into array list */
+		cargoType.add("Small truck");
+		cargoType.add("Light truck");
+		cargoType.add("Medium truck");
+		cargoType.add("Heavy truck");
+		cargoType.add("Heavy truck & transporters");
 	}
 
 }

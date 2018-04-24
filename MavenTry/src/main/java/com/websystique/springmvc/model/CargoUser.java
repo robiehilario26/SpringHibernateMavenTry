@@ -28,6 +28,9 @@ public class CargoUser {
 	@Column(name = "CARGO_COMPANY", nullable = false)
 	private String cargo_company;
 
+	@Size(min = 1, max = 20)
+	@Column(name = "TRUCK_PLATE_NUMBER", nullable = false)
+	private String truck_plate_number;
 
 	@Override
 	public int hashCode() {
@@ -82,6 +85,15 @@ public class CargoUser {
 		this.cargo_vehicletype = cargo_vehicletype;
 	}
 
+
+	public String getTruck_plate_number() {
+		return truck_plate_number;
+	}
+
+	public void setTruck_plate_number(String truck_plate_number) {
+		this.truck_plate_number = truck_plate_number;
+	}
+
 	public String getCargo_company() {
 		return cargo_company;
 	}
@@ -90,17 +102,18 @@ public class CargoUser {
 		this.cargo_company = cargo_company;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "CargoUser [cargo_id=" + cargo_id + ", cargo_driver=" + cargo_driver
-				+ ", cargo_vehicletype=" + cargo_vehicletype
-				+ ", cargo_company=" + cargo_company + "]";
+		return "CargoUser [cargo_id=" + cargo_id + ", cargo_driver="
+				+ cargo_driver + ", cargo_vehicletype=" + cargo_vehicletype
+				+ ", cargo_company=" + cargo_company + ", truck_plate_no="
+				+ truck_plate_number + "]";
 	}
 
 	public CargoUser() {
-		
+
 	}
 
-	
-	
 }

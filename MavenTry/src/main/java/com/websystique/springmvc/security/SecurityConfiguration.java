@@ -38,11 +38,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+				// Request Mapping accessible
 				.antMatchers("/", "/list", "/getEmployeeList")
+				// Roles
 				.access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
+				// Request Mapping accessible
 				.antMatchers("/newuser/**", "/delete-user-*",
 						"/ajaxEditEmployee", "/ajaxAddEmployee",
-						"/delete-cargo-user-by-ajax", "/delete-employee-by-ajax",
+						"/delete-cargo-user-by-ajax", "/ajaxAddCargoUser",
+						"/ajaxEditCargoUser", "/delete-employee-by-ajax",
 						"/listV1").access("hasRole('ADMIN')")
 				.antMatchers("/edit-user-*")
 				.access("hasRole('ADMIN') or hasRole('DBA')").and().formLogin()

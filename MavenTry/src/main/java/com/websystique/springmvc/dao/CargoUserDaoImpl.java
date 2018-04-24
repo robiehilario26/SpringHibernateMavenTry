@@ -16,7 +16,7 @@ public class CargoUserDaoImpl extends AbstractDao<Integer, CargoUser> implements
 		CargoUserDao {
 
 	@Override
-	public CargoUser findById(int id) {
+	public CargoUser findById(Integer id) {
 		return getByKey(id);
 	}
 
@@ -27,7 +27,7 @@ public class CargoUserDaoImpl extends AbstractDao<Integer, CargoUser> implements
 	}
 
 	@Override
-	public void deleteCargoEmployeeById(int cargo_id) {
+	public void deleteCargoEmployeeById(Integer cargo_id) {
 		Criteria crit = createEntityCriteria();
 		crit.add(Restrictions.eq("cargo_id", cargo_id));
 		CargoUser cargoUser = (CargoUser)crit.uniqueResult();
@@ -44,11 +44,14 @@ public class CargoUserDaoImpl extends AbstractDao<Integer, CargoUser> implements
 	}
 
 	@Override
-	public CargoUser findCargoUserById(int id) {
-		Criteria criteria = createEntityCriteria();
-		criteria.add(Restrictions.eq("cargo_id", id));
-		return (CargoUser) criteria.uniqueResult();
+	public CargoUser findCargoUserByPlateNumber(String plateNumber) {
+		Criteria crit = createEntityCriteria();
+		crit.add(Restrictions.eq("truck_plate_number", plateNumber));
+		return (CargoUser) crit.uniqueResult();
+		 
 	}
+
+	
 	
 	
 

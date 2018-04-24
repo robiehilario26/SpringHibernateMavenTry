@@ -210,18 +210,18 @@ public class AppController {
 
 		/* Set error message if text field is empty */
 
-		ValidationUtils.rejectIfEmpty(result, "name", "Name can not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "name", "Name can not be empty");
 
 		ValidationUtils
-				.rejectIfEmpty(result, "address", "address not be empty");
+				.rejectIfEmptyOrWhitespace(result, "address", "address not be empty");
 
-		ValidationUtils.rejectIfEmpty(result, "salary",
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "salary",
 				"Salary can not be empty.");
 
-		ValidationUtils.rejectIfEmpty(result, "joiningDate",
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "joiningDate",
 				"Date can not be empty.");
 
-		ValidationUtils.rejectIfEmpty(result, "ssn", "Ssn can not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "ssn", "Ssn can not be empty");
 
 		if (!service.isEmployeeUnique(employee.getId(), employee.getSsn())) {
 

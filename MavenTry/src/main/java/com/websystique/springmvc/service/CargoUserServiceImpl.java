@@ -12,12 +12,12 @@ import com.websystique.springmvc.model.CargoUser;
 @Service("cargoUserService")
 @Transactional
 public class CargoUserServiceImpl implements CargoUserService {
-	
+
 	@Autowired
 	private CargoUserDao dao;
 
 	@Override
-	public CargoUser findById(int id) {
+	public CargoUser findById(Integer id) {
 		return dao.findById(id);
 	}
 
@@ -32,13 +32,13 @@ public class CargoUserServiceImpl implements CargoUserService {
 		CargoUser entity = dao.findById(cargoUser.getCargo_id());
 		entity.setCargo_driver(cargoUser.getCargo_driver());
 		entity.setCargo_vehicletype(cargoUser.getCargo_vehicletype());
+		entity.setTruck_plate_number(cargoUser.getTruck_plate_number());
 		entity.setCargo_company(cargoUser.getCargo_company());
-
 
 	}
 
 	@Override
-	public void deleteCargoEmployeeById(int id) {
+	public void deleteCargoEmployeeById(Integer id) {
 		dao.deleteCargoEmployeeById(id);
 
 	}
@@ -48,9 +48,17 @@ public class CargoUserServiceImpl implements CargoUserService {
 		return dao.cargoList();
 	}
 
+	
+
 	@Override
-	public CargoUser findCargoUserById(int id) {
-				return dao.findCargoUserById(id);
+	public boolean isPlateNumberUnique(Integer id, String plateNumber) {
+		CargoUser cargoUser = findCargoUserByPlateNumber(plateNumber);
+		return (cargoUser == null || (id != null) && (cargoUser.getCargo_id() == id));
+	}
+
+	@Override
+	public CargoUser findCargoUserByPlateNumber(String plate) {
+		return dao.findCargoUserByPlateNumber(plate);
 	}
 
 }
