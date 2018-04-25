@@ -2,8 +2,6 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
@@ -55,7 +53,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">List</h1>
+					<h1 class="page-header">Customer</h1>
 				</div>
 
 				<!-- /.col-lg-12 -->
@@ -65,8 +63,8 @@
 				<div class="col-lg-12">
 					<div>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#modalUser" onClick="addUser()">Add
-							User</button>
+							data-target="#modalAddCargoUser" onClick="addCargoUser()">Add
+							Customer</button>
 					</div>
 
 					<div class="panel panel-default">
@@ -86,10 +84,10 @@
 								id="dataTables-example">
 								<thead>
 									<tr>
-										<th>Firstname</th>
-										<th>Lastname</th>
-										<th>Email</th>
-										<th>SSO ID</th>
+										<th>Cargo Driver</th>
+										<th>Vehicle Type</th>
+										<th>Plate Number</th>
+										<th>Company</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -97,6 +95,7 @@
 
 								</tbody>
 							</table>
+
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -116,9 +115,13 @@
 	<!-- /#wrapper -->
 
 
+
+
+
 	<!-- Register Modal -->
-	<div class="modal fade" id="modalUser" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal fade" id="modalAddCargoUser" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -130,57 +133,43 @@
 				</div>
 
 				<!-- Form Text field -->
-				<form:form method="GET" modelAttribute="user" name="myform"
+				<form:form method="GET" modelAttribute="cargoUser" name="myform"
 					id="myform">
-					<form:input type="text" path="id" id="id" />
+					<form:input type="hidden" path="cargo_id" id="cargo_id" />
 					<div class="modal-body">
 
-						<!-- Input First Name -->
+						<!-- Input Cargo Driver Name -->
 						<div>
-							<label for="firstName">First name: </label>
-							<form:input path="firstName" id="firstName" class="form-control"
-								placeholder="First name" />
-							<form:errors path="firstName" cssClass="error" />
-						</div>
-
-						<!-- Input Last Name -->
-						<div>
-							<label for="lastName">Last name: </label>
-							<form:input path="lastName" id="lastName" class="form-control"
-								placeholder="Last name" />
-							<form:errors path="lastName" cssClass="error" />
-						</div>
-
-						<!-- Input Email -->
-						<div>
-							<label for="email">Email: </label>
-							<form:input path="email" id="email" class="form-control"
-								placeholder="Email" />
-							<form:errors path="email" cssClass="error" />
-						</div>
-						
-						<!-- Input User name -->
-						<div>
-							<label for="ssoId">Username: </label>
-							<form:input path="ssoId" id="ssoId" class="form-control"
-								placeholder="Username" />
-							<form:errors path="ssoId" cssClass="error" />
-						</div>
-
-						<!-- Input Password -->
-						<div>
-							<label for="password">Password: </label>
-							<form:input path="password" id="password" class="form-control"
-								placeholder="password" />
-							<form:errors path="password" cssClass="error" />
+							<label for="name">Name: </label>
+							<form:input path="cargo_driver" id="cargo_driver"
+								class="form-control" placeholder="Full name" />
+							<form:errors path="cargo_driver" cssClass="error" />
 						</div>
 
 						<div>
-							<!-- Select Role Type -->
-							<label for="userProfiles">Account Type: </label>
-							<form:select name="userProfiles" id="userProfiles" path="userProfiles" items="${roles}" multiple="true"
-								itemValue="id" itemLabel="type" class="form-control" />
-							<form:errors path="userProfiles" cssClass="error" />
+							<!-- Select Vechicle Type -->
+							<label for="type">Vehicle Type: </label>
+							<form:select path="cargo_vehicletype" id="cargo_vehicletype"
+								name="cargo_vehicletype" class="form-control">
+								<form:option value="" label="--- Select Type ---" />
+								<form:options items="${truckType}" />
+							</form:select>
+						</div>
+
+						<div>
+							<!-- Input Vechicle plate number -->
+							<label for="type">Vehicle Plate number: </label>
+							<form:input path="truck_plate_number" id="truck_plate_number"
+								class="form-control" placeholder="Vehicle Plate number" />
+							<form:errors path="truck_plate_number" cssClass="error" />
+						</div>
+
+						<div>
+							<!-- Input Company -->
+							<label for="type">Company: </label>
+							<form:input path="cargo_company" id="cargo_company"
+								class="form-control" placeholder="Company name" />
+							<form:errors path="cargo_company" cssClass="error" />
 						</div>
 
 
@@ -196,7 +185,7 @@
 
 						<!-- Register button -->
 						<input type="button" class="btn btn-primary" value="Register"
-							id="btnUser" onClick="insertOrUpdate()" />
+							id="btnCargo" onClick="insertOrUpdate()" />
 
 					</div>
 				</form:form>
@@ -205,7 +194,44 @@
 	</div>
 
 
+	<!-- Delete Modal -->
+	<div class="modal fade" id="modalDeleteCargoUser" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<form name="deleteForm" id="deleteForm" method="GET">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
 
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body">
+						<!-- Hidden input field for id -->
+						<input type="hidden" id="deleteId" />
+
+						<h4>Delete this record?</h4>
+					</div>
+
+					<div class="modal-footer">
+
+						<!-- Close button -->
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<!-- Close button -->
+
+						<input type="button" id="btnCargoDelete" class="btn btn-danger"
+							onClick="deleteViaAjax()" value="Delete" />
+
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
 
 
 	<!-- jQuery -->
@@ -239,15 +265,16 @@
 
 	<!-- Custom function Javascript -->
 	<script type="text/javascript"
-		src="<c:url value="/static/register-user-script.js" />"></script>
+		src="<c:url value="/static/cargo-user-script.js" />"></script>
 
 
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
 	<script>
 		$(document).ready(function() {
-			populateUserDataTable();
+			populateCargoDataTable();
 		});
 	</script>
+
 
 
 

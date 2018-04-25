@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page isELIgnored="false"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -55,7 +54,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">List</h1>
+					<h1 class="page-header">User</h1>
 				</div>
 
 				<!-- /.col-lg-12 -->
@@ -65,8 +64,7 @@
 				<div class="col-lg-12">
 					<div>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#modalUser" onClick="addUser()">Add
-							User</button>
+							data-target="#modalAddCargoUser" onClick="addCargoUser()">Add User</button>
 					</div>
 
 					<div class="panel panel-default">
@@ -90,13 +88,36 @@
 										<th>Lastname</th>
 										<th>Email</th>
 										<th>SSO ID</th>
-										<th>Action</th>
+										<sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+											<th width="100"></th>
+										</sec:authorize>
+										<sec:authorize access="hasRole('ADMIN')">
+											<th width="100"></th>
+										</sec:authorize>
 									</tr>
 								</thead>
 								<tbody>
-
+									<c:forEach items="${users}" var="user">
+										<tr>
+											<td>${user.firstName}</td>
+											<td>${user.lastName}</td>
+											<td>${user.email}</td>
+											<td>${user.ssoId}</td>
+											<sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+												<td><a
+													href="<c:url value='/edit-user-${user.ssoId}' />"
+													class="btn btn-success custom-width">edit</a></td>
+											</sec:authorize>
+											<sec:authorize access="hasRole('ADMIN')">
+												<td><a
+													href="<c:url value='/delete-user-${user.ssoId}' />"
+													class="btn btn-danger custom-width">delete</a></td>
+											</sec:authorize>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
+
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -116,9 +137,13 @@
 	<!-- /#wrapper -->
 
 
+
+
+
 	<!-- Register Modal -->
-	<div class="modal fade" id="modalUser" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal fade" id="modalAddCargoUser" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -132,7 +157,7 @@
 				<!-- Form Text field -->
 				<form:form method="GET" modelAttribute="user" name="myform"
 					id="myform">
-					<form:input type="text" path="id" id="id" />
+					<form:input type="hidden" path="id" id="id" />
 					<div class="modal-body">
 
 						<!-- Input First Name -->
@@ -151,22 +176,6 @@
 							<form:errors path="lastName" cssClass="error" />
 						</div>
 
-						<!-- Input Email -->
-						<div>
-							<label for="email">Email: </label>
-							<form:input path="email" id="email" class="form-control"
-								placeholder="Email" />
-							<form:errors path="email" cssClass="error" />
-						</div>
-						
-						<!-- Input User name -->
-						<div>
-							<label for="ssoId">Username: </label>
-							<form:input path="ssoId" id="ssoId" class="form-control"
-								placeholder="Username" />
-							<form:errors path="ssoId" cssClass="error" />
-						</div>
-
 						<!-- Input Password -->
 						<div>
 							<label for="password">Password: </label>
@@ -175,14 +184,22 @@
 							<form:errors path="password" cssClass="error" />
 						</div>
 
+						<!-- Input Email -->
 						<div>
-							<!-- Select Role Type -->
-							<label for="userProfiles">Account Type: </label>
-							<form:select name="userProfiles" id="userProfiles" path="userProfiles" items="${roles}" multiple="true"
-								itemValue="id" itemLabel="type" class="form-control" />
-							<form:errors path="userProfiles" cssClass="error" />
+							<label for="email">Email: </label>
+							<form:input path="email" id="email" class="form-control"
+								placeholder="Email" />
+							<form:errors path="email" cssClass="error" />
 						</div>
 
+						<div>
+							<!-- Select Role Type -->
+							<label for="type">Account Type: </label>
+							<form:select path="userProfiles" id="userProfiles"
+								name="userProfiles" class="form-control">
+								<form:options items="${roles}" />
+							</form:select>
+						</div>
 
 						<div id="error" class="error"></div>
 
@@ -196,7 +213,7 @@
 
 						<!-- Register button -->
 						<input type="button" class="btn btn-primary" value="Register"
-							id="btnUser" onClick="insertOrUpdate()" />
+							id="btnCargo" onClick="insertOrUpdate()" />
 
 					</div>
 				</form:form>
@@ -205,7 +222,44 @@
 	</div>
 
 
+	<!-- Delete Modal -->
+	<div class="modal fade" id="modalDeleteCargoUser" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<form name="deleteForm" id="deleteForm" method="GET">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
 
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body">
+						<!-- Hidden input field for id -->
+						<input type="hidden" id="deleteId" />
+
+						<h4>Delete this record?</h4>
+					</div>
+
+					<div class="modal-footer">
+
+						<!-- Close button -->
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<!-- Close button -->
+
+						<input type="button" id="btnCargoDelete" class="btn btn-danger"
+							onClick="deleteViaAjax()" value="Delete" />
+
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
 
 
 	<!-- jQuery -->
@@ -245,9 +299,10 @@
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
 	<script>
 		$(document).ready(function() {
-			populateUserDataTable();
+			 
 		});
 	</script>
+
 
 
 

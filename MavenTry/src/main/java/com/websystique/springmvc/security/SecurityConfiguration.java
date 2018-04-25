@@ -39,18 +39,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// Request Mapping accessible
-				.antMatchers("/", "/list", "/getEmployeeList")
+				.antMatchers("/home")
 				// Roles
-				.access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
+				.access("hasRole('ADMIN') or hasRole('DBA') or hasRole('USER')")
 				// Request Mapping accessible
-				.antMatchers("/newuser/**", "/delete-user-*",
-						"/ajaxEditEmployee", "/ajaxAddEmployee",
+				.antMatchers("/newuser/**", "/customer/**", "/delete-user-*",
+						"/ajaxEditEmployee", "/cargo", "/list",
+						"/getEmployeeList", "/ajaxAddEmployee",
 						"/delete-cargo-user-by-ajax", "/ajaxAddCargoUser",
 						"/ajaxEditCargoUser", "/delete-employee-by-ajax",
-						"/listV1").access("hasRole('ADMIN')")
+						"/ajaxAddUser", "/listV1").access("hasRole('ADMIN')")
+				.antMatchers("/customer/**")
+				.access("hasRole('USER') or hasRole('ADMIN')")
 				.antMatchers("/edit-user-*")
-				.access("hasRole('ADMIN') or hasRole('DBA')").and().formLogin()
-				.loginPage("/login").loginProcessingUrl("/login")
+				.access("hasRole('ADMIN') or hasRole('CARGO')").and()
+				.formLogin().loginPage("/login").loginProcessingUrl("/login")
 				.usernameParameter("ssoId").passwordParameter("password").and()
 				.rememberMe().rememberMeParameter("remember-me")
 				.tokenRepository(tokenRepository).tokenValiditySeconds(86400)

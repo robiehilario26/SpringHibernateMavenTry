@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import antlr.Utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.websystique.springmvc.model.CargoUser;
 import com.websystique.springmvc.model.Employee;
 import com.websystique.springmvc.model.JsonResponse;
 import com.websystique.springmvc.model.User;
@@ -49,6 +51,7 @@ import com.websystique.springmvc.service.UserService;
 public class AppController {
 
 	private List<Employee> employeeList = new ArrayList<Employee>();
+	private List<User> userList = new ArrayList<User>();
 
 	@Autowired
 	UserService userService;
@@ -173,6 +176,94 @@ public class AppController {
 		}
 		return res;
 	}
+	
+	
+	
+	@RequestMapping(value = "/ajaxAddUser", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody JsonResponse AddUser(
+			@ModelAttribute(value = "employee") User user,
+			BindingResult result) {
+
+		System.out.println("user " + user.toString());
+
+		/* Create new json response */
+		JsonResponse res = new JsonResponse();
+
+		/* Call method for validating the input values */
+		userJsonResponse(res, result, user);
+
+		/* If result is success it will insert into the employee table */
+		if (res.getStatus().equalsIgnoreCase("success")) {
+
+			/* Add Employee details into database */
+			//userService.saveUser(user);
+
+		}
+		return res;
+	}
+	
+	
+	public JsonResponse userJsonResponse(JsonResponse res, BindingResult result,
+			User user) {
+
+		/* Set error message if text field is empty */
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "firstName",
+				"firstName can not be empty");
+		
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "lastName",
+				"lastName can not be empty");
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "email",
+				"email not be empty");
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "ssoId",
+				"ssoId can not be empty.");
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "password",
+				"password can not be empty.");
+
+		
+		if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
+
+			/* Set status to fail */
+			res.setStatus("FAIL");
+
+			/* Set error message if Username already exist */
+			result.rejectValue("ssoId",
+					"Username already exists. Please fill in different value");
+			res.setResult(result.getAllErrors());
+
+		}
+	
+
+		if (result.hasErrors()) {
+
+			/* Set status to fail */
+			res.setStatus("FAIL");
+
+			/*
+			 * Collect all error messages for text field that not properly
+			 * assign value
+			 */
+			res.setResult(result.getAllErrors());
+
+		} else {
+
+			System.out.println("user " + user.toString());
+
+			userList.clear(); /* Clear array list */
+			userList.add(user); /* Add employee model object into list */
+			res.setStatus("SUCCESS"); /* Set status to success */
+			res.setResult(userList); /* Return object into list */
+
+		}
+
+		return res;
+	}
+	
+	
+	
 
 	/*
 	 * This method will validate all input field in form and returning response
@@ -210,10 +301,11 @@ public class AppController {
 
 		/* Set error message if text field is empty */
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "name", "Name can not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "name",
+				"Name can not be empty");
 
-		ValidationUtils
-				.rejectIfEmptyOrWhitespace(result, "address", "address not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "address",
+				"address not be empty");
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(result, "salary",
 				"Salary can not be empty.");
@@ -221,7 +313,8 @@ public class AppController {
 		ValidationUtils.rejectIfEmptyOrWhitespace(result, "joiningDate",
 				"Date can not be empty.");
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "ssn", "Ssn can not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "ssn",
+				"Ssn can not be empty");
 
 		if (!service.isEmployeeUnique(employee.getId(), employee.getSsn())) {
 
@@ -361,13 +454,14 @@ public class AppController {
 	public String deleteUser(@PathVariable String ssoId) {
 		userService.deleteUserBySSO(ssoId);
 		return "redirect:/list";
-	}
+	}  
 
 	/**
 	 * This method will provide UserProfile list to views
 	 */
 	@ModelAttribute("roles")
 	public List<UserProfile> initializeProfiles() {
+		System.out.println("userProfileService "+userProfileService.findAll().toString());
 		return userProfileService.findAll();
 	}
 
@@ -390,7 +484,7 @@ public class AppController {
 			return "login";
 		} else {
 			// return "redirect:/list"; // orignal code
-			return "redirect:/getEmployeeList";
+			return "redirect:/home";
 		}
 	}
 
@@ -405,11 +499,12 @@ public class AppController {
 		model.addAttribute("loggedinuser", getPrincipal());
 		System.out.println("getPrincipal " + getPrincipal().toString());
 		// return "userslist";
-		return "redirect:/getEmployeeList";
+		return "redirect:/home";
 	}
 
 	/**
 	 * This method will list all existing users.
+	 * back here
 	 */
 	@RequestMapping(value = { "/listV1" }, method = RequestMethod.GET)
 	public String listUsersV1(ModelMap model) {
@@ -417,9 +512,38 @@ public class AppController {
 		List<User> users = userService.findAllUsers();
 		model.addAttribute("users", users);
 		model.addAttribute("loggedinuser", getPrincipal());
-		/* return "userslist"; */
+				
+		User user = new User();
+		model.addAttribute("user", user);
+		// return "userslist";
 		return "userListV1";
+		//return "registerUser";
+	}
 
+	/*
+	 * This method will redirect user page
+	 */
+	@RequestMapping(value = { "/ajaxUserList" }, method = RequestMethod.GET)
+	@ResponseBody
+	@Transactional
+	public List<User> ajaxUserList(ModelMap model) {
+		/* Populate DataTable */
+		List<User> users = userService.findAllUsers();
+		model.addAttribute("loggedinuser", getPrincipal());
+		return users;
+	}
+	
+	/*
+	 * This method will provide the medium to get cargo user details using ajax
+	 * with annotation @RequestParam.
+	 */
+	@RequestMapping(value = { "/search-user-by-ajax" }, method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public User ajaxEmployeeDetail(@RequestParam Integer id,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		User user = userService.findById(id);
+		return user;
 	}
 
 	/**
