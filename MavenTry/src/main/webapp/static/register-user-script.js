@@ -24,11 +24,11 @@ function addUser() {
 function clearTextField() {
 
 	/* Set default to 0 */
-	$("#id").val("0");
+	$("#id").val(null);
 	$("#firstName").val(null);
 	$("#lastName").val(null);
 	$("#email").val(null);
-	$("#ssoId").val(null);
+	$("#usernameId").val(null);
 	$("#password").val(null);
 	$("#userProfiles").val(null);
 
@@ -86,7 +86,7 @@ function searchUserDetailViaAjax(elem) {
 			$("#firstName").val(obj.firstName);
 			$("#lastName").val(obj.lastName);
 			$("#email").val(obj.email);
-			$("#ssoId").val(obj.ssoId);
+			$("#usernameId").val(obj.usernameId);
 			$("#password").val(obj.password);
 
 			var x = JSON.stringify(obj.userProfiles[0]);
@@ -105,9 +105,6 @@ function searchUserDetailViaAjax(elem) {
 
 }
 
-function parse2Darray() {
-
-}
 
 /* Fetch Cargo User id */
 function fetchDeleteId(obj) {
@@ -122,23 +119,23 @@ function deleteViaAjax() {
 	var stringResponse;
 
 	/* Disable button to prevent redundant ajax request */
-	$("#btnCargoDelete").prop('disabled', true);
+	$("#btnUserDelete").prop('disabled', true);
 
 	/* Get hidden text field value in modal delete */
 	var id = $("#deleteId").val();
 
 	/* Set Parameters */
 	var dataParameter = {
-		cargo_id : id,
+		userId : id,
 	};
 	$.ajax({
-		url : '' + myContext + '/delete-cargo-user-by-ajax',
+		url : '' + myContext + '/ajaxDeletetUser',
 		type : "GET",
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		data : dataParameter,
 		error : function(xhr, desc, err) {
-			$("#btnCargoDelete").prop('disabled', false);
+			$("#btnUserDelete").prop('disabled', false);
 			if (xhr.status == 500) {
 				alert('Error: ' + "Server not respond ");
 			}
@@ -149,13 +146,13 @@ function deleteViaAjax() {
 		success : function(response) {
 
 			/* Enable button to make ajax request again after response return */
-			$("#btnCargoDelete").prop('disabled', false);
+			$("#btnUserDelete").prop('disabled', false);
 
 			/* Populate DataTable */
-			populateCargoDataTable();
+			populateUserDataTable();
 
 			/* Hide modal */
-			$('#modalDeleteCargoUser').modal('hide');
+			$('#modalDeleteUser').modal('hide');
 
 		}
 	});
@@ -201,7 +198,7 @@ function populateUserDataTable() {
 													},
 
 													{
-														"data" : "ssoId"
+														"data" : "usernameId"
 													},
 
 													{
@@ -244,7 +241,7 @@ function insertOrUpdate() {
 		action = "ajaxAddUser";
 		message = "User has been added to the list successfully.";
 	} else {
-		action = "ajaxEditCargoUser";
+		action = "ajaxEditUser";
 		message = "User has been updated successfully.";
 	}
 
@@ -267,18 +264,21 @@ function validateAndInsertUsingAjax(action, message) {
 	var fname = $('#firstName').val();
 	var lname = $('#lastName').val();
 	var email = $('#email').val();
-	var username = $('#ssoId').val();
+	var username = $('#usernameId').val();
 	var password = $('#password').val();
 	
+	var serializedData = $('form[name=userForm]').serialize();
 	
+	console.log("DATA "+ serializedData);
 
 	$.ajax({
-
+		headers : {
+			Accept : "application/json",
+            "Content-Type" : "application/json"
+        },
 		type : "GET",
-		url : myContext + '/' + action,
-		data : "id=" + id + "&firstName=" + fname
-				+ "&lastName=" + lname + "&email="
-				+ email + "&ssoId=" + username + "&password=" + password,
+		url : myContext + '/' + action +'?_csrf='+ $("#token").val(),
+		data :serializedData ,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		crossDomain : "TRUE",
@@ -311,7 +311,7 @@ function validateAndInsertUsingAjax(action, message) {
 							+ obj.result[i].email;
 					
 					userInfo += "<br><li><b>username</b> : "
-						+ obj.result[i].ssoId;
+						+ obj.result[i].usernameId;
 
 					userInfo += "<br><li><b>password</b> : "
 							+ obj.result[i].password;
@@ -331,7 +331,7 @@ function validateAndInsertUsingAjax(action, message) {
 				populateUserDataTable();
 
 				/* Hide modal */
-				$('#modalAddUser').modal('hide');
+				$('#modalUser').modal('hide');
 
 			} else {
 				/*

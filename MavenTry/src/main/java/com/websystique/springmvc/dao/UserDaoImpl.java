@@ -12,16 +12,14 @@ import org.springframework.stereotype.Repository;
 
 import com.websystique.springmvc.model.User;
 
-
-
 @Repository("userDao")
 public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
-	
+
 	public User findById(int id) {
 		User user = getByKey(id);
-		if(user!=null){
+		if (user != null) {
 			Hibernate.initialize(user.getUserProfiles());
 		}
 		return user;
@@ -30,9 +28,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	public User findBySSO(String sso) {
 		logger.info("SSO : {}", sso);
 		Criteria crit = createEntityCriteria();
-		crit.add(Restrictions.eq("ssoId", sso));
-		User user = (User)crit.uniqueResult();
-		if(user!=null){
+		crit.add(Restrictions.eq("usernameId", sso));
+		User user = (User) crit.uniqueResult();
+		if (user != null) {
 			Hibernate.initialize(user.getUserProfiles());
 		}
 		return user;
@@ -40,14 +38,18 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	@SuppressWarnings("unchecked")
 	public List<User> findAllUsers() {
-		Criteria criteria = createEntityCriteria().addOrder(Order.asc("firstName"));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+		Criteria criteria = createEntityCriteria().addOrder(
+				Order.asc("firstName"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);// To avoid
+																		// duplicates.
 		List<User> users = (List<User>) criteria.list();
-		
-		// No need to fetch userProfiles since we are not showing them on list page. Let them lazy load. 
-		// Uncomment below lines for eagerly fetching of userProfiles if you want.
-		
-		for(User user : users){
+
+		// No need to fetch userProfiles since we are not showing them on list
+		// page. Let them lazy load.
+		// Uncomment below lines for eagerly fetching of userProfiles if you
+		// want.
+
+		for (User user : users) {
 			Hibernate.initialize(user.getUserProfiles());
 		}
 		return users;
@@ -59,9 +61,18 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	public void deleteBySSO(String sso) {
 		Criteria crit = createEntityCriteria();
-		crit.add(Restrictions.eq("ssoId", sso));
-		User user = (User)crit.uniqueResult();
+		crit.add(Restrictions.eq("usernameId", sso));
+		User user = (User) crit.uniqueResult();
 		delete(user);
+	}
+
+	@Override
+	public void deleteUserById(int id) {
+		Criteria crit = createEntityCriteria();
+		crit.add(Restrictions.eq("id", id));
+		User user = (User) crit.uniqueResult();
+		delete(user);
+
 	}
 
 }

@@ -65,8 +65,7 @@
 				<div class="col-lg-12">
 					<div>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#modalUser" onClick="addUser()">Add
-							User</button>
+							data-target="#modalUser" onClick="addUser()">Add User</button>
 					</div>
 
 					<div class="panel panel-default">
@@ -89,7 +88,7 @@
 										<th>Firstname</th>
 										<th>Lastname</th>
 										<th>Email</th>
-										<th>SSO ID</th>
+										<th>Username</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -130,11 +129,12 @@
 				</div>
 
 				<!-- Form Text field -->
-				<form:form method="GET" modelAttribute="user" name="myform"
+				<form:form method="GET" modelAttribute="user" name="userForm"
 					id="myform">
-					<form:input type="text" path="id" id="id" />
+					<form:input type="hidden" path="id" id="id" />
 					<div class="modal-body">
-
+						<input type="hidden" id="token" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
 						<!-- Input First Name -->
 						<div>
 							<label for="firstName">First name: </label>
@@ -158,13 +158,13 @@
 								placeholder="Email" />
 							<form:errors path="email" cssClass="error" />
 						</div>
-						
+
 						<!-- Input User name -->
 						<div>
 							<label for="ssoId">Username: </label>
-							<form:input path="ssoId" id="ssoId" class="form-control"
+							<form:input path="usernameId" id="usernameId" class="form-control"
 								placeholder="Username" />
-							<form:errors path="ssoId" cssClass="error" />
+							<form:errors path="usernameId" cssClass="error" />
 						</div>
 
 						<!-- Input Password -->
@@ -178,7 +178,8 @@
 						<div>
 							<!-- Select Role Type -->
 							<label for="userProfiles">Account Type: </label>
-							<form:select name="userProfiles" id="userProfiles" path="userProfiles" items="${roles}" multiple="true"
+							<form:select name="userProfiles" id="userProfiles"
+								path="userProfiles" items="${roles}" multiple="true"
 								itemValue="id" itemLabel="type" class="form-control" />
 							<form:errors path="userProfiles" cssClass="error" />
 						</div>
@@ -205,7 +206,44 @@
 	</div>
 
 
+<!-- Delete Modal -->
+	<div class="modal fade" id="modalDeleteUser" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<form name="deleteForm" id="deleteForm" method="GET">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
 
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body">
+						<!-- Hidden input field for id -->
+						<input type="hidden" id="deleteId" />
+
+						<h4>Delete this record?</h4>
+					</div>
+
+					<div class="modal-footer">
+
+						<!-- Close button -->
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<!-- Close button -->
+
+						<input type="button" id="btnUserDelete" class="btn btn-danger"
+							onClick="deleteViaAjax()" value="Delete" />
+
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
 
 
 	<!-- jQuery -->

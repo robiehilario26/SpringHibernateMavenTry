@@ -27,8 +27,8 @@ public class User implements Serializable{
 	private Integer id;
 
 	@NotEmpty
-	@Column(name="SSO_ID", unique=true, nullable=false)
-	private String ssoId;
+	@Column(name="USERNAME_ID", unique=true, nullable=false)
+	private String usernameId;
 	
 	@NotEmpty
 	@Column(name="PASSWORD", nullable=false)
@@ -53,6 +53,39 @@ public class User implements Serializable{
              inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
 	private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
 
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((usernameId == null) ? 0 : usernameId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (usernameId == null) {
+			if (other.usernameId != null)
+				return false;
+		} else if (!usernameId.equals(other.usernameId))
+			return false;
+		return true;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -61,12 +94,12 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	public String getSsoId() {
-		return ssoId;
+	public String getUsernameId() {
+		return usernameId;
 	}
 
-	public void setSsoId(String ssoId) {
-		this.ssoId = ssoId;
+	public void setUsernameId(String usernameId) {
+		this.usernameId = usernameId;
 	}
 
 	public String getPassword() {
@@ -109,36 +142,7 @@ public class User implements Serializable{
 		this.userProfiles = userProfiles;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof User))
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (ssoId == null) {
-			if (other.ssoId != null)
-				return false;
-		} else if (!ssoId.equals(other.ssoId))
-			return false;
-		return true;
-	}
+	
 
 	/*
 	 * DO-NOT-INCLUDE passwords in toString function.
@@ -146,7 +150,7 @@ public class User implements Serializable{
 	 */
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", ssoId=" + ssoId + ", password=" + password
+		return "User [id=" + id + ", usernameId=" + usernameId + ", password=" + password
 				+ ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", email=" + email + "]";
 	}

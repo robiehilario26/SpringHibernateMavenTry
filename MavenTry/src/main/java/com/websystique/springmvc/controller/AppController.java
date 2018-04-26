@@ -179,88 +179,7 @@ public class AppController {
 	
 	
 	
-	@RequestMapping(value = "/ajaxAddUser", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody JsonResponse AddUser(
-			@ModelAttribute(value = "employee") User user,
-			BindingResult result) {
-
-		System.out.println("user " + user.toString());
-
-		/* Create new json response */
-		JsonResponse res = new JsonResponse();
-
-		/* Call method for validating the input values */
-		userJsonResponse(res, result, user);
-
-		/* If result is success it will insert into the employee table */
-		if (res.getStatus().equalsIgnoreCase("success")) {
-
-			/* Add Employee details into database */
-			//userService.saveUser(user);
-
-		}
-		return res;
-	}
 	
-	
-	public JsonResponse userJsonResponse(JsonResponse res, BindingResult result,
-			User user) {
-
-		/* Set error message if text field is empty */
-
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "firstName",
-				"firstName can not be empty");
-		
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "lastName",
-				"lastName can not be empty");
-
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "email",
-				"email not be empty");
-
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "ssoId",
-				"ssoId can not be empty.");
-
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "password",
-				"password can not be empty.");
-
-		
-		if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-
-			/* Set status to fail */
-			res.setStatus("FAIL");
-
-			/* Set error message if Username already exist */
-			result.rejectValue("ssoId",
-					"Username already exists. Please fill in different value");
-			res.setResult(result.getAllErrors());
-
-		}
-	
-
-		if (result.hasErrors()) {
-
-			/* Set status to fail */
-			res.setStatus("FAIL");
-
-			/*
-			 * Collect all error messages for text field that not properly
-			 * assign value
-			 */
-			res.setResult(result.getAllErrors());
-
-		} else {
-
-			System.out.println("user " + user.toString());
-
-			userList.clear(); /* Clear array list */
-			userList.add(user); /* Add employee model object into list */
-			res.setStatus("SUCCESS"); /* Set status to success */
-			res.setResult(userList); /* Return object into list */
-
-		}
-
-		return res;
-	}
 	
 	
 	
@@ -386,10 +305,10 @@ public class AppController {
 		 * can fill custom errors outside the validation framework as well while
 		 * still using internationalized messages.
 		 */
-		if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
+		if (!userService.isUserSSOUnique(user.getId(), user.getUsernameId())) {
 			FieldError ssoError = new FieldError("user", "ssoId",
 					messageSource.getMessage("non.unique.ssoId",
-							new String[] { user.getSsoId() },
+							new String[] { user.getUsernameId() },
 							Locale.getDefault()));
 			result.addError(ssoError);
 			return "registration";
@@ -502,23 +421,7 @@ public class AppController {
 		return "redirect:/home";
 	}
 
-	/**
-	 * This method will list all existing users.
-	 * back here
-	 */
-	@RequestMapping(value = { "/listV1" }, method = RequestMethod.GET)
-	public String listUsersV1(ModelMap model) {
-
-		List<User> users = userService.findAllUsers();
-		model.addAttribute("users", users);
-		model.addAttribute("loggedinuser", getPrincipal());
-				
-		User user = new User();
-		model.addAttribute("user", user);
-		// return "userslist";
-		return "userListV1";
-		//return "registerUser";
-	}
+	
 
 	/*
 	 * This method will redirect user page
@@ -533,18 +436,7 @@ public class AppController {
 		return users;
 	}
 	
-	/*
-	 * This method will provide the medium to get cargo user details using ajax
-	 * with annotation @RequestParam.
-	 */
-	@RequestMapping(value = { "/search-user-by-ajax" }, method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public User ajaxEmployeeDetail(@RequestParam Integer id,
-			HttpServletRequest request, HttpServletResponse response,
-			Model model) {
-		User user = userService.findById(id);
-		return user;
-	}
+	
 
 	/**
 	 * This method handles logout requests. Toggle the handlers if you are
