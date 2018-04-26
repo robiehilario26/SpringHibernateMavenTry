@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Customer</title>
+<title>Maintenance</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -53,7 +53,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Customer</h1>
+					<h1 class="page-header">Maintenance</h1>
 				</div>
 
 				<!-- /.col-lg-12 -->
@@ -61,10 +61,10 @@
 			<!-- /.row -->
 			<div class="row">
 				<div class="col-lg-12">
-					<div>
+					<div> 
 						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#modalAddCargoUser" onClick="addCargoUser()">Add
-							Customer</button>
+							data-target="#modalAddDeliveryType" onClick="addCargoUser()">Add
+							Delivery Type</button>
 					</div>
 
 					<div class="panel panel-default">
@@ -84,10 +84,9 @@
 								id="dataTables-example">
 								<thead>
 									<tr>
-										<th>Cargo Driver</th>
-										<th>Vehicle Type</th>
-										<th>Plate Number</th>
-										<th>Company</th>
+										<th>Delivery Type</th>
+										<th>Delivery Weight</th>
+										<th>Delivery Price</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -119,7 +118,7 @@
 
 
 	<!-- Register Modal -->
-	<div class="modal fade" id="modalAddCargoUser" tabindex="-1"
+	<div class="modal fade" id="modalAddDeliveryType" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
@@ -133,44 +132,36 @@
 				</div>
 
 				<!-- Form Text field -->
-				<form:form method="GET" modelAttribute="cargoUser" name="myform"
+				<form:form method="GET" modelAttribute="delivery" name="myform"
 					id="myform">
-					<form:input type="hidden" path="cargo_id" id="cargo_id" />
+					<form:input type="hidden" path="id" id="id" />
 					<div class="modal-body">
 
-						<!-- Input Cargo Driver Name -->
+						<!-- Input Delivery type -->
 						<div>
-							<label for="name">Name: </label>
-							<form:input path="cargo_driver" id="cargo_driver"
-								class="form-control" placeholder="Full name" />
-							<form:errors path="cargo_driver" cssClass="error" />
+							<label for="delivery_type">Delivery type: </label>
+							<form:input path="delivery_type" id="delivery_type"
+								class="form-control" placeholder="Delivery type" />
+							<form:errors path="delivery_type" cssClass="error" />
+						</div>
+						
+						<!-- Input Delivery weight -->
+						<div>
+							<label for="delivery_weight">Delivery weight (kg): </label>
+							<form:input type="number" min="0" path="delivery_weight" id="delivery_weight"
+								class="form-control" placeholder="Delivery weight(kg)" />
+							<form:errors path="delivery_weight" cssClass="error" />
+						</div>
+						
+						<!-- Input Delivery price -->
+						<div>
+							<label for="delivery_price">Delivery price: </label>
+							<form:input type="number" min="0" path="delivery_price" id="delivery_price"
+								class="form-control" placeholder="Delivery price" />
+							<form:errors path="delivery_price" cssClass="error" />
 						</div>
 
-						<div>
-							<!-- Select Vechicle Type -->
-							<label for="type">Vehicle Type: </label>
-							<form:select path="cargo_vehicletype" id="cargo_vehicletype"
-								name="cargo_vehicletype" class="form-control">
-								<form:option value="" label="--- Select Type ---" />
-								<form:options items="${truckType}" />
-							</form:select>
-						</div>
-
-						<div>
-							<!-- Input Vechicle plate number -->
-							<label for="type">Vehicle Plate number: </label>
-							<form:input path="truck_plate_number" id="truck_plate_number"
-								class="form-control" placeholder="Vehicle Plate number" />
-							<form:errors path="truck_plate_number" cssClass="error" />
-						</div>
-
-						<div>
-							<!-- Input Company -->
-							<label for="type">Company: </label>
-							<form:input path="cargo_company" id="cargo_company"
-								class="form-control" placeholder="Company name" />
-							<form:errors path="cargo_company" cssClass="error" />
-						</div>
+						
 
 
 						<div id="error" class="error"></div>
@@ -184,8 +175,8 @@
 							data-dismiss="modal">Close</button>
 
 						<!-- Register button -->
-						<input type="button" class="btn btn-primary" value="Register"
-							id="btnCargo" onClick="insertOrUpdate()" />
+						<input type="button" class="btn btn-primary" value="Save"
+							id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
 
 					</div>
 				</form:form>
@@ -223,7 +214,7 @@
 							data-dismiss="modal">Close</button>
 						<!-- Close button -->
 
-						<input type="button" id="btnCargoDelete" class="btn btn-danger"
+						<input type="button" id="btnDeliveryTypeDelete" class="btn btn-danger"
 							onClick="deleteViaAjax()" value="Delete" />
 
 					</div>
@@ -265,13 +256,13 @@
 
 	<!-- Custom function Javascript -->
 	<script type="text/javascript"
-		src="<c:url value="/static/cargo-user-script.js" />"></script>
+		src="<c:url value="/static/delivery-type-script.js" />"></script>
 
 
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
 	<script>
 		$(document).ready(function() {
-			populateCargoDataTable();
+			populateDeliveryTypeDataTable();
 		});
 	</script>
 

@@ -48,8 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 						"/getEmployeeList", "/ajaxAddEmployee",
 						"/delete-cargo-user-by-ajax", "/ajaxAddCargoUser",
 						"/ajaxEditCargoUser", "/delete-employee-by-ajax",
-						"/ajaxAddUser", "/listV1").access("hasRole('ADMIN')")
-				.antMatchers("/customer/**")
+						"/deliveryType*", "/ajaxAddUser", "/listV1")
+				.access("hasRole('ADMIN')").antMatchers("/customer/**")
 				.access("hasRole('USER') or hasRole('ADMIN')")
 				.antMatchers("/edit-user-*")
 				.access("hasRole('ADMIN') or hasRole('CARGO')").and()

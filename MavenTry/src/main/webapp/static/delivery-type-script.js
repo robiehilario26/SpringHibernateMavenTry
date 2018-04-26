@@ -9,29 +9,26 @@
  */
 
 /* Add employee */
-function addUser() {
+function addCargoUser() {
 	/* Clear input fields */
 	clearTextField();
 
 	/* Set text value of button */
-	$('#btnUser').val("Register");
+	$('#btnDeliveryType').val("Save");
 
 	/* Change class of attr of button */
-	$("#btnUser").attr('class', 'btn btn-primary');
+	$("#btnDeliveryType").attr('class', 'btn btn-primary');
 }
 
 /* Clear all textfield value */
 function clearTextField() {
 
-	/* Set default to 0 / null */
-	$("#id").val(null);
-	$("#firstName").val(null);
-	$("#lastName").val(null);
-	$("#email").val(null);
-	$("#usernameId").val(null);
-	$("#password").val(null);
-	$("#userProfiles").val(null);
-
+	/* Set default to 0 */
+	$("#id").val("0");
+	$("#delivery_type").val(null);
+	$("#delivery_weight").val("0");
+	$("#delivery_price").val("0");
+	
 	/* Clear error validation message */
 	$("#error").empty();
 
@@ -41,10 +38,10 @@ function clearTextField() {
  * Fetch employee information via cargo user id using json response using
  * @RequestParam
  */
-function searchUserDetailViaAjax(elem) {
+function searchDeliveryTypeDetailViaAjax(elem) {
 	var stringResponse;
 	var id = elem.id;
-
+	
 	/* Clear error validation message */
 	$("#error").empty();
 
@@ -52,20 +49,20 @@ function searchUserDetailViaAjax(elem) {
 	$("#id").val(id);
 
 	/* Set text value of button */
-	$('#btnUser').val("Update");
+	$('#btnDeliveryType').val("Update");
 
 	/* Change class of attr of button */
-	$("#btnUser").attr('class', 'btn btn-success');
+	$("#btnDeliveryType").attr('class', 'btn btn-success');
 
 	/* Disable button to prevent unnecessary submit */
-	$("#btnUser").prop('disabled', true);
+	$("#btnDeliveryType").prop('disabled', true);
 
 	/* Set Parameters */
 	var dataParameter = {
 		id : id,
 	};
 	$.ajax({
-		url : '' + myContext + '/search-user-by-ajax',
+		url : '' + myContext + '/search-delivery-type-by-ajax',
 		type : "GET",
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
@@ -77,28 +74,18 @@ function searchUserDetailViaAjax(elem) {
 
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
-			console.log(stringResponse);
+
 			/* Parse json response to get value of each key */
 			var obj = JSON.parse(stringResponse);
-			console.log("stringResponse" + stringResponse);
+
 			/* Set modal text field value */
 			$("#id").val(obj.id);
-			$("#firstName").val(obj.firstName);
-			$("#lastName").val(obj.lastName);
-			$("#email").val(obj.email);
-			$("#usernameId").val(obj.usernameId);
-			$("#password").val(obj.password);
-
-			var x = JSON.stringify(obj.userProfiles[0]);
-			console.log("x " + x);
-
-			x = JSON.parse(x);
-			console.log("new " + x.id);
-
-			$("#userProfiles").val(x.id);
-
+			$("#delivery_type").val(obj.delivery_type);
+			$("#delivery_weight").val(obj.delivery_weight);
+			$("#delivery_price").val(obj.delivery_price);
+			
 			/* Enable button to submit */
-			$("#btnUser").prop('disabled', false);
+			$("#btnDeliveryType").prop('disabled', false);
 
 		}
 	});
@@ -118,23 +105,23 @@ function deleteViaAjax() {
 	var stringResponse;
 
 	/* Disable button to prevent redundant ajax request */
-	$("#btnUserDelete").prop('disabled', true);
+	$("#btnCargoDelete").prop('disabled', true);
 
 	/* Get hidden text field value in modal delete */
 	var id = $("#deleteId").val();
 
 	/* Set Parameters */
 	var dataParameter = {
-		userId : id,
+		cargo_id : id,
 	};
 	$.ajax({
-		url : '' + myContext + '/ajaxDeletetUser',
+		url : '' + myContext + '/delete-cargo-user-by-ajax',
 		type : "GET",
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		data : dataParameter,
 		error : function(xhr, desc, err) {
-			$("#btnUserDelete").prop('disabled', false);
+			$("#btnCargoDelete").prop('disabled', false);
 			if (xhr.status == 500) {
 				alert('Error: ' + "Server not respond ");
 			}
@@ -145,35 +132,35 @@ function deleteViaAjax() {
 		success : function(response) {
 
 			/* Enable button to make ajax request again after response return */
-			$("#btnUserDelete").prop('disabled', false);
+			$("#btnCargoDelete").prop('disabled', false);
 
 			/* Populate DataTable */
-			populateUserDataTable();
+			populateDeliveryTypeDataTable();
 
 			/* Hide modal */
-			$('#modalDeleteUser').modal('hide');
+			$('#modalDeleteCargoUser').modal('hide');
 
 		}
 	});
 
 }
 
-/* Populate DataTable of list of all User existed using ajax */
-function populateUserDataTable() {
+/* Populate DataTable of list of all Cargo User existed using ajax */
+function populateDeliveryTypeDataTable() {
 	$("#dataTables-example").dataTable().fnDestroy();
 
 	/* set class and onClick event listener */
 	var buttonEditClass = 'class="btn btn-success" data-toggle="modal"';
-	buttonEditClass += 'data-target="#modalUser"';
-	buttonEditClass += 'onClick="searchUserDetailViaAjax(this)"';
+	buttonEditClass += 'data-target="#modalAddDeliveryType"';
+	buttonEditClass += 'onClick="searchDeliveryTypeDetailViaAjax(this)"';
 
 	var buttonDeleteClass = 'class="btn btn-danger" data-toggle="modal"';
-	buttonDeleteClass += 'data-target="#modalDeleteUser"';
+	buttonDeleteClass += 'data-target="#modalDeleteCargoUser"';
 	buttonDeleteClass += 'onClick="fetchDeleteId(this)"'
 
 	$
 			.ajax({
-				'url' : '' + myContext + '/ajaxUserList',
+				'url' : '' + myContext + '/ajaxDeliveryTypeList',
 				'method' : "GET",
 				'contentType' : 'application/json'
 			})
@@ -187,19 +174,15 @@ function populateUserDataTable() {
 											"aaData" : data,
 											"columns" : [
 													{
-														"data" : "firstName"
+														"data" : "delivery_type"
 													},
 													{
-														"data" : "lastName"
+														"data" : "delivery_weight"
 													},
 													{
-														"data" : "email"
+														"data" : "delivery_price"
 													},
-
-													{
-														"data" : "usernameId"
-													},
-
+											
 													{
 
 														/*
@@ -232,15 +215,15 @@ function populateUserDataTable() {
  * This function will insert or update base on the value of button name. Set the
  * url action of ajax Set message to be display
  */
-function insertOrUpdate() {
+function insertOrUpdateDeliveryType() {
 	var action, message;
-	var getButtonName = $("#btnUser").val();
+	var getButtonName = $("#btnDeliveryType").val();
 
-	if (getButtonName == "Register") {
-		action = "ajaxAddUser";
+	if (getButtonName == "Save") {
+		action = "ajaxAddDeliveryType";
 		message = "User has been added to the list successfully.";
 	} else {
-		action = "ajaxEditUser";
+		action = "ajaxEditDeliveryType";
 		message = "User has been updated successfully.";
 	}
 
@@ -256,130 +239,116 @@ function insertOrUpdate() {
 function validateAndInsertUsingAjax(action, message) {
 
 	/* Disable button to prevent redundant ajax request */
-	$("#btnUser").prop('disabled', true);
+	$("#btnDeliveryType").prop('disabled', true);
 
 	/* get the text field form values */
 	var id = $('#id').val();
-	var fname = $('#firstName').val();
-	var lname = $('#lastName').val();
-	var email = $('#email').val();
-	var username = $('#usernameId').val();
-	var password = $('#password').val();
+	var type = $('#delivery_type').val();
+	var weight = $('#delivery_weight').val();
+	var price = $('#delivery_price').val();
+	
 
-	var serializedData = $('form[name=userForm]').serialize();
+	$.ajax({
 
-	console.log("DATA " + serializedData);
+		type : "GET",
+		url : myContext + '/' + action,
+		data : "id=" + id + "&delivery_type=" + type
+				+ "&delivery_weight=" + weight + "&delivery_price="
+				+ price,
+		contentType : "application/json; charset=utf-8",
+		datatype : "json",
+		crossDomain : "TRUE",
+		success : function(response) {
+			var stringResponse = JSON.stringify(response)
+			// we have the response
 
-	$
-			.ajax({
-				headers : {
-					Accept : "application/json",
-					"Content-Type" : "application/json"
-				},
-				type : "GET",
-				url : myContext + '/' + action + '?_csrf=' + $("#token").val(),
-				data : serializedData,
-				contentType : "application/json; charset=utf-8",
-				datatype : "json",
-				crossDomain : "TRUE",
-				success : function(response) {
-					var stringResponse = JSON.stringify(response)
-					// we have the response
+			var obj = JSON.parse(stringResponse);
 
-					var obj = JSON.parse(stringResponse);
+			if (obj.status == "SUCCESS") {
+				/*
+				 * Enable button to make ajax request again after response
+				 * return
+				 */
+				$("#btnDeliveryType").prop('disabled', false);
 
-					if (obj.status == "SUCCESS") {
-						/*
-						 * Enable button to make ajax request again after
-						 * response return
-						 */
-						$("#btnUser").prop('disabled', false);
+				var userInfo = "<ol>";
 
-						var userInfo = "<ol>";
+				for (i = 0; i < obj.result.length; i++) {
 
-						for (i = 0; i < obj.result.length; i++) {
+					/* Create html elements */
 
-							/* Create html elements */
+					userInfo += "<br><li><b>Delivery Type</b> : "
+							+ obj.result[i].delivery_type;
 
-							userInfo += "<br><li><b>firstName</b> : "
-									+ obj.result[i].firstName;
+					userInfo += "<br><li><b>Delivery weight</b> : "
+							+ obj.result[i].delivery_weight;
 
-							userInfo += "<br><li><b>lastName</b> : "
-									+ obj.result[i].lastName;
+					userInfo += "<br><li><b>Delivery Price</b> : "
+							+ obj.result[i].delivery_price;
 
-							userInfo += "<br><li><b>email</b> : "
-									+ obj.result[i].email;
-
-							userInfo += "<br><li><b>username</b> : "
-									+ obj.result[i].usernameId;
-
-							userInfo += "<br><li><b>password</b> : "
-									+ obj.result[i].password;
-
-						}
-
-						userInfo += "</ol>";
-
-						/* Draw message in #info div */
-						$('#info').html(message + userInfo);
-
-						/* Show and hide div */
-						$('#error').hide('slow');
-						$('#info').show('slow');
-
-						/* Populate DataTable */
-						populateUserDataTable();
-
-						/* Hide modal */
-						$('#modalUser').modal('hide');
-
-					} else {
-						/*
-						 * Enable button to make ajax request again after
-						 * response return
-						 */
-						$("#btnUser").prop('disabled', false);
-
-						var errorInfo = "";
-
-						for (i = 0; i < response.result.length; i++) {
-
-							errorInfo += "<br>" + (i + 1) + ". "
-									+ response.result[i].code;
-
-						}
-
-						/* Show error message from response */
-						$('#error')
-								.html(
-										"Please correct following errors: "
-												+ errorInfo);
-
-						/* Show and hide div */
-						$('#info').hide('slow');
-						$('#error').show('slow');
-
-					}
-
-				},
-
-				/* xhr.status shows server respond */
-				error : function(xhr, desc, err) {
-					/*
-					 * Enable button to make ajax request again after response
-					 * return
-					 */
-
-					$("#btnUser").prop('disabled', false);
-					if (xhr.status == 500) {
-						alert('Error: ' + "Server not respond ");
-					}
-					if (xhr.status == 403) {
-						alert('Error: ' + "Access Denied");
-					}
+					
 
 				}
 
-			});
+				userInfo += "</ol>";
+
+				/* Draw message in #info div */
+				$('#info').html(message + userInfo);
+
+				/* Show and hide div */
+				$('#error').hide('slow');
+				$('#info').show('slow');
+
+				/* Populate DataTable */
+				populateDeliveryTypeDataTable();
+
+				/* Hide modal */
+				$('#modalAddDeliveryType').modal('hide');
+
+			} else {
+				/*
+				 * Enable button to make ajax request again after response
+				 * return
+				 */
+				$("#btnDeliveryType").prop('disabled', false);
+
+				var errorInfo = "";
+
+				for (i = 0; i < response.result.length; i++) {
+
+					errorInfo += "<br>" + (i + 1) + ". "
+							+ response.result[i].code;
+
+				}
+
+				/* Show error message from response */
+				$('#error').html(
+						"Please correct following errors: " + errorInfo);
+
+				/* Show and hide div */
+				$('#info').hide('slow');
+				$('#error').show('slow');
+
+			}
+
+		},
+
+		/* xhr.status shows server respond */
+		error : function(xhr, desc, err) {
+			/*
+			 * Enable button to make ajax request again after response return
+			 */
+
+			$("#btnDeliveryType").prop('disabled', false);
+			if (xhr.status == 500) {
+				alert('Error: ' + "Server not respond ");
+			}
+			if (xhr.status == 403) {
+				alert('Error: ' + "Access Denied");
+			}
+
+		}
+
+	});
 
 }

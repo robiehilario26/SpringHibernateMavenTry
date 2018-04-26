@@ -199,9 +199,9 @@
 						</span>
 					</div> <!-- /input-group -->
 				</li>
-				<li><a href="<c:url value='/home' />"><i
+				<li class="active"><a href="<c:url value='/home' />"><i
 						class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
-				<li class="active"><a href="#"><i
+				<li><a href="#"><i
 						class="fa fa-bar-chart-o fa-fw"></i> People <span
 						class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
@@ -209,14 +209,22 @@
 						<li><a href="<c:url value='/listV1' />">Users</a></li>
 						<li><a href="<c:url value='/cargo' />">Cargo User</a></li>
 						<li><a href="<c:url value='/customer/list' />">Customers</a></li>
-					</ul> <!-- /.nav-second-level --></li>
+					</ul> <!-- /.nav-2nd-level --></li>
 				<li><a href="#"><i
-						class="fa fa-bar-chart-o fa-fw"></i> Delivery <span
+						class="fa fa-shopping-cart fa-fw"></i> Delivery <span
 						class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
 						<li><a href="<c:url value='#' />">Delivery Request</a></li>
 						<li><a href="<c:url value='#' />">Beeding</a></li>
-					</ul> <!-- /.nav-second-level --></li>
+					</ul> <!-- /.nav-3rd-level --></li>
+					
+						<li><a href="#"><i
+						class="fa fa-wrench fa-fw"></i> Maintenance <span
+						class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li><a href="<c:url value='/deliveryType' />">Delivery Type</a></li>
+					</ul> <!-- /.nav-4th-level --></li>
+					
 				<li><a href="tables.html"><i class="fa fa-table fa-fw"></i>
 						Tables</a></li>
 				<li><a href="forms.html"><i class="fa fa-edit fa-fw"></i>

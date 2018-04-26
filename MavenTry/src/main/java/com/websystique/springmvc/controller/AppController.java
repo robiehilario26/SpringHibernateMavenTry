@@ -178,11 +178,6 @@ public class AppController {
 	}
 	
 	
-	
-	
-	
-	
-	
 
 	/*
 	 * This method will validate all input field in form and returning response
@@ -306,8 +301,8 @@ public class AppController {
 		 * still using internationalized messages.
 		 */
 		if (!userService.isUserSSOUnique(user.getId(), user.getUsernameId())) {
-			FieldError ssoError = new FieldError("user", "ssoId",
-					messageSource.getMessage("non.unique.ssoId",
+			FieldError ssoError = new FieldError("user", "usernameId",
+					messageSource.getMessage("non.unique.usernameId",
 							new String[] { user.getUsernameId() },
 							Locale.getDefault()));
 			result.addError(ssoError);
@@ -326,9 +321,9 @@ public class AppController {
 	/**
 	 * This method will provide the medium to update an existing user.
 	 */
-	@RequestMapping(value = { "/edit-user-{ssoId}" }, method = RequestMethod.GET)
-	public String editUser(@PathVariable String ssoId, ModelMap model) {
-		User user = userService.findBySSO(ssoId);
+	@RequestMapping(value = { "/edit-user-{usernameId}" }, method = RequestMethod.GET)
+	public String editUser(@PathVariable String usernameId, ModelMap model) {
+		User user = userService.findBySSO(usernameId);
 		model.addAttribute("user", user);
 		model.addAttribute("edit", true);
 		model.addAttribute("loggedinuser", getPrincipal());
@@ -339,9 +334,9 @@ public class AppController {
 	 * This method will be called on form submission, handling POST request for
 	 * updating user in database. It also validates the user input
 	 */
-	@RequestMapping(value = { "/edit-user-{ssoId}" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/edit-user-{usernameId}" }, method = RequestMethod.POST)
 	public String updateUser(@Valid User user, BindingResult result,
-			ModelMap model, @PathVariable String ssoId) {
+			ModelMap model, @PathVariable String usernameId) {
 
 		if (result.hasErrors()) {
 			return "registration";
@@ -369,9 +364,9 @@ public class AppController {
 	/**
 	 * This method will delete an user by it's SSOID value.
 	 */
-	@RequestMapping(value = { "/delete-user-{ssoId}" }, method = RequestMethod.GET)
-	public String deleteUser(@PathVariable String ssoId) {
-		userService.deleteUserBySSO(ssoId);
+	@RequestMapping(value = { "/delete-user-{usernameId}" }, method = RequestMethod.GET)
+	public String deleteUser(@PathVariable String usernameId) {
+		userService.deleteUserBySSO(usernameId);
 		return "redirect:/list";
 	}  
 
@@ -390,7 +385,7 @@ public class AppController {
 	@RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
 	public String accessDeniedPage(ModelMap model) {
 		model.addAttribute("loggedinuser", getPrincipal());
-		return "accessDenied";
+		return "accessDeniedV1";
 	}
 
 	/**
