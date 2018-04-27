@@ -44,6 +44,9 @@ public class MaintenanceController {
 		return deliveryTypes;
 	}
 
+	/*
+	 * This method will redirect user to maintenance delivery page.
+	 */
 	@RequestMapping(value = "/deliveryType", method = RequestMethod.GET)
 	public String deliveryType(ModelMap model) {
 		DeliveryType deliveryType = new DeliveryType();
@@ -52,6 +55,10 @@ public class MaintenanceController {
 
 	}
 
+	/*
+	 * This method will provide the medium to get delivery type details using
+	 * ajax with annotation @RequestParam.
+	 */
 	@RequestMapping(value = "/search-delivery-type-by-ajax", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public DeliveryType ListDeliveryTypeDetail(@RequestParam Integer id,
@@ -60,51 +67,64 @@ public class MaintenanceController {
 		return deliveryType;
 	}
 
+	/*
+	 * This method will provide the medium to add a new delivery type. It
+	 * validate all the input before inserting to database
+	 */
 	@RequestMapping(value = "/ajaxAddDeliveryType", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public JsonResponse addDeliveryType(
 			@ModelAttribute(value = "delivery") DeliveryType deliveryType,
 			BindingResult result) {
 
-		System.out.println("deliveryType " + deliveryType.toString());
-
 		JsonResponse res = new JsonResponse();
+
+		/* Validate all the input. it return "SUCCESS" or "FAIL" status */
 		jsonResponse(res, result, deliveryType);
 
 		if (res.getStatus().equalsIgnoreCase("success")) {
+			/*
+			 * If result status is Success insert the data into database
+			 */
 			deliveryTypeService.saveDeliveryType(deliveryType);
-			System.out.println("success insert");
 		}
 
 		return res;
 	}
 
+	/*
+	 * This method will provide the medium to update a delivery type. It
+	 * validate all the input before update to database
+	 */
 	@RequestMapping(value = "/ajaxEditDeliveryType", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public JsonResponse editDeliveryType(
 			@ModelAttribute(value = "delivery") DeliveryType deliveryType,
 			BindingResult result) {
 
-		System.out.println("deliveryType " + deliveryType.toString());
-
 		JsonResponse res = new JsonResponse();
+		/* Validate all the input. it return "SUCCESS" or "FAIL" status */
 		jsonResponse(res, result, deliveryType);
 
 		if (res.getStatus().equalsIgnoreCase("success")) {
-
+			/*
+			 * If result status is Success update the data into database
+			 */
 			deliveryTypeService.updateDeliveryType(deliveryType);
-			System.out.println("success update");
 		}
 
 		return res;
 	}
-	
-	@RequestMapping(value="ajaxDeleteDeliveryType", method = RequestMethod.GET)
-	public String deleteDeliveryType(@RequestParam Integer id){
+
+	/*
+	 * This method will delete an delivery type by it's id value using ajax with
+	 * annotation @RequestParam.
+	 */
+	@RequestMapping(value = "ajaxDeleteDeliveryType", method = RequestMethod.GET)
+	public String deleteDeliveryType(@RequestParam Integer id) {
 		deliveryTypeService.deleteDeliveryType(id);
 		return "redirect:/deliveryType";
 	}
-	
 
 	/*
 	 * This method will validate all input field in form and returning response.
@@ -151,7 +171,7 @@ public class MaintenanceController {
 			res.setResult(result.getAllErrors());
 
 		}
-		
+
 		/* Validate if the weight or price is more than zero / 0 */
 		else if (deliveryType.getDelivery_price().toString()
 				.equalsIgnoreCase("0")

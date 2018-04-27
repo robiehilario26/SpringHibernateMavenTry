@@ -2,13 +2,13 @@
  * for retrieving data, deleting data, updating data, clearing
  * input text field and populate dataTable columns.
  *
- * myContext is a global variable in employeeList.jsp, equivalent into
+ * myContext is a global variable in jsp, equivalent into
  * ${pageContext.request.contextPath} - pageContext whatever is the context
  * path of the project.
  * 
  */
 
-/* Add employee */
+/* Add user */
 function addUser() {
 	/* Clear input fields */
 	clearTextField();
@@ -38,7 +38,7 @@ function clearTextField() {
 }
 
 /*
- * Fetch employee information via cargo user id using json response using
+ * Fetch user information via cargo user id using json response using
  * @RequestParam
  */
 function searchUserDetailViaAjax(elem) {
@@ -105,7 +105,7 @@ function searchUserDetailViaAjax(elem) {
 
 }
 
-/* Fetch Cargo User id */
+/* Fetch User id */
 function fetchDeleteId(obj) {
 	var id = obj.id;
 	/* Set hidden text field value */
@@ -113,7 +113,7 @@ function fetchDeleteId(obj) {
 
 }
 
-/* Delete Cargo User by id */
+/* Delete User by id */
 function deleteViaAjax() {
 	var stringResponse;
 

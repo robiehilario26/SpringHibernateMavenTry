@@ -139,7 +139,7 @@ public class AppController {
 	}
 
 	/*
-	 * This method will delete an employee by it's SSN value sing ajax with
+	 * This method will delete an employee by it's SSN value using ajax with
 	 * annotation @RequestParam.
 	 */
 	@RequestMapping(value = { "/delete-employee-by-ajax" }, method = RequestMethod.GET, produces = "application/json")

@@ -219,8 +219,13 @@
 				<li><a href="#"><i class="fa fa-shopping-cart fa-fw"></i>
 						Delivery <span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
-						<li><a href="<c:url value='#' />">Delivery Request</a></li>
-						<li><a href="<c:url value='#' />">Beeding</a></li>
+						<sec:authorize access="hasRole('ADMIN') or hasRole('USER')">
+							<li><a href="<c:url value='/deliveryRequest' />">Delivery
+									Request</a></li>
+						</sec:authorize>
+						<sec:authorize access="hasRole('ADMIN') or hasRole('CARGO')">
+							<li><a href="<c:url value='/deliveryBeeding' />">Beeding</a></li>
+						</sec:authorize>
 					</ul> <!-- /.nav-3rd-level --></li>
 				<sec:authorize access="hasRole('ADMIN')">
 					<li><a href="#"><i class="fa fa-wrench fa-fw"></i>

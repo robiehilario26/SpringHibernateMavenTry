@@ -35,25 +35,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authenticationProvider());
 	}
 
+	/* This method sets-up the list of accessing page for each role. */ 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// Request Mapping accessible
 				.antMatchers("/home")
 				// Roles
-				.access("hasRole('ADMIN') or hasRole('DBA') or hasRole('USER')")
+				.access("hasRole('ADMIN') or hasRole('USER') or hasRole('CARGO')")
+				// Request Mapping accessible
+				.antMatchers("/deliveryBeeding")
+				// Roles
+				.access("hasRole('CARGO') or hasRole('ADMIN')")
+				// Request Mapping accessible
+				.antMatchers("/deliveryRequest")
+				// Roles
+				.access("hasRole('USER') or hasRole('ADMIN')")
 				// Request Mapping accessible
 				.antMatchers("/newuser/**", "/customer/**", "/delete-user-*",
 						"/ajaxEditEmployee", "/cargo", "/list",
 						"/getEmployeeList", "/ajaxAddEmployee",
 						"/delete-cargo-user-by-ajax", "/ajaxAddCargoUser",
 						"/ajaxEditCargoUser", "/delete-employee-by-ajax",
-						"/deliveryType*", "/ajaxAddUser", "/listV1")
-				.access("hasRole('ADMIN')").antMatchers("/customer/**")
-				.access("hasRole('USER') or hasRole('ADMIN')")
-				.antMatchers("/edit-user-*")
-				.access("hasRole('ADMIN') or hasRole('CARGO')").and()
-				.formLogin().loginPage("/login").loginProcessingUrl("/login")
+						"/deliveryType*", "/ajaxAddUser", "/listV1",
+						"deliveryRequest", "deliveryBeeding")
+				// Roles
+				.access("hasRole('ADMIN')").and().formLogin()
+				.loginPage("/login").loginProcessingUrl("/login")
 				.usernameParameter("ssoId").passwordParameter("password").and()
 				.rememberMe().rememberMeParameter("remember-me")
 				.tokenRepository(tokenRepository).tokenValiditySeconds(86400)

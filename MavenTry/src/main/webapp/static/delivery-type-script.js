@@ -35,7 +35,7 @@ function clearTextField() {
 }
 
 /*
- * Fetch employee information via cargo user id using json response using
+ * Fetch information via delivertype id using json response using
  * @RequestParam
  */
 function searchDeliveryTypeDetailViaAjax(elem) {
@@ -92,7 +92,7 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 }
 
-/* Fetch Cargo User id */
+/* Fetch deliveryType id */
 function fetchDeleteId(obj) {
 	var id = obj.id;
 	/* Set hidden text field value */
@@ -100,7 +100,7 @@ function fetchDeleteId(obj) {
 
 }
 
-/* Delete Cargo User by id */
+/* Delete deliveryType by id */
 function deleteViaAjax() {
 	var stringResponse;
 
@@ -145,7 +145,7 @@ function deleteViaAjax() {
 
 }
 
-/* Populate DataTable of list of all Cargo User existed using ajax */
+/* Populate DataTable of list of all deliveryType existed using ajax */
 function populateDataTable() {
 	$("#dataTables-example").dataTable().fnDestroy();
 
@@ -278,7 +278,7 @@ function validateAndInsertUsingAjax(action, message) {
 					userInfo += "<br><li><b>Delivery Type</b> : "
 							+ obj.result[i].delivery_type;
 
-					userInfo += "<br><li><b>Delivery weight</b> : "
+					userInfo += "<br><li><b>Delivery weight (kg)</b> : "
 							+ obj.result[i].delivery_weight;
 
 					userInfo += "<br><li><b>Delivery Price</b> : "
