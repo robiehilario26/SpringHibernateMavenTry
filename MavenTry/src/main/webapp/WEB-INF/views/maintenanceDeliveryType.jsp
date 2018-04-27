@@ -186,7 +186,7 @@
 
 
 	<!-- Delete Modal -->
-	<div class="modal fade" id="modalDeleteCargoUser" tabindex="-1"
+	<div class="modal fade" id="modalDeleteDeliveryType" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
 		<form name="deleteForm" id="deleteForm" method="GET">

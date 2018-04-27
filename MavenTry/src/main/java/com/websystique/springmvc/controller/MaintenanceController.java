@@ -98,6 +98,13 @@ public class MaintenanceController {
 
 		return res;
 	}
+	
+	@RequestMapping(value="ajaxDeleteDeliveryType", method = RequestMethod.GET)
+	public String deleteDeliveryType(@RequestParam Integer id){
+		deliveryTypeService.deleteDeliveryType(id);
+		return "redirect:/deliveryType";
+	}
+	
 
 	/*
 	 * This method will validate all input field in form and returning response.

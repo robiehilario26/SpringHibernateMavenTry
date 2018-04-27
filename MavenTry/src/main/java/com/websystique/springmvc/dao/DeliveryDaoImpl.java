@@ -41,7 +41,7 @@ public class DeliveryDaoImpl extends AbstractDao<Integer, DeliveryType>
 	@Override
 	public void deleteDeliveryType(int id) {
 		Criteria criteria = createEntityCriteria();
-		criteria.add(Restrictions.eq("delivery_type", id));
+		criteria.add(Restrictions.eq("id", id));
 		DeliveryType deliveryType = (DeliveryType) criteria.uniqueResult();
 		delete(deliveryType);
 

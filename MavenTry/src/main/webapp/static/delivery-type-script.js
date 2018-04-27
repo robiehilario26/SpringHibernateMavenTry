@@ -2,7 +2,7 @@
  * for retrieving data, deleting data, updating data, clearing
  * input text field and populate dataTable columns.
  *
- * myContext is a global variable in employeeList.jsp, equivalent into
+ * myContext is a global variable in jsp, equivalent into
  * ${pageContext.request.contextPath} - pageContext whatever is the context
  * path of the project.
  * 
@@ -28,7 +28,7 @@ function clearTextField() {
 	$("#delivery_type").val(null);
 	$("#delivery_weight").val("0");
 	$("#delivery_price").val("0");
-	
+
 	/* Clear error validation message */
 	$("#error").empty();
 
@@ -41,7 +41,7 @@ function clearTextField() {
 function searchDeliveryTypeDetailViaAjax(elem) {
 	var stringResponse;
 	var id = elem.id;
-	
+
 	/* Clear error validation message */
 	$("#error").empty();
 
@@ -83,7 +83,7 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 			$("#delivery_type").val(obj.delivery_type);
 			$("#delivery_weight").val(obj.delivery_weight);
 			$("#delivery_price").val(obj.delivery_price);
-			
+
 			/* Enable button to submit */
 			$("#btnDeliveryType").prop('disabled', false);
 
@@ -105,17 +105,17 @@ function deleteViaAjax() {
 	var stringResponse;
 
 	/* Disable button to prevent redundant ajax request */
-	$("#btnCargoDelete").prop('disabled', true);
+	$("#btnDeliveryTypeDelete").prop('disabled', true);
 
 	/* Get hidden text field value in modal delete */
 	var id = $("#deleteId").val();
 
 	/* Set Parameters */
 	var dataParameter = {
-		cargo_id : id,
+		id : id,
 	};
 	$.ajax({
-		url : '' + myContext + '/delete-cargo-user-by-ajax',
+		url : '' + myContext + '/ajaxDeleteDeliveryType',
 		type : "GET",
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
@@ -132,13 +132,13 @@ function deleteViaAjax() {
 		success : function(response) {
 
 			/* Enable button to make ajax request again after response return */
-			$("#btnCargoDelete").prop('disabled', false);
+			$("#btnDeliveryTypeDelete").prop('disabled', false);
 
 			/* Populate DataTable */
 			populateDeliveryTypeDataTable();
 
 			/* Hide modal */
-			$('#modalDeleteCargoUser').modal('hide');
+			$('#modalDeleteDeliveryType').modal('hide');
 
 		}
 	});
@@ -155,7 +155,7 @@ function populateDeliveryTypeDataTable() {
 	buttonEditClass += 'onClick="searchDeliveryTypeDetailViaAjax(this)"';
 
 	var buttonDeleteClass = 'class="btn btn-danger" data-toggle="modal"';
-	buttonDeleteClass += 'data-target="#modalDeleteCargoUser"';
+	buttonDeleteClass += 'data-target="#modalDeleteDeliveryType"';
 	buttonDeleteClass += 'onClick="fetchDeleteId(this)"'
 
 	$
@@ -182,7 +182,7 @@ function populateDeliveryTypeDataTable() {
 													{
 														"data" : "delivery_price"
 													},
-											
+
 													{
 
 														/*
@@ -246,15 +246,13 @@ function validateAndInsertUsingAjax(action, message) {
 	var type = $('#delivery_type').val();
 	var weight = $('#delivery_weight').val();
 	var price = $('#delivery_price').val();
-	
 
 	$.ajax({
 
 		type : "GET",
 		url : myContext + '/' + action,
-		data : "id=" + id + "&delivery_type=" + type
-				+ "&delivery_weight=" + weight + "&delivery_price="
-				+ price,
+		data : "id=" + id + "&delivery_type=" + type + "&delivery_weight="
+				+ weight + "&delivery_price=" + price,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		crossDomain : "TRUE",
@@ -285,8 +283,6 @@ function validateAndInsertUsingAjax(action, message) {
 
 					userInfo += "<br><li><b>Delivery Price</b> : "
 							+ obj.result[i].delivery_price;
-
-					
 
 				}
 

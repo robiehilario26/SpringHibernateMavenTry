@@ -74,8 +74,9 @@ public class AppController {
 	/*
 	 * This method will redirect user to home page
 	 */
-	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
-	public String index() {
+	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
+	public String index(ModelMap model) {
+		model.addAttribute("loggedinuser", getPrincipal());
 		return "index";
 	}
 
@@ -176,8 +177,6 @@ public class AppController {
 		}
 		return res;
 	}
-	
-	
 
 	/*
 	 * This method will validate all input field in form and returning response
@@ -368,14 +367,15 @@ public class AppController {
 	public String deleteUser(@PathVariable String usernameId) {
 		userService.deleteUserBySSO(usernameId);
 		return "redirect:/list";
-	}  
+	}
 
 	/**
 	 * This method will provide UserProfile list to views
 	 */
 	@ModelAttribute("roles")
 	public List<UserProfile> initializeProfiles() {
-		System.out.println("userProfileService "+userProfileService.findAll().toString());
+		System.out.println("userProfileService "
+				+ userProfileService.findAll().toString());
 		return userProfileService.findAll();
 	}
 
@@ -405,18 +405,16 @@ public class AppController {
 	/**
 	 * This method will list all existing users.
 	 */
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = {"/list" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
 
 		// List<User> users = userService.findAllUsers();
 		// model.addAttribute("users", users);
 		model.addAttribute("loggedinuser", getPrincipal());
-		System.out.println("getPrincipal " + getPrincipal().toString());
+		// System.out.println("getPrincipal " + getPrincipal().toString());
 		// return "userslist";
-		return "redirect:/home";
+		return "index";
 	}
-
-	
 
 	/*
 	 * This method will redirect user page
@@ -430,8 +428,6 @@ public class AppController {
 		model.addAttribute("loggedinuser", getPrincipal());
 		return users;
 	}
-	
-	
 
 	/**
 	 * This method handles logout requests. Toggle the handlers if you are

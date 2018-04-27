@@ -2,7 +2,7 @@
  * for retrieving data, deleting data, updating data, clearing
  * input text field and populate dataTable columns.
  *
- * myContext is a global variable in employeeList.jsp, equivalent into
+ * myContext is a global variable in jsp, equivalent into
  * ${pageContext.request.contextPath} - pageContext whatever is the context
  * path of the project.
  * 
