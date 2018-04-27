@@ -135,7 +135,7 @@ function deleteViaAjax() {
 			$("#btnDeliveryTypeDelete").prop('disabled', false);
 
 			/* Populate DataTable */
-			populateDeliveryTypeDataTable();
+			populateDataTable();
 
 			/* Hide modal */
 			$('#modalDeleteDeliveryType').modal('hide');
@@ -146,7 +146,7 @@ function deleteViaAjax() {
 }
 
 /* Populate DataTable of list of all Cargo User existed using ajax */
-function populateDeliveryTypeDataTable() {
+function populateDataTable() {
 	$("#dataTables-example").dataTable().fnDestroy();
 
 	/* set class and onClick event listener */
@@ -296,7 +296,7 @@ function validateAndInsertUsingAjax(action, message) {
 				$('#info').show('slow');
 
 				/* Populate DataTable */
-				populateDeliveryTypeDataTable();
+				populateDataTable();
 
 				/* Hide modal */
 				$('#modalAddDeliveryType').modal('hide');

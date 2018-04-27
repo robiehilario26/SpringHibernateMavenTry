@@ -262,7 +262,7 @@
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
 	<script>
 		$(document).ready(function() {
-			populateDeliveryTypeDataTable();
+			populateDataTable();
 		});
 	</script>
 
