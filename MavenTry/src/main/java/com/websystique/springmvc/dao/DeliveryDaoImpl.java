@@ -34,7 +34,7 @@ public class DeliveryDaoImpl extends AbstractDao<Integer, DeliveryType>
 	@Override
 	public DeliveryType findDeliveryByType(String type) {
 		Criteria criteria = createEntityCriteria();
-		criteria.add(Restrictions.eq("delivery_type", type));
+		criteria.add(Restrictions.eq("mainte_delivery_type", type));
 		return (DeliveryType) criteria.uniqueResult();
 	}
 

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Maintenance</title>
+<title>Delivery Request</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -53,7 +53,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Maintenance</h1>
+					<h1 class="page-header">Delivery Request</h1>
 				</div>
 
 				<!-- /.col-lg-12 -->
@@ -85,8 +85,10 @@
 								<thead>
 									<tr>
 										<th>Delivery Type</th>
-										<th>Delivery Weight (kg)</th>
-										<th>Delivery Price</th>
+										<th>Pick-up Address</th>
+										<th>Destination Address</th>
+										<th>Delivery Cost</th>
+										<th>Delivery Status</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -132,38 +134,56 @@
 				</div>
 
 				<!-- Form Text field -->
-				<form:form method="GET" modelAttribute="delivery" name="myform"
-					id="myform">
-					<form:input type="hidden" path="id" id="id" />
+				<form:form method="GET" modelAttribute="deliveryRequest"
+					name="myform" id="myform">
+					<form:input type="hidden" path="deliver_id" id="deliver_id" />
 					<div class="modal-body">
+
+
+						<!-- User id -->
+						<div>
+							<label for="user_id">User: </label>
+							<form:input path="user_id"
+								id="user_id" class="form-control"
+								placeholder="User Id" />
+							<form:errors path="user_id" cssClass="error" />
+						</div>
 
 						<!-- Input Delivery type -->
 						<div>
-							<label for="mainte_delivery_type">Delivery type: </label>
-							<form:input path="mainte_delivery_type" id="mainte_delivery_type"
-								class="form-control" placeholder="Delivery type" />
-							<form:errors path="mainte_delivery_type" cssClass="error" />
+							<label for="delivery_type">Delivery type: </label>
+							<form:select path="delivery_type" id="delivery_type"
+								class="form-control" placeholder="Delivery type">
+								<form:options items="${deliveryTypes}" itemValue="id"
+									itemLabel="mainte_delivery_type" />
+								<form:errors path="delivery_type" cssClass="error" />
+							</form:select>
 						</div>
 
-						<!-- Input Delivery weight -->
+						<!-- Input item details-->
 						<div>
-							<label for="delivery_weight">Delivery weight (kg): </label>
-							<form:input type="number" min="0" path="delivery_weight"
-								id="delivery_weight" class="form-control"
-								placeholder="Delivery weight(kg)" />
-							<form:errors path="delivery_weight" cssClass="error" />
+							<label for="item_details">Item Details: </label>
+							<form:textarea path="item_details" id="item_details"
+								class="form-control" placeholder="Item Details" />
+							<form:errors path="item_details" cssClass="error" />
 						</div>
 
-						<!-- Input Delivery price -->
+						<!-- Input Delivery Pick-up address -->
 						<div>
-							<label for="delivery_price">Delivery price: </label>
-							<form:input type="number" min="0" path="delivery_price"
-								id="delivery_price" class="form-control"
-								placeholder="Delivery price" />
-							<form:errors path="delivery_price" cssClass="error" />
+							<label for="delivery_pickup_address">Pick-up Address: </label>
+							<form:input path="delivery_pickup_address"
+								id="delivery_pickup_address" class="form-control"
+								placeholder="Pick-up Address" />
+							<form:errors path="delivery_pickup_address" cssClass="error" />
 						</div>
 
-
+						<!-- Input Delivery Destination address -->
+						<div>
+							<label for="delivery_destination">Destination Address: </label>
+							<form:input path="delivery_destination" id="delivery_destination"
+								class="form-control" placeholder="Destination Address" />
+							<form:errors path="delivery_destination" cssClass="error" />
+						</div>
 
 
 						<div id="error" class="error"></div>
@@ -258,7 +278,7 @@
 
 	<!-- Custom function Javascript -->
 	<script type="text/javascript"
-		src="<c:url value="/static/delivery-type-script.js" />"></script>
+		src="<c:url value="/static/delivery-request-script.js" />"></script>
 
 
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->

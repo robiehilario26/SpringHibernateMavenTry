@@ -35,8 +35,7 @@ function clearTextField() {
 }
 
 /*
- * Fetch information via delivertype id using json response using
- * @RequestParam
+ * Fetch information via delivertype id using json response using @RequestParam
  */
 function searchDeliveryTypeDetailViaAjax(elem) {
 	var stringResponse;
@@ -80,7 +79,7 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 			/* Set modal text field value */
 			$("#id").val(obj.id);
-			$("#mainte_delivery_type").val(obj.mainte_delivery_type);
+			$("#delivery_type").val(obj.delivery_type);
 			$("#delivery_weight").val(obj.delivery_weight);
 			$("#delivery_price").val(obj.delivery_price);
 
@@ -160,13 +159,14 @@ function populateDataTable() {
 
 	$
 			.ajax({
-				'url' : '' + myContext + '/ajaxDeliveryTypeList',
+				'url' : '' + myContext + '/ajaxDeliveryRequestList',
 				'method' : "GET",
 				'contentType' : 'application/json'
 			})
 			.done(
 					function(data) {
 						var dataToString = JSON.stringify(data);
+						console.log("dataToString " + dataToString);
 						$('#dataTables-example')
 								.dataTable(
 										{
@@ -174,13 +174,21 @@ function populateDataTable() {
 											"aaData" : data,
 											"columns" : [
 													{
-														"data" : "mainte_delivery_type"
+														"data" : "deliveryType.mainte_delivery_type"
 													},
 													{
-														"data" : "delivery_weight"
+														"data" : "delivery_pickup_address"
 													},
 													{
-														"data" : "delivery_price"
+														"data" : "delivery_destination"
+													},
+
+													{
+														"data" : "deliveryType.delivery_price"
+													},
+
+													{
+														"data" : "delivery_status"
 													},
 
 													{
@@ -193,7 +201,7 @@ function populateDataTable() {
 														"render" : function(
 																data, type,
 																full, meta) {
-															var buttonID = full.id;
+															var buttonID = full.deliver_id;
 															var drawActionButton = ' <button id='
 																	+ buttonID
 																	+ ' '
@@ -220,11 +228,11 @@ function insertOrUpdateDeliveryType() {
 	var getButtonName = $("#btnDeliveryType").val();
 
 	if (getButtonName == "Save") {
-		action = "ajaxAddDeliveryType";
-		message = "User has been added to the list successfully.";
+		action = "ajaxAddDeliveryRequest";
+		message = "Delivery request has been added to the list successfully.";
 	} else {
 		action = "ajaxEditDeliveryType";
-		message = "User has been updated successfully.";
+		message = "Delivery request has been updated successfully.";
 	}
 
 	/* Call function */
@@ -243,16 +251,18 @@ function validateAndInsertUsingAjax(action, message) {
 
 	/* get the text field form values */
 	var id = $('#id').val();
-	var type = $('#mainte_delivery_type').val();
-	var weight = $('#delivery_weight').val();
-	var price = $('#delivery_price').val();
+	var type = $('#delivery_type').val();
+	var details = $('#item_details').val();
+	var address = $('#delivery_pickup_address').val();
+	var destination = $('#delivery_destination').val();
 
 	$.ajax({
 
 		type : "GET",
 		url : myContext + '/' + action,
-		data : "id=" + id + "&mainte_delivery_type=" + type + "&delivery_weight="
-				+ weight + "&delivery_price=" + price,
+		data : "id=" + id + "&delivery_type=" + type
+				+ "&delivery_pickup_address=" + address + "&item_details="
+				+ details + "&delivery_destination=" + destination,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		crossDomain : "TRUE",
@@ -275,14 +285,17 @@ function validateAndInsertUsingAjax(action, message) {
 
 					/* Create html elements */
 
-					userInfo += "<br><li><b>Delivery Type</b> : "
-							+ obj.result[i].mainte_delivery_type;
+					userInfo += "<br><li><b>Delivery type</b> : "
+							+ obj.result[i].delivery_type;
 
-					userInfo += "<br><li><b>Delivery weight (kg)</b> : "
-							+ obj.result[i].delivery_weight;
+					userInfo += "<br><li><b>Item details:</b> : "
+							+ obj.result[i].item_details;
 
-					userInfo += "<br><li><b>Delivery Price</b> : "
-							+ obj.result[i].delivery_price;
+					userInfo += "<br><li><b>Delivery address</b> : "
+							+ obj.result[i].delivery_pickup_address;
+
+					userInfo += "<br><li><b>Delivery destination</b> : "
+							+ obj.result[i].delivery_destination;
 
 				}
 

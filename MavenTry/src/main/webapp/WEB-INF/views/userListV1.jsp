@@ -179,7 +179,7 @@
 							<!-- Select Role Type -->
 							<label for="userProfiles">Account Type: </label>
 							<form:select name="userProfiles" id="userProfiles"
-								path="userProfiles" items="${roles}" multiple="true"
+								path="userProfiles" items="${roles}"
 								itemValue="id" itemLabel="type" class="form-control" />
 							<form:errors path="userProfiles" cssClass="error" />
 						</div>

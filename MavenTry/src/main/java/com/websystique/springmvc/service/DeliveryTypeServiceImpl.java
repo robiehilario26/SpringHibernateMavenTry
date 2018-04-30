@@ -35,7 +35,7 @@ public class DeliveryTypeServiceImpl implements DeliveryTypeService {
 	@Override
 	public void updateDeliveryType(DeliveryType deliveryType) {
 		DeliveryType entity = dao.findById(deliveryType.getId());
-		entity.setDelivery_type(deliveryType.getDelivery_type());
+		entity.setMainte_delivery_type(deliveryType.getMainte_delivery_type());
 		entity.setDelivery_price(deliveryType.getDelivery_price());
 		entity.setDelivery_weight(deliveryType.getDelivery_weight());
 

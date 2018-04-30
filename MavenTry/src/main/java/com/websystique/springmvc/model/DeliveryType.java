@@ -1,12 +1,14 @@
 package com.websystique.springmvc.model;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -17,12 +19,13 @@ import javax.validation.constraints.Size;
 public class DeliveryType {
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Size(min = 1, max = 100)
-	@Column(name = "DELIVERY_TYPE", nullable = false)
-	private String delivery_type;
+	@Column(name = "MAINTE_DELIVERY_TYPE", nullable = false)
+	private String mainte_delivery_type;
 	
 	@NotNull
 	@Digits(integer = 8, fraction = 2)
@@ -33,15 +36,18 @@ public class DeliveryType {
 	@Digits(integer = 8, fraction = 2)
 	@Column(name = "DELIVERY_WEIGHT", nullable =false)
 	private BigDecimal delivery_weight;
-
+	
+	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((delivery_type == null) ? 0 : delivery_type.hashCode());
 		result = prime * result + id;
+		result = prime
+				* result
+				+ ((mainte_delivery_type == null) ? 0 : mainte_delivery_type
+						.hashCode());
 		return result;
 	}
 
@@ -55,16 +61,25 @@ public class DeliveryType {
 		if (getClass() != obj.getClass())
 			return false;
 		DeliveryType other = (DeliveryType) obj;
-		if (delivery_type == null) {
-			if (other.delivery_type != null)
-				return false;
-		} else if (!delivery_type.equals(other.delivery_type))
-			return false;
 		if (id != other.id)
+			return false;
+		if (mainte_delivery_type == null) {
+			if (other.mainte_delivery_type != null)
+				return false;
+		} else if (!mainte_delivery_type.equals(other.mainte_delivery_type))
 			return false;
 		return true;
 	}
 
+
+	public String getMainte_delivery_type() {
+		return mainte_delivery_type;
+	}
+
+
+	public void setMainte_delivery_type(String mainte_delivery_type) {
+		this.mainte_delivery_type = mainte_delivery_type;
+	}
 
 
 	public int getId() {
@@ -77,14 +92,6 @@ public class DeliveryType {
 	}
 
 
-	public String getDelivery_type() {
-		return delivery_type;
-	}
-
-
-	public void setDelivery_type(String delivery_type) {
-		this.delivery_type = delivery_type;
-	}
 
 
 	public BigDecimal getDelivery_price() {
@@ -109,7 +116,7 @@ public class DeliveryType {
 
 	@Override
 	public String toString() {
-		return "DeliveryType [id=" + id + ", delivery_type=" + delivery_type
+		return "DeliveryType [id=" + id + ", mainte_delivery_type=" + mainte_delivery_type
 				+ ", delivery_price=" + delivery_price + ", delivery_weight="
 				+ delivery_weight + "]";
 	}

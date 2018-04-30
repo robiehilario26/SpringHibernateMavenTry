@@ -405,7 +405,7 @@ public class AppController {
 	/**
 	 * This method will list all existing users.
 	 */
-	@RequestMapping(value = {"/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/list" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
 
 		// List<User> users = userService.findAllUsers();
@@ -453,11 +453,13 @@ public class AppController {
 	 */
 	private String getPrincipal() {
 		String userName = null;
+
 		Object principal = SecurityContextHolder.getContext()
 				.getAuthentication().getPrincipal();
 
 		if (principal instanceof UserDetails) {
 			userName = ((UserDetails) principal).getUsername();
+
 		} else {
 			userName = principal.toString();
 		}
@@ -473,5 +475,7 @@ public class AppController {
 				.getContext().getAuthentication();
 		return authenticationTrustResolver.isAnonymous(authentication);
 	}
+
+	
 
 }

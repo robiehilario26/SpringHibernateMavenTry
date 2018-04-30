@@ -136,7 +136,7 @@ public class MaintenanceController {
 
 		/* Set error message if text field is empty */
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "delivery_type",
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "mainte_delivery_type",
 				"Delivery type can not be empty");
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(result, "delivery_weight",
@@ -146,13 +146,13 @@ public class MaintenanceController {
 				"Delivery price can not be empty.");
 
 		if (!deliveryTypeService.isDeliveryTypeUnique(deliveryType.getId(),
-				deliveryType.getDelivery_type())) {
+				deliveryType.getMainte_delivery_type())) {
 
 			/* Set status to fail */
 			res.setStatus("FAIL");
 
 			/* Set error message if delivery type already exist */
-			result.rejectValue("delivery_type",
+			result.rejectValue("mainte_delivery_type",
 					"Delivery type already exists. Please fill in different value");
 
 			res.setResult(result.getAllErrors());
