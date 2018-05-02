@@ -28,10 +28,11 @@ function clearTextField() {
 	$("#item_details").val(null);
 	$("#delivery_pickup_address").val(null);
 	$("#delivery_destination").val(null);
-	$("#preferred_date").val(null);
-	
+
 	/* Clear error validation message */
 	$("#error").empty();
+	
+	
 
 }
 
@@ -39,6 +40,9 @@ function clearTextField() {
  * Fetch information via delivertype id using json response using @RequestParam
  */
 function searchDeliveryTypeDetailViaAjax(elem) {
+	
+	
+	
 	var stringResponse;
 	var id = elem.id;
 
@@ -74,7 +78,7 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
-
+					
 			/* Parse json response to get value of each key */
 			var obj = JSON.parse(stringResponse);
 
@@ -83,14 +87,14 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 			$("#item_details").val(obj.item_details);
 			$("#delivery_pickup_address").val(obj.delivery_pickup_address);
 			$("#delivery_destination").val(obj.delivery_destination);
-			$("#preferred_date").val(obj.preferred_date);
-			
+
 			/* Enable button to submit */
 			$("#btnDeliveryType").prop('disabled', false);
 
 		}
 	});
-
+	
+	
 }
 
 /* Fetch deliveryType id */
@@ -148,12 +152,13 @@ function deleteViaAjax() {
 
 /* Populate DataTable of list of all deliveryType existed using ajax */
 function populateDataTable() {
+		
 	$("#dataTables-example").dataTable().fnDestroy();
 
 	/* set class and onClick event listener */
-	var buttonEditClass = 'class="btn btn-success" data-toggle="modal"';
-	buttonEditClass += 'data-target="#modalAddDeliveryType"';
-	buttonEditClass += 'onClick="searchDeliveryTypeDetailViaAjax(this)"';
+	var buttonBeedingClass = 'class="btn btn-success" data-toggle="modal"';
+	buttonBeedingClass += 'data-target="#modalAddDeliveryType"';
+	buttonBeedingClass += 'onClick="searchDeliveryTypeDetailViaAjax(this)"';
 
 	var buttonDeleteClass = 'class="btn btn-danger" data-toggle="modal"';
 	buttonDeleteClass += 'data-target="#modalDeleteDeliveryRequest"';
@@ -161,7 +166,7 @@ function populateDataTable() {
 
 	$
 			.ajax({
-				'url' : '' + myContext + '/ajaxDeliveryRequestList',
+				'url' : '' + myContext + '/beeding/ajaxDeliveryRequestList',
 				'method' : "GET",
 				'contentType' : 'application/json'
 			})
@@ -207,8 +212,8 @@ function populateDataTable() {
 															var drawActionButton = ' <button id='
 																	+ buttonID
 																	+ ' '
-																	+ buttonEditClass
-																	+ ' >Edit</button> ';
+																	+ buttonBeedingClass
+																	+ ' >Beed</button> ';
 															drawActionButton += ' <button id='
 																	+ buttonID
 																	+ ' '
@@ -257,7 +262,6 @@ function validateAndInsertUsingAjax(action, message) {
 	var details = $('#item_details').val();
 	var address = $('#delivery_pickup_address').val();
 	var destination = $('#delivery_destination').val();
-	var date = $('#preferred_date').val();
 
 	$.ajax({
 
@@ -265,8 +269,7 @@ function validateAndInsertUsingAjax(action, message) {
 		url : myContext + '/' + action,
 		data : "deliver_id=" + id + "&delivery_type=" + type
 				+ "&delivery_pickup_address=" + address + "&item_details="
-				+ details + "&delivery_destination=" + destination
-				+ "&preferred_date=" + date,
+				+ details + "&delivery_destination=" + destination,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		crossDomain : "TRUE",

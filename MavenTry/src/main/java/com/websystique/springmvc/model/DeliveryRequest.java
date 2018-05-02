@@ -1,5 +1,7 @@
 package com.websystique.springmvc.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "TABLE_DELIVER")
@@ -32,8 +41,16 @@ public class DeliveryRequest {
 	@Column(name = "DELIVERY_DESTINATION", nullable = false)
 	private String delivery_destination;
 
+	@Size(min = 1, max = 100)
 	@Column(name = "ITEM_DETAILS", nullable = false)
 	private String item_details;
+	
+	@NotNull
+	@JsonFormat(pattern = "YYYY-MM-dd")
+	@DateTimeFormat(pattern = "YYYY-MM-dd")
+	@Column(name = "PREFERRED_DATE", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date preferred_date;
 
 	@Column(name = "DELIVERY_STATUS", nullable = false)
 	private String delivery_status;
@@ -121,6 +138,15 @@ public class DeliveryRequest {
 		this.item_details = item_details;
 	}
 
+
+	public Date getPreferred_date() {
+		return preferred_date;
+	}
+
+	public void setPreferred_date(Date preferred_date) {
+		this.preferred_date = preferred_date;
+	}
+
 	public String getDelivery_status() {
 		return delivery_status;
 	}
@@ -135,8 +161,11 @@ public class DeliveryRequest {
 				+ user_id + ", delivery_type=" + delivery_type
 				+ ", delivery_pickup_address=" + delivery_pickup_address
 				+ ", delivery_destination=" + delivery_destination
-				+ ", item_details=" + item_details + ", delivery_status="
-				+ delivery_status + "]";
+				+ ", item_details=" + item_details + ", preffered_date="
+				+ preferred_date + ", delivery_status=" + delivery_status
+				+ ", deliveryType=" + deliveryType + "]";
 	}
+
+	
 
 }

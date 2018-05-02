@@ -14,6 +14,8 @@ public interface DeliveryRequestService {
 	
 	void updateDeliveryRequest(DeliveryRequest deliveryRequest);
 	
+	List<DeliveryRequest> deliveryRequestList(Integer id);
+	
 	List<DeliveryRequest> deliveryRequestList();
 
 }

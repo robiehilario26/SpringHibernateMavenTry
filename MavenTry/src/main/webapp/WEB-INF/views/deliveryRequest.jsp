@@ -140,7 +140,7 @@
 					<div class="modal-body">
 
 
-						
+
 						<!-- Input Delivery type -->
 						<div>
 							<label for="delivery_type">Delivery type: </label>
@@ -176,6 +176,14 @@
 								class="form-control" placeholder="Destination Address" />
 							<form:errors path="delivery_destination" cssClass="error" />
 						</div>
+						
+						<!-- Input Expected date to be delivered -->
+						<div>
+							<label for="preferred_date">Preferred Date to be Delivered: </label>
+							<form:input type="date" path="preferred_date" id="preferred_date"
+								class="form-control" placeholder="Preferred Date to be Delivered" />
+							<form:errors path="preferred_date" cssClass="error" />
+						</div>
 
 
 						<div id="error" class="error"></div>
@@ -200,7 +208,7 @@
 
 
 	<!-- Delete Modal -->
-	<div class="modal fade" id="modalDeleteDeliveryType" tabindex="-1"
+	<div class="modal fade" id="modalDeleteDeliveryRequest" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
 		<form name="deleteForm" id="deleteForm" method="GET">

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Delivery Request</title>
+<title>Beeding</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -32,6 +32,10 @@
 <link href="<c:url value='/static/dist/css/sb-admin-2.css' />"
 	rel="stylesheet">
 
+<!-- Morris Charts CSS -->
+<link href="<c:url value="/static/vendor/morrisjs/morris.css" />"
+	rel="stylesheet">
+
 <!-- Custom Fonts -->
 <link
 	href="<c:url value='/static/vendor/font-awesome/css/font-awesome.min.css' />"
@@ -53,19 +57,16 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Delivery Request</h1>
+					<h1 class="page-header">Beeding</h1>
 				</div>
+
 
 				<!-- /.col-lg-12 -->
 			</div>
 			<!-- /.row -->
 			<div class="row">
 				<div class="col-lg-12">
-					<div>
-						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#modalAddDeliveryType" onClick="addCargoUser()">Add
-							Delivery Type</button>
-					</div>
+
 
 					<div class="panel panel-default">
 						<!-- The code below hide as for now, remove when no further usage in final release -->
@@ -133,75 +134,32 @@
 					</button>
 				</div>
 
-				<!-- Form Text field -->
-				<form:form method="GET" modelAttribute="deliveryRequest"
-					name="myform" id="myform">
-					<form:input type="hidden" path="deliver_id" id="deliver_id" />
-					<div class="modal-body">
 
+				<div class="modal-body">
 
-						<!-- User id -->
-						<div>
-							<label for="user_id">User: </label>
-							<form:input path="user_id"
-								id="user_id" class="form-control"
-								placeholder="User Id" />
-							<form:errors path="user_id" cssClass="error" />
+					<div class="panel panel-default">
+						<div class="panel-heading">Delivery Request Chart</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div id="morris-area-chart"></div>
 						</div>
-
-						<!-- Input Delivery type -->
-						<div>
-							<label for="delivery_type">Delivery type: </label>
-							<form:select path="delivery_type" id="delivery_type"
-								class="form-control" placeholder="Delivery type">
-								<form:options items="${deliveryTypes}" itemValue="id"
-									itemLabel="mainte_delivery_type" />
-								<form:errors path="delivery_type" cssClass="error" />
-							</form:select>
-						</div>
-
-						<!-- Input item details-->
-						<div>
-							<label for="item_details">Item Details: </label>
-							<form:textarea path="item_details" id="item_details"
-								class="form-control" placeholder="Item Details" />
-							<form:errors path="item_details" cssClass="error" />
-						</div>
-
-						<!-- Input Delivery Pick-up address -->
-						<div>
-							<label for="delivery_pickup_address">Pick-up Address: </label>
-							<form:input path="delivery_pickup_address"
-								id="delivery_pickup_address" class="form-control"
-								placeholder="Pick-up Address" />
-							<form:errors path="delivery_pickup_address" cssClass="error" />
-						</div>
-
-						<!-- Input Delivery Destination address -->
-						<div>
-							<label for="delivery_destination">Destination Address: </label>
-							<form:input path="delivery_destination" id="delivery_destination"
-								class="form-control" placeholder="Destination Address" />
-							<form:errors path="delivery_destination" cssClass="error" />
-						</div>
-
-
-						<div id="error" class="error"></div>
-
+						<!-- /.panel-body -->
 					</div>
 
-					<div class="modal-footer">
+				</div>
 
-						<!-- Close button -->
-						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
+				<div class="modal-footer">
 
-						<!-- Register button -->
-						<input type="button" class="btn btn-primary" value="Save"
-							id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
+					<!-- Close button -->
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
 
-					</div>
-				</form:form>
+					<!-- Register button -->
+					<input type="button" class="btn btn-primary" value="Save"
+						id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
+
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -258,6 +216,17 @@
 	<script
 		src="<c:url value="/static/vendor/metisMenu/metisMenu.min.js" />"></script>
 
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="<c:url value="/static/vendor/metisMenu/metisMenu.min.js" />"></script>
+
+	<!-- Morris Charts JavaScript -->
+	<script src="<c:url value="/static/vendor/raphael/raphael.min.js" />"></script>
+
+	<script src="<c:url value="/static/vendor/morrisjs/morris.min.js" />"></script>
+
+	<script src="<c:url value="/static/data/morris-data.js" />"></script>
+
 	<!-- DataTables JavaScript -->
 	<script
 		src="<c:url value="/static/vendor/datatables/js/jquery.dataTables.min.js" />"></script>
@@ -268,8 +237,11 @@
 	<script
 		src="<c:url value="/static/vendor/datatables-responsive/dataTables.responsive.js" />"></script>
 
+
+
 	<!-- Custom Theme JavaScript -->
 	<script src="<c:url value="/static/dist/js/sb-admin-2.js" />"></script>
+
 
 	<script>
 		/* Global variable for getting page context */
@@ -278,7 +250,7 @@
 
 	<!-- Custom function Javascript -->
 	<script type="text/javascript"
-		src="<c:url value="/static/delivery-request-script.js" />"></script>
+		src="<c:url value="/static/beeding-script.js" />"></script>
 
 
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
@@ -286,11 +258,94 @@
 		$(document).ready(function() {
 			/* Call function */
 			populateDataTable();
+
 		});
 	</script>
 
 
+	<script>
+		$('#modalAddDeliveryType').on('shown.bs.modal', function() { //listen for user to open modal
+			$(function() {
+				$("#morris-area-chart").empty(); //clear chart so it doesn't create multiple if multiple clicks
+				// Create a Bar Chart with Morris
+				var chart = Morris.Bar({
+					element : 'morris-area-chart',
+					 data: [{
+				            period: '2010 Q1',
+				            iphone: 666,
+				            ipad: null,
+				            itouch: 647
+				        }, {
+				            period: '2010 Q2',
+				            iphone: 778,
+				            ipad: 294,
+				            itouch: 441
+				        }, {
+				            period: '2010 Q3',
+				            iphone: 912,
+				            ipad: 969,
+				            itouch: 501
+				        }, {
+				            period: '2010 Q4',
+				            iphone: 767,
+				            ipad: 597,
+				            itouch: 689
+				        }, {
+				            period: '2011 Q1',
+				            iphone: 810,
+				            ipad: 914,
+				            itouch: 293
+				        }, {
+				            period: '2011 Q2',
+				            iphone: 670,
+				            ipad: 293,
+				            itouch: 881
+				        }, {
+				            period: '2011 Q3',
+				            iphone: 820,
+				            ipad: 795,
+				            itouch: 588
+				        }, {
+				            period: '2011 Q4',
+				            iphone: 5073,
+				            ipad: 967,
+				            itouch: 175
+				        }, {
+				            period: '2012 Q1',
+				            iphone: 0687,
+				            ipad: 460,
+				            itouch: 028
+				        }, {
+				            period: '2012 Q2',
+				            iphone: 432,
+				            ipad: 713,
+				            itouch: 791
+				        }],
+				        xkey: 'period',
+				        ykeys: ['iphone', 'ipad', 'itouch'],
+				        labels: ['iPhone', 'iPad', 'iPod Touch'],
+				        pointSize: 2,
+				        hideHover: 'auto',
+				        resize: true,
+					stacked : true
+				});
 
+				// Fire off an AJAX request to load the data
+			/* 	$.ajax({
+					type : "GET",
+					dataType : 'json',
+					url : "${pageContext.request.contextPath}/static/data/morris-data.js", // This is the URL to the API
+
+				}).done(function(data) {
+					// When the response to the AJAX request comes back render the chart with new data
+					chart.setData(data);
+				}).fail(function() {
+					// If there is no communication between the server, show an error
+					alert("error occured");
+				}); */
+			});
+		});
+	</script>
 
 
 

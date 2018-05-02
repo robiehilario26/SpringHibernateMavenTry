@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.websystique.springmvc.model.DeliveryRequest;
 
 @Repository("deliveryRequestDaoImpl")
-public class DeliveryRequestDaoImpl extends AbstractDao<Integer, DeliveryRequest>implements DeliveryRequestDao {
+public class DeliveryRequestDaoImpl extends
+		AbstractDao<Integer, DeliveryRequest> implements DeliveryRequestDao {
 
 	@Override
 	public DeliveryRequest findById(int id) {
@@ -33,9 +34,18 @@ public class DeliveryRequestDaoImpl extends AbstractDao<Integer, DeliveryRequest
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<DeliveryRequest> deliveryRequestList(Integer id) {
+		Criteria crit = createEntityCriteria();
+		crit.add(Restrictions.eq("user_id", id));
+		return (List<DeliveryRequest>) crit.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<DeliveryRequest> deliveryRequestList() {
 		Criteria crit = createEntityCriteria();
 		return (List<DeliveryRequest>) crit.list();
+
 	}
 
 }

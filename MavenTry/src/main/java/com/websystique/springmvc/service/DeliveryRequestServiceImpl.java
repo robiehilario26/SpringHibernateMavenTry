@@ -43,9 +43,14 @@ public class DeliveryRequestServiceImpl implements DeliveryRequestService {
 				.getDelivery_pickup_address());
 		entity.setDelivery_destination(deliveryRequest
 				.getDelivery_destination());
+		entity.setPreferred_date(deliveryRequest.getPreferred_date());
 		entity.setItem_details(deliveryRequest.getItem_details());
-		entity.setDelivery_status(deliveryRequest.getDelivery_status());
 
+	}
+
+	@Override
+	public List<DeliveryRequest> deliveryRequestList(Integer id) {
+		return dao.deliveryRequestList(id);
 	}
 
 	@Override

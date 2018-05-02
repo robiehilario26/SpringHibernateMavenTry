@@ -12,6 +12,8 @@ public interface DeliveryRequestDao {
 	
 	void deleteDeliveryRequest(int id);
 	
+	List<DeliveryRequest> deliveryRequestList(Integer id);
+	
 	List<DeliveryRequest> deliveryRequestList();
 
 
