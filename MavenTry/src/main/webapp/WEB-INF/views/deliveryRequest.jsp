@@ -32,6 +32,10 @@
 <link href="<c:url value='/static/dist/css/sb-admin-2.css' />"
 	rel="stylesheet">
 
+<!-- Morris Charts CSS -->
+<link href="<c:url value="/static/vendor/morrisjs/morris.css" />"
+	rel="stylesheet">
+
 <!-- Custom Fonts -->
 <link
 	href="<c:url value='/static/vendor/font-awesome/css/font-awesome.min.css' />"
@@ -89,7 +93,7 @@
 										<th>Destination Address</th>
 										<th>Delivery Cost</th>
 										<th>Delivery Status</th>
-										<th>Action</th>
+										<th width="200px">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -176,12 +180,14 @@
 								class="form-control" placeholder="Destination Address" />
 							<form:errors path="delivery_destination" cssClass="error" />
 						</div>
-						
+
 						<!-- Input Expected date to be delivered -->
 						<div>
-							<label for="preferred_date">Preferred Date to be Delivered: </label>
+							<label for="preferred_date">Preferred Date to be
+								Delivered: </label>
 							<form:input type="date" path="preferred_date" id="preferred_date"
-								class="form-control" placeholder="Preferred Date to be Delivered" />
+								class="form-control"
+								placeholder="Preferred Date to be Delivered" />
 							<form:errors path="preferred_date" cssClass="error" />
 						</div>
 
@@ -247,6 +253,48 @@
 	</div>
 
 
+	<!-- Beeding Modal -->
+	<div class="modal fade" id="modalBeeding" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="exampleModalLongTitle"></h3>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+
+				<div class="modal-body">
+
+					<div class="panel panel-default">
+						<div class="panel-heading">Delivery Request Chart</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div id="morris-area-chart"></div>
+						</div>
+						<!-- /.panel-body -->
+					</div>
+					<div id="error" class="error"></div>
+				</div>
+
+				<div class="modal-footer">
+					<br />
+					<!-- Close button -->
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
 	<!-- jQuery -->
 	<script src="<c:url value="/static/vendor/jquery/jquery.min.js" />"></script>
 
@@ -257,6 +305,13 @@
 	<!-- Metis Menu Plugin JavaScript -->
 	<script
 		src="<c:url value="/static/vendor/metisMenu/metisMenu.min.js" />"></script>
+
+	<!-- Morris Charts JavaScript -->
+	<script src="<c:url value="/static/vendor/raphael/raphael.min.js" />"></script>
+
+	<script src="<c:url value="/static/vendor/morrisjs/morris.min.js" />"></script>
+
+	<script src="<c:url value="/static/data/morris-data.js" />"></script>
 
 	<!-- DataTables JavaScript -->
 	<script

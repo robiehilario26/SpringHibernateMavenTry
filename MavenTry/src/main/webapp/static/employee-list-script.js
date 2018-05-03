@@ -86,6 +86,7 @@ function searchEmployeeDetailViaAjax(elem) {
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
 
+			console.log("result "+ stringResponse);
 			/* Parse json response to get value of each key */
 			var obj = JSON.parse(stringResponse);
 

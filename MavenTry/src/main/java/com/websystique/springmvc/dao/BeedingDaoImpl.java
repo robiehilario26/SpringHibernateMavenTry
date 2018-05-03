@@ -49,5 +49,12 @@ public class BeedingDaoImpl extends AbstractDao<Integer, Beeding> implements
 		
 	}
 
+	@Override
+	public List<Beeding> listBeedingRequestByDeliveryId(Integer id) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("beeding_delivery_id", id));
+		return (List<Beeding>) criteria.list();
+	}
+
 
 }

@@ -1,16 +1,24 @@
 package com.websystique.springmvc.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -40,8 +48,21 @@ public class Beeding {
 	
 	@Column(name ="BEEDING_STATUS", nullable= false)
 	private String beeding_status;
+	
+	@ManyToOne
+	@JoinColumn(name = "BEEDING_DELIVERY_ID", insertable = false, updatable = false, nullable = false)
+	private DeliveryRequest deliveryRequest;
 
 	
+
+	public DeliveryRequest getDeliveryRequest() {
+		return deliveryRequest;
+	}
+
+	public void setDeliveryRequest(DeliveryRequest deliveryRequest) {
+		this.deliveryRequest = deliveryRequest;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

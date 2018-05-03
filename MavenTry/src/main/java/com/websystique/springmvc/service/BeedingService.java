@@ -17,6 +17,7 @@ Beeding findBeedingById(Integer id);
 	
 	List<Beeding> listBeedingRequest();
 	
+	List<Beeding> listBeedingRequestByDeliveryId(Integer id);
 		
 	Beeding findBeedingRequestById(Integer id);
 

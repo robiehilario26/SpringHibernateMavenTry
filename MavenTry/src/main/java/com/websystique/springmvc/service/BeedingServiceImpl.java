@@ -57,6 +57,11 @@ public class BeedingServiceImpl implements BeedingService {
 		entity.setBeeding_status(beeding.getBeeding_status());
 	}
 
+	@Override
+	public List<Beeding> listBeedingRequestByDeliveryId(Integer id) {
+			return dao.listBeedingRequestByDeliveryId(id);
+	}
+
 
 
 }

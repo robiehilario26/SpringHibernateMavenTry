@@ -14,6 +14,8 @@ public interface BeedingDao {
 	void deleteBeedingRequest(Integer id);
 	
 	List<Beeding> listBeedingRequest();
+	
+	List<Beeding> listBeedingRequestByDeliveryId(Integer id);
 		
 	Beeding findBeedingRequestById(Integer id);
 

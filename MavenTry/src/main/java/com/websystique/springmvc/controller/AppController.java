@@ -421,7 +421,6 @@ public class AppController {
 	 */
 	@RequestMapping(value = { "/ajaxUserList" }, method = RequestMethod.GET)
 	@ResponseBody
-	@Transactional
 	public List<User> ajaxUserList(ModelMap model) {
 		/* Populate DataTable */
 		List<User> users = userService.findAllUsers();

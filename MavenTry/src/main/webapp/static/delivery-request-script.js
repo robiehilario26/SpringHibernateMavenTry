@@ -29,7 +29,7 @@ function clearTextField() {
 	$("#delivery_pickup_address").val(null);
 	$("#delivery_destination").val(null);
 	$("#preferred_date").val(null);
-	
+
 	/* Clear error validation message */
 	$("#error").empty();
 
@@ -84,12 +84,23 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 			$("#delivery_pickup_address").val(obj.delivery_pickup_address);
 			$("#delivery_destination").val(obj.delivery_destination);
 			$("#preferred_date").val(obj.preferred_date);
-			
+
 			/* Enable button to submit */
 			$("#btnDeliveryType").prop('disabled', false);
 
 		}
 	});
+
+}
+
+var global_id;
+/* Fetch Delivery id */
+function fetchDeliverId(obj) {
+	var id = obj.id;
+	/* Pass delivery id to global variable */
+	global_id = id;
+
+	$("#morris-area-chart").empty(); // clear chart so it doesn't
 
 }
 
@@ -157,7 +168,11 @@ function populateDataTable() {
 
 	var buttonDeleteClass = 'class="btn btn-danger" data-toggle="modal"';
 	buttonDeleteClass += 'data-target="#modalDeleteDeliveryRequest"';
-	buttonDeleteClass += 'onClick="fetchDeleteId(this)"'
+	buttonDeleteClass += 'onClick="fetchDeleteId(this)"';
+
+	var buttonBeedingClass = 'class="btn btn-warning" data-toggle="modal"';
+	buttonBeedingClass += 'data-target="#modalBeeding"';
+	buttonBeedingClass += 'onClick="fetchDeliverId(this)"';
 
 	$
 			.ajax({
@@ -214,6 +229,11 @@ function populateDataTable() {
 																	+ ' '
 																	+ buttonDeleteClass
 																	+ ' >Delete</button> ';
+															drawActionButton += ' <button id='
+																	+ buttonID
+																	+ ' '
+																	+ buttonBeedingClass
+																	+ ' >Beeding</button> ';
 															return drawActionButton;
 														}
 													} ]
@@ -365,3 +385,53 @@ function validateAndInsertUsingAjax(action, message) {
 	});
 
 }
+
+/*
+ * This method will call when modal is open. It will populate the chart
+ * automatically base on the JSON response from the server
+ */
+$('#modalBeeding').on('shown.bs.modal', function() { // listen for user to
+	// open modal
+	$(function() {
+		var dataLength;
+		/* Set Parameters */
+		var dataParameter = {
+			id : global_id,
+		};
+		// Fire off an AJAX request to load the data
+		$.ajax({
+			type : "GET",
+			dataType : 'json',
+			url : '' + myContext + '/ajaxSearchBeedingRequest',
+			// This is the URL to the API
+			data : dataParameter,
+		}).done(function(data) {
+			// When the response to the AJAX request comes back render the chart
+			// with new data
+			// If date response lenght is more than 0 it will set the chart value
+			if (data.length > 0) {
+				chart.setData(data);
+			}
+		}).fail(function() {
+			// If there is no communication between the server, show an error
+			alert("error occured");
+		});
+
+		$("#morris-area-chart").empty(); // clear chart so it doesn't
+		// create multiple if
+		// multiple clicks
+		// Create a Bar Chart with Morris
+		var chart = Morris.Bar({
+			element : 'morris-area-chart',
+			data : [ 0, 0 ],
+			xkey : 'beeding_delivery_date',
+			ykeys : [ 'user_beeder_id', 'beeding_startingprice' ],
+			labels : [ 'User', 'Price' ],
+			pointSize : 2,
+			hideHover : 'auto',
+			resize : true,
+			stacked : true
+		});
+
+	});
+});

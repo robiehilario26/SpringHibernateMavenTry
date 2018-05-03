@@ -89,8 +89,8 @@
 										<th>Pick-up Address</th>
 										<th>Destination Address</th>
 										<th>Delivery Cost</th>
-										<th>Delivery Status</th>
-										<th>Action</th>
+										<th>Customer Preferred Date</th>
+										<th width="130px">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -145,19 +145,52 @@
 						</div>
 						<!-- /.panel-body -->
 					</div>
-
+					<div id="error" class="error"></div>
 				</div>
 
 				<div class="modal-footer">
 
-					<!-- Close button -->
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Close</button>
+					<form:form method="GET" modelAttribute="beedingRequest"
+						name="myform" id="myform">
+						<div class="row">
 
-					<!-- Register button -->
-					<input type="button" class="btn btn-primary" value="Save"
-						id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
+							<form:input type="hidden" path="beeding_delivery_id"
+								id="beeding_delivery_id" />
 
+							<!-- Input Expected date to be delivered -->
+							<div class="col-md-5 col-md-offset-1">
+								<label for="beeding_delivery_date" class="pull-left">
+									Delivery Date: </label>
+								<form:input type="date" path="beeding_delivery_date"
+									id="beeding_delivery_date" class="form-control"
+									placeholder="Preferred Date to be Delivered" />
+								<form:errors path="beeding_delivery_date" cssClass="error" />
+							</div>
+
+							<!-- Input Delivery price -->
+							<div class="col-md-5 col-md-offset-1 pull-left">
+								<label for="beeding_startingprice" class="pull-left">Delivery
+									price: </label>
+								<form:input type="number" min="0" path="beeding_startingprice"
+									id="beeding_startingprice" class="form-control"
+									placeholder="Delivery price" />
+								<form:errors path="beeding_startingprice" cssClass="error" />
+							</div>
+
+
+						</div>
+
+						<br />
+
+						<!-- Close button -->
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+
+						<!-- Register button -->
+						<input type="button" class="btn btn-primary" value="Save"
+							id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
+
+					</form:form>
 				</div>
 
 			</div>
@@ -264,87 +297,7 @@
 
 
 	<script>
-		$('#modalAddDeliveryType').on('shown.bs.modal', function() { //listen for user to open modal
-			$(function() {
-				$("#morris-area-chart").empty(); //clear chart so it doesn't create multiple if multiple clicks
-				// Create a Bar Chart with Morris
-				var chart = Morris.Bar({
-					element : 'morris-area-chart',
-					 data: [{
-				            period: '2010 Q1',
-				            iphone: 666,
-				            ipad: null,
-				            itouch: 647
-				        }, {
-				            period: '2010 Q2',
-				            iphone: 778,
-				            ipad: 294,
-				            itouch: 441
-				        }, {
-				            period: '2010 Q3',
-				            iphone: 912,
-				            ipad: 969,
-				            itouch: 501
-				        }, {
-				            period: '2010 Q4',
-				            iphone: 767,
-				            ipad: 597,
-				            itouch: 689
-				        }, {
-				            period: '2011 Q1',
-				            iphone: 810,
-				            ipad: 914,
-				            itouch: 293
-				        }, {
-				            period: '2011 Q2',
-				            iphone: 670,
-				            ipad: 293,
-				            itouch: 881
-				        }, {
-				            period: '2011 Q3',
-				            iphone: 820,
-				            ipad: 795,
-				            itouch: 588
-				        }, {
-				            period: '2011 Q4',
-				            iphone: 5073,
-				            ipad: 967,
-				            itouch: 175
-				        }, {
-				            period: '2012 Q1',
-				            iphone: 0687,
-				            ipad: 460,
-				            itouch: 028
-				        }, {
-				            period: '2012 Q2',
-				            iphone: 432,
-				            ipad: 713,
-				            itouch: 791
-				        }],
-				        xkey: 'period',
-				        ykeys: ['iphone', 'ipad', 'itouch'],
-				        labels: ['iPhone', 'iPad', 'iPod Touch'],
-				        pointSize: 2,
-				        hideHover: 'auto',
-				        resize: true,
-					stacked : true
-				});
-
-				// Fire off an AJAX request to load the data
-			/* 	$.ajax({
-					type : "GET",
-					dataType : 'json',
-					url : "${pageContext.request.contextPath}/static/data/morris-data.js", // This is the URL to the API
-
-				}).done(function(data) {
-					// When the response to the AJAX request comes back render the chart with new data
-					chart.setData(data);
-				}).fail(function() {
-					// If there is no communication between the server, show an error
-					alert("error occured");
-				}); */
-			});
-		});
+		
 	</script>
 
 

@@ -31,18 +31,17 @@ function clearTextField() {
 
 	/* Clear error validation message */
 	$("#error").empty();
-	
-	
 
 }
 
+var global_data = [];
+var global_id;
+var global_array;
 /*
  * Fetch information via delivertype id using json response using @RequestParam
  */
 function searchDeliveryTypeDetailViaAjax(elem) {
-	
-	
-	
+
 	var stringResponse;
 	var id = elem.id;
 
@@ -50,10 +49,12 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 	$("#error").empty();
 
 	/* Get id value in hidden input text field */
-	$("#deliver_id").val(id);
+	$("#beeding_delivery_id").val(id);
+
+	global_id = id;
 
 	/* Set text value of button */
-	$('#btnDeliveryType').val("Update");
+	$('#btnDeliveryType').val("Beed");
 
 	/* Change class of attr of button */
 	$("#btnDeliveryType").attr('class', 'btn btn-success');
@@ -66,7 +67,7 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 		id : id,
 	};
 	$.ajax({
-		url : '' + myContext + '/ajaxFetchRequestDetails',
+		url : '' + myContext + '/ajaxSearchBeedingRequest',
 		type : "GET",
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
@@ -78,23 +79,24 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
-					
+
+			console.log("stringResponse " + stringResponse);
+			global_data = stringResponse;
 			/* Parse json response to get value of each key */
 			var obj = JSON.parse(stringResponse);
 
 			/* Set modal text field value */
-			$("#delivery_type").val(obj.delivery_type);
-			$("#item_details").val(obj.item_details);
-			$("#delivery_pickup_address").val(obj.delivery_pickup_address);
-			$("#delivery_destination").val(obj.delivery_destination);
+			$("#beeding_delivery_date").val(obj.beeding_delivery_date);
 
+			// $("#item_details").val(obj.item_details);
+			// $("#delivery_pickup_address").val(obj.delivery_pickup_address);
+			// $("#delivery_destination").val(obj.delivery_destination);
 			/* Enable button to submit */
 			$("#btnDeliveryType").prop('disabled', false);
 
 		}
 	});
-	
-	
+
 }
 
 /* Fetch deliveryType id */
@@ -152,7 +154,7 @@ function deleteViaAjax() {
 
 /* Populate DataTable of list of all deliveryType existed using ajax */
 function populateDataTable() {
-		
+
 	$("#dataTables-example").dataTable().fnDestroy();
 
 	/* set class and onClick event listener */
@@ -173,7 +175,6 @@ function populateDataTable() {
 			.done(
 					function(data) {
 						var dataToString = JSON.stringify(data);
-						console.log("dataToString " + dataToString);
 						$('#dataTables-example')
 								.dataTable(
 										{
@@ -195,7 +196,7 @@ function populateDataTable() {
 													},
 
 													{
-														"data" : "delivery_status"
+														"data" : "preferred_date"
 													},
 
 													{
@@ -234,9 +235,9 @@ function insertOrUpdateDeliveryType() {
 	var action, message;
 	var getButtonName = $("#btnDeliveryType").val();
 
-	if (getButtonName == "Save") {
-		action = "ajaxAddDeliveryRequest";
-		message = "Delivery request has been added to the list successfully.";
+	if (getButtonName == "Beed") {
+		action = "ajaxAddBeedingRequest";
+		message = "Beed request has been added to the list successfully.";
 	} else {
 		action = "ajaxUpdateDeliveryRequest";
 		message = "Delivery request has been updated successfully.";
@@ -257,19 +258,16 @@ function validateAndInsertUsingAjax(action, message) {
 	$("#btnDeliveryType").prop('disabled', true);
 
 	/* get the text field form values */
-	var id = $('#deliver_id').val();
-	var type = $('#delivery_type').val();
-	var details = $('#item_details').val();
-	var address = $('#delivery_pickup_address').val();
-	var destination = $('#delivery_destination').val();
+	var id = $('#beeding_delivery_id').val();
+	var date = $('#beeding_delivery_date').val();
+	var price = $('#beeding_startingprice').val();
 
 	$.ajax({
 
 		type : "GET",
 		url : myContext + '/' + action,
-		data : "deliver_id=" + id + "&delivery_type=" + type
-				+ "&delivery_pickup_address=" + address + "&item_details="
-				+ details + "&delivery_destination=" + destination,
+		data : "beeding_delivery_id=" + id + "&beeding_delivery_date=" + date
+				+ "&beeding_startingprice=" + price,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		crossDomain : "TRUE",
@@ -292,17 +290,11 @@ function validateAndInsertUsingAjax(action, message) {
 
 					/* Create html elements */
 
-					userInfo += "<br><li><b>Delivery type</b> : "
-							+ obj.result[i].delivery_type;
+					userInfo += "<br><li><b>Delivery date</b> : "
+							+ obj.result[i].beeding_delivery_date;
 
-					userInfo += "<br><li><b>Item details:</b> : "
-							+ obj.result[i].item_details;
-
-					userInfo += "<br><li><b>Delivery address</b> : "
-							+ obj.result[i].delivery_pickup_address;
-
-					userInfo += "<br><li><b>Delivery destination</b> : "
-							+ obj.result[i].delivery_destination;
+					userInfo += "<br><li><b>Delivery price</b> : "
+							+ obj.result[i].beeding_startingprice;
 
 				}
 
@@ -368,3 +360,47 @@ function validateAndInsertUsingAjax(action, message) {
 	});
 
 }
+
+$('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
+	// user to open
+	// modal
+	$(function() {
+
+		/* Set Parameters */
+		var dataParameter = {
+			id : global_id,
+		};
+		// Fire off an AJAX request to load the data
+		$.ajax({
+			type : "GET",
+			dataType : 'json',
+			url : '' + myContext + '/ajaxSearchBeedingRequest',
+			// This is the URL to the API
+			data : dataParameter,
+		}).done(function(data) {
+			// When the response to the AJAX request comes back render the chart
+			// with new data
+			chart.setData(data);
+		}).fail(function() {
+			// If there is no communication between the server, show an error
+			alert("error occured");
+		});
+
+		$("#morris-area-chart").empty(); // clear chart so it doesn't
+		// create multiple if
+		// multiple clicks
+		// Create a Bar Chart with Morris
+		var chart = Morris.Bar({
+			element : 'morris-area-chart',
+			data : [ 0, 0 ],
+			xkey : 'beeding_delivery_date',
+			ykeys : [ 'user_beeder_id', 'beeding_startingprice' ],
+			labels : [ 'User', 'Price' ],
+			pointSize : 2,
+			hideHover : 'auto',
+			resize : true,
+			stacked : true
+		});
+
+	});
+});
