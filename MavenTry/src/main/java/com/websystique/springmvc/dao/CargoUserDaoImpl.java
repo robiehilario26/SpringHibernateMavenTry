@@ -3,12 +3,10 @@ package com.websystique.springmvc.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.websystique.springmvc.model.CargoUser;
-import com.websystique.springmvc.model.User;
 
 
 @Repository("cargoUserDao")

@@ -8,7 +8,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.websystique.springmvc.model.Beeding;
-import com.websystique.springmvc.model.DeliveryRequest;
 
 @SuppressWarnings("unchecked")
 @Repository("beedingDao")

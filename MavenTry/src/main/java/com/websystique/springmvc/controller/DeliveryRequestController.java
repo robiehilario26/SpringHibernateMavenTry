@@ -22,10 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.websystique.springmvc.model.CargoUser;
 import com.websystique.springmvc.model.DeliveryRequest;
 import com.websystique.springmvc.model.DeliveryType;
-import com.websystique.springmvc.model.Employee;
 import com.websystique.springmvc.model.JsonResponse;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.service.DeliveryRequestService;

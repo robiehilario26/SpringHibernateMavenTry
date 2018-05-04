@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.websystique.springmvc.dao.BeedingDao;
 import com.websystique.springmvc.model.Beeding;
-import com.websystique.springmvc.model.DeliveryRequest;
 
 @Repository("beedingDaoService")
 @Transactional

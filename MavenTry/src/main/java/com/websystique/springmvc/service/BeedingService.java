@@ -3,7 +3,6 @@ package com.websystique.springmvc.service;
 import java.util.List;
 
 import com.websystique.springmvc.model.Beeding;
-import com.websystique.springmvc.model.DeliveryRequest;
 
 public interface BeedingService {
 

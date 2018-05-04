@@ -15,7 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @SuppressWarnings("serial")
