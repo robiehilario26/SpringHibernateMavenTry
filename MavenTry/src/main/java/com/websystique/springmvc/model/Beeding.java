@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -49,7 +50,7 @@ public class Beeding {
 	@Column(name ="BEEDING_STATUS", nullable= false)
 	private String beeding_status;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "BEEDING_DELIVERY_ID", insertable = false, updatable = false, nullable = false)
 	private DeliveryRequest deliveryRequest;
 

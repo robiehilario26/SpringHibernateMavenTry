@@ -24,11 +24,9 @@ function addCargoUser() {
 function clearTextField() {
 
 	/* Set default to 0 */
-	$("#delivery_type").val(null);
-	$("#item_details").val(null);
-	$("#delivery_pickup_address").val(null);
-	$("#delivery_destination").val(null);
-
+	$("#beeding_delivery_date").val(null);
+	$("#beeding_startingprice").val(null);
+	
 	/* Clear error validation message */
 	$("#error").empty();
 
@@ -61,6 +59,9 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 	/* Disable button to prevent unnecessary submit */
 	$("#btnDeliveryType").prop('disabled', true);
+	
+	/* Clear input fields */
+	clearTextField();
 
 	/* Set Parameters */
 	var dataParameter = {
@@ -86,8 +87,9 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 			var obj = JSON.parse(stringResponse);
 
 			/* Set modal text field value */
-			$("#beeding_delivery_date").val(obj.beeding_delivery_date);
-
+			// $("#beeding_delivery_date").val(obj.deliveryRequest);
+			var x = JSON.stringify(response, [ 'beeding_id' ]);
+			console.log("DELIVERYREQUEST  " + x);
 			// $("#item_details").val(obj.item_details);
 			// $("#delivery_pickup_address").val(obj.delivery_pickup_address);
 			// $("#delivery_destination").val(obj.delivery_destination);
@@ -380,7 +382,9 @@ $('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
 		}).done(function(data) {
 			// When the response to the AJAX request comes back render the chart
 			// with new data
-			chart.setData(data);
+			if (data.length > 0) {
+				chart.setData(data);
+			}
 		}).fail(function() {
 			// If there is no communication between the server, show an error
 			alert("error occured");
@@ -397,10 +401,12 @@ $('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
 			ykeys : [ 'user_beeder_id', 'beeding_startingprice' ],
 			labels : [ 'User', 'Price' ],
 			pointSize : 2,
+			xLabelAngle : 45,
 			hideHover : 'auto',
 			resize : true,
 			stacked : true
 		});
 
 	});
+
 });

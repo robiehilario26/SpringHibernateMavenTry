@@ -100,7 +100,7 @@ function fetchDeliverId(obj) {
 	/* Pass delivery id to global variable */
 	global_id = id;
 
-	$("#morris-area-chart").empty(); // clear chart so it doesn't
+	$("#morris-bar-chart").empty(); // clear chart so it
 
 }
 
@@ -392,12 +392,14 @@ function validateAndInsertUsingAjax(action, message) {
  */
 $('#modalBeeding').on('shown.bs.modal', function() { // listen for user to
 	// open modal
+	
 	$(function() {
-		var dataLength;
+
 		/* Set Parameters */
 		var dataParameter = {
 			id : global_id,
 		};
+
 		// Fire off an AJAX request to load the data
 		$.ajax({
 			type : "GET",
@@ -406,32 +408,76 @@ $('#modalBeeding').on('shown.bs.modal', function() { // listen for user to
 			// This is the URL to the API
 			data : dataParameter,
 		}).done(function(data) {
-			// When the response to the AJAX request comes back render the chart
+			// When the response to the AJAX request comes back
+			// render
+			// the chart
 			// with new data
-			// If date response lenght is more than 0 it will set the chart value
+			// If date response lenght is more than 0 it will
+			// set the
+			// chart value
+			
 			if (data.length > 0) {
 				chart.setData(data);
 			}
+
 		}).fail(function() {
-			// If there is no communication between the server, show an error
+			// If there is no communication between the server,
+			// show an
+			// error
 			alert("error occured");
 		});
 
-		$("#morris-area-chart").empty(); // clear chart so it doesn't
+		// $("#morris-bar-chart").empty(); // clear chart so it
+		// doesn't
 		// create multiple if
 		// multiple clicks
 		// Create a Bar Chart with Morris
+
+		
 		var chart = Morris.Bar({
-			element : 'morris-area-chart',
+			element : 'morris-bar-chart',
 			data : [ 0, 0 ],
 			xkey : 'beeding_delivery_date',
-			ykeys : [ 'user_beeder_id', 'beeding_startingprice' ],
-			labels : [ 'User', 'Price' ],
+			ykeys : [ 'beeding_id', 'beeding_startingprice' ],
+			labels : [ 'Beed entry', 'Price' ],
 			pointSize : 2,
+			xLabelAngle : 45,
 			hideHover : 'auto',
 			resize : true,
 			stacked : true
 		});
 
 	});
+});
+
+/* Fetch the selected Beeding entry the user click */
+var thisDate, thisData, parser, price;
+$("#morris-bar-chart").on('click', function() {
+
+	// Find data and date in the actual morris diply below the graph.
+	thisDate = $(".morris-hover-row-label").html();
+	thisDataHtml = $(".morris-hover-point").html().split(":");
+	thisData = thisDataHtml[1].trim();
+
+	var fetchClass = document.querySelectorAll("[class='morris-hover-point']");
+	for (var i = 0; i < fetchClass.length; i++) {
+		// grab x[i].innerHTML (or textContent or innerText)
+		parser = fetchClass[i].innerHTML.split(":");
+
+		// Get delivery price
+		if (i > 0) {
+			price = parser[1];
+		}
+	}
+
+	var beedinfo = "<ol>";
+	beedinfo += "<br><li><b>Beeding entry</b> : " + thisData;
+	beedinfo += "<br><li><b>Delivery Price</b> : " + price;
+	beedinfo += "<br><li><b>Delivery Date</b> : " + thisDate;
+	beedinfo += "</ol>";
+
+	/* Draw message in #info div */
+	$('#beedInfo').html(beedinfo);
+
+	$('#modalSelectBeeding').modal('show');
 });

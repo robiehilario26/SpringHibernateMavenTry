@@ -3,6 +3,7 @@ package com.websystique.springmvc.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -51,7 +52,8 @@ public class BeedingDaoImpl extends AbstractDao<Integer, Beeding> implements
 
 	@Override
 	public List<Beeding> listBeedingRequestByDeliveryId(Integer id) {
-		Criteria criteria = createEntityCriteria();
+		Criteria criteria = createEntityCriteria().addOrder(
+				Order.asc("beeding_delivery_date"));
 		criteria.add(Restrictions.eq("beeding_delivery_id", id));
 		return (List<Beeding>) criteria.list();
 	}

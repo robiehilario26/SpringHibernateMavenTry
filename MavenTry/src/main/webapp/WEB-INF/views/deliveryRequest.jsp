@@ -68,7 +68,7 @@
 					<div>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#modalAddDeliveryType" onClick="addCargoUser()">Add
-							Delivery Type</button>
+							Delivery Request</button>
 					</div>
 
 					<div class="panel panel-default">
@@ -91,7 +91,7 @@
 										<th>Delivery Type</th>
 										<th>Pick-up Address</th>
 										<th>Destination Address</th>
-										<th>Delivery Cost</th>
+										<th>Estimated Delivery Cost</th>
 										<th>Delivery Status</th>
 										<th width="200px">Action</th>
 									</tr>
@@ -273,7 +273,8 @@
 						<div class="panel-heading">Delivery Request Chart</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							<div id="morris-area-chart"></div>
+							 <div id="morris-bar-chart"></div>
+							 <div align="center"><h4><i>Delivery date</i></h4></div>
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -295,6 +296,41 @@
 	</div>
 
 
+<!-- Select Beeding Modal -->
+	<div class="modal fade" id="modalSelectBeeding" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true" data-keyboard="false" data-backdrop="static">
+		<form name="beedForm" id="beedForm" method="GET">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body">
+						<!-- Hidden input field for id -->
+						<input type="hidden" id="deleteId" />
+
+						<h5>Select this beed entry?</h5>
+						<div id="beedInfo"></div>
+					</div>
+
+					<div class="modal-footer">
+					
+						<input type="button" id="btnSelectBeeding"
+							class="btn btn-primary" onClick="deleteViaAjax()" value="Save" />
+
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
+
 	<!-- jQuery -->
 	<script src="<c:url value="/static/vendor/jquery/jquery.min.js" />"></script>
 
@@ -310,9 +346,8 @@
 	<script src="<c:url value="/static/vendor/raphael/raphael.min.js" />"></script>
 
 	<script src="<c:url value="/static/vendor/morrisjs/morris.min.js" />"></script>
-
-	<script src="<c:url value="/static/data/morris-data.js" />"></script>
-
+ 
+	
 	<!-- DataTables JavaScript -->
 	<script
 		src="<c:url value="/static/vendor/datatables/js/jquery.dataTables.min.js" />"></script>

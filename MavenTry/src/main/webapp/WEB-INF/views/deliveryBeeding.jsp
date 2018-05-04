@@ -85,7 +85,7 @@
 								id="dataTables-example">
 								<thead>
 									<tr>
-										<th>Delivery Type</th>
+										<th width="200px">Delivery Type</th>
 										<th>Pick-up Address</th>
 										<th>Destination Address</th>
 										<th>Delivery Cost</th>
