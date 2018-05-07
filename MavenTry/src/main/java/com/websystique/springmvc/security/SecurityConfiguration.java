@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authenticationProvider());
 	}
 
-	/* This method sets-up the list of accessing page for each role. */ 
+	/* This method sets-up the list of accessing page for each role. */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
@@ -58,7 +58,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 						"/delete-cargo-user-by-ajax", "/ajaxAddCargoUser",
 						"/ajaxEditCargoUser", "/delete-employee-by-ajax",
 						"/deliveryType*", "/ajaxAddUser", "/listV1",
-						"deliveryRequest", "deliveryBeeding")
+						"deliveryRequest", "deliveryBeeding",
+						"/ajaxAddDeliveryType", "/ajaxEditDeliveryType")
 				// Roles
 				.access("hasRole('ADMIN')").and().formLogin()
 				.loginPage("/login").loginProcessingUrl("/login")
@@ -67,6 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.tokenRepository(tokenRepository).tokenValiditySeconds(86400)
 				.and().csrf().and().exceptionHandling()
 				.accessDeniedPage("/Access_Denied");
+
 	}
 
 	@Bean

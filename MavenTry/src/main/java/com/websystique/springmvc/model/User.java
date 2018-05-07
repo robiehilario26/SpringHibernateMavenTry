@@ -13,46 +13,48 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="APP_USER")
-public class User implements Serializable{
+@Table(name = "APP_USER")
+public class User implements Serializable {
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private Integer id;
 
 	@NotEmpty
-	@Column(name="USERNAME_ID", unique=true, nullable=false)
+	@Column(name = "USERNAME_ID", unique = true, nullable = false)
 	private String usernameId;
-	
+
 	@NotEmpty
-	@Column(name="PASSWORD", nullable=false)
+	@Column(name = "PASSWORD", nullable = false)
 	private String password;
-		
+
 	@NotEmpty
-	@Column(name="FIRST_NAME", nullable=false)
+	@Column(name = "FIRST_NAME", nullable = false)
 	private String firstName;
 
 	@NotEmpty
-	@Column(name="LAST_NAME", nullable=false)
+	@Column(name = "LAST_NAME", nullable = false)
 	private String lastName;
 
 	@NotEmpty
-	@Column(name="EMAIL", nullable=false)
+	@Column(name = "EMAIL", nullable = false)
 	private String email;
 
 	@NotEmpty
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "APP_USER_USER_PROFILE", 
-             joinColumns = { @JoinColumn(name = "USER_ID") }, 
-             inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
+	@JoinTable(name = "APP_USER_USER_PROFILE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
 	private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
 
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -141,19 +143,15 @@ public class User implements Serializable{
 		this.userProfiles = userProfiles;
 	}
 
-	
-
 	/*
-	 * DO-NOT-INCLUDE passwords in toString function.
-	 * It is done here just for convenience purpose.
+	 * DO-NOT-INCLUDE passwords in toString function. It is done here just for
+	 * convenience purpose.
 	 */
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", usernameId=" + usernameId + ", password=" + password
-				+ ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + "]";
+		return "User [id=" + id + ", usernameId=" + usernameId + ", password="
+				+ password + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", email=" + email + "]";
 	}
 
-
-	
 }

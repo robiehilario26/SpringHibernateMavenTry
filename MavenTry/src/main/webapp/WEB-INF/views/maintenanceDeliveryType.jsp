@@ -130,10 +130,15 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
+				
+			
 
 				<!-- Form Text field -->
 				<form:form method="GET" modelAttribute="delivery" name="myform"
 					id="myform">
+					
+						<input type="hidden" id="token" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
 					<form:input type="hidden" path="id" id="id" />
 					<div class="modal-body">
 
@@ -177,7 +182,7 @@
 							data-dismiss="modal">Close</button>
 
 						<!-- Register button -->
-						<input type="button" class="btn btn-primary" value="Save"
+						<input type="submit" class="btn btn-primary" value="Save"
 							id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
 
 					</div>
@@ -266,6 +271,13 @@
 		$(document).ready(function() {
 			/* Call function */
 			populateDataTable();
+
+			$("#btnDeliveryType").on("click", function(ev) {
+		        ev.preventDefault();
+
+		      
+
+		    });
 		});
 	</script>
 

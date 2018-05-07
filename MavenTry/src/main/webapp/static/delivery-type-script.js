@@ -35,8 +35,7 @@ function clearTextField() {
 }
 
 /*
- * Fetch information via delivertype id using json response using
- * @RequestParam
+ * Fetch information via delivertype id using json response using @RequestParam
  */
 function searchDeliveryTypeDetailViaAjax(elem) {
 	var stringResponse;
@@ -247,18 +246,21 @@ function validateAndInsertUsingAjax(action, message) {
 	var weight = $('#delivery_weight').val();
 	var price = $('#delivery_price').val();
 
+	var datastring = $("#myform").serialize();
+	
 	$.ajax({
 
 		type : "GET",
-		url : myContext + '/' + action,
-		data : "id=" + id + "&mainte_delivery_type=" + type + "&delivery_weight="
-				+ weight + "&delivery_price=" + price,
+		url : myContext + '/' + action+ '?_csrf=' + $("#token").val(),
+		data : datastring,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		crossDomain : "TRUE",
 		success : function(response) {
 			var stringResponse = JSON.stringify(response)
 			// we have the response
+
+			console.log("response " + stringResponse);
 
 			var obj = JSON.parse(stringResponse);
 

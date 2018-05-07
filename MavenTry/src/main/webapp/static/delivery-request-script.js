@@ -233,7 +233,7 @@ function populateDataTable() {
 																	+ buttonID
 																	+ ' '
 																	+ buttonBeedingClass
-																	+ ' >Beeding</button> ';
+																	+ ' >Beeding Chart</button> ';
 															return drawActionButton;
 														}
 													} ]
@@ -392,7 +392,7 @@ function validateAndInsertUsingAjax(action, message) {
  */
 $('#modalBeeding').on('shown.bs.modal', function() { // listen for user to
 	// open modal
-	
+
 	$(function() {
 
 		/* Set Parameters */
@@ -415,7 +415,7 @@ $('#modalBeeding').on('shown.bs.modal', function() { // listen for user to
 			// If date response lenght is more than 0 it will
 			// set the
 			// chart value
-			
+
 			if (data.length > 0) {
 				chart.setData(data);
 			}
@@ -433,7 +433,6 @@ $('#modalBeeding').on('shown.bs.modal', function() { // listen for user to
 		// multiple clicks
 		// Create a Bar Chart with Morris
 
-		
 		var chart = Morris.Bar({
 			element : 'morris-bar-chart',
 			data : [ 0, 0 ],
@@ -481,3 +480,44 @@ $("#morris-bar-chart").on('click', function() {
 
 	$('#modalSelectBeeding').modal('show');
 });
+
+/* Get selection option selected value */
+$('#delivery_type').on('change', function() {
+	var id = this.value;
+
+	/* Set Parameters */
+	var dataParameter = {
+		id : id,
+	};
+	$.ajax({
+		url : '' + myContext + '/search-delivery-type-by-ajax',
+		type : "GET",
+		contentType : "application/json; charset=utf-8",
+		datatype : "json",
+		data : dataParameter,
+		error : function() {
+			alert('Error: ' + "Server not respond");
+		},
+		success : function(response) {
+			
+			/* Convert response into String format */
+			stringResponse = JSON.stringify(response);
+
+			/*
+			 * Parse json response to get value of each key
+			 */
+			var obj = JSON.parse(stringResponse);
+
+			/* Create Description message */
+			var deliveryDescription = "<b>Description: </b>";
+			deliveryDescription += "Delivery Cost: "
+			deliveryDescription += '<b>' + obj.delivery_price + '</b>.';
+			deliveryDescription += " Delivery Maximum weight(kg): "
+			deliveryDescription += '<b>' + obj.delivery_weight + '</b>.';
+
+			/* Draw message in div */
+			$('#description').html(deliveryDescription);
+			$('#panel_description').show('slow');
+		}
+	});
+})

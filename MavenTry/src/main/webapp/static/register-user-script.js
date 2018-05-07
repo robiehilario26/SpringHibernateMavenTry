@@ -180,6 +180,7 @@ function populateUserDataTable() {
 			.done(
 					function(data) {
 						var dataToString = JSON.stringify(data);
+						console.log("dataToString "+dataToString);
 						$('#dataTables-example')
 								.dataTable(
 										{

@@ -88,12 +88,12 @@
 								id="dataTables-example">
 								<thead>
 									<tr>
-										<th>Delivery Type</th>
+										<th width="120px">Delivery Type</th>
 										<th>Pick-up Address</th>
 										<th>Destination Address</th>
 										<th>Estimated Delivery Cost</th>
 										<th>Delivery Status</th>
-										<th width="200px">Action</th>
+										<th width="225px">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -156,6 +156,14 @@
 							</form:select>
 						</div>
 
+						<!-- Delivery type decription -->
+						<div id ="panel_description" style="display: none">
+							<div class="panel-heading">
+								<div id="description" ></div>
+							</div>
+						</div>
+						
+						
 						<!-- Input item details-->
 						<div>
 							<label for="item_details">Item Details: </label>
@@ -270,11 +278,17 @@
 				<div class="modal-body">
 
 					<div class="panel panel-default">
-						<div class="panel-heading">Delivery Request Chart</div>
+						<div class="panel-heading">
+							<span>Click the Beeding you preferred on Chart:</span>
+						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							 <div id="morris-bar-chart"></div>
-							 <div align="center"><h4><i>Delivery date</i></h4></div>
+							<div id="morris-bar-chart"></div>
+							<div align="center">
+								<h4>
+									<i>Delivery date</i>
+								</h4>
+							</div>
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -296,7 +310,7 @@
 	</div>
 
 
-<!-- Select Beeding Modal -->
+	<!-- Select Beeding Modal -->
 	<div class="modal fade" id="modalSelectBeeding" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true" data-keyboard="false" data-backdrop="static">
@@ -320,9 +334,9 @@
 					</div>
 
 					<div class="modal-footer">
-					
-						<input type="button" id="btnSelectBeeding"
-							class="btn btn-primary" onClick="deleteViaAjax()" value="Save" />
+
+						<input type="button" id="btnSelectBeeding" class="btn btn-primary"
+							onClick="deleteViaAjax()" value="Save" />
 
 					</div>
 
@@ -346,8 +360,8 @@
 	<script src="<c:url value="/static/vendor/raphael/raphael.min.js" />"></script>
 
 	<script src="<c:url value="/static/vendor/morrisjs/morris.min.js" />"></script>
- 
-	
+
+
 	<!-- DataTables JavaScript -->
 	<script
 		src="<c:url value="/static/vendor/datatables/js/jquery.dataTables.min.js" />"></script>

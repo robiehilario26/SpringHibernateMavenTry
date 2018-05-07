@@ -46,7 +46,6 @@ public class Beeding {
 	@OneToOne
 	@JoinColumn(name = "BEEDING_DELIVERY_ID", insertable = false, updatable = false, nullable = false)
 	private DeliveryRequest deliveryRequest;
-
 	
 
 	public DeliveryRequest getDeliveryRequest() {

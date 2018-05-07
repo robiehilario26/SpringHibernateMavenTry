@@ -20,10 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.websystique.springmvc.model.DeliveryType;
 import com.websystique.springmvc.model.JsonResponse;
 import com.websystique.springmvc.service.DeliveryTypeService;
+import com.websystique.springmvc.utility.AjaxRequestValidation;
 
 @Controller
 @RequestMapping("/")
 public class MaintenanceController {
+	
+	@Autowired
+	AjaxRequestValidation ajaxRequestValidation;
 
 	@Autowired
 	DeliveryTypeService deliveryTypeService;
@@ -61,6 +65,15 @@ public class MaintenanceController {
 	@ResponseBody
 	public DeliveryType ListDeliveryTypeDetail(@RequestParam Integer id,
 			HttpServletRequest request, HttpServletResponse response) {
+	
+
+		if(!ajaxRequestValidation.isAjax(request))
+		{
+			/* Return null in web browser */
+			 return null;
+		}
+	
+	
 		DeliveryType deliveryType = deliveryTypeService.findById(id);
 		return deliveryType;
 	}
@@ -69,12 +82,15 @@ public class MaintenanceController {
 	 * This method will provide the medium to add a new delivery type. It
 	 * validate all the input before inserting to database
 	 */
+	
 	@RequestMapping(value = "/ajaxAddDeliveryType", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public JsonResponse addDeliveryType(
 			@ModelAttribute(value = "delivery") DeliveryType deliveryType,
 			BindingResult result) {
 
+		System.out.println("deliveryType "+deliveryType.toString());
+		
 		JsonResponse res = new JsonResponse();
 
 		/* Validate all the input. it return "SUCCESS" or "FAIL" status */
@@ -134,8 +150,8 @@ public class MaintenanceController {
 
 		/* Set error message if text field is empty */
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "mainte_delivery_type",
-				"Delivery type can not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result,
+				"mainte_delivery_type", "Delivery type can not be empty");
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(result, "delivery_weight",
 				"Delivery weight not be empty");
