@@ -436,7 +436,7 @@ $('#modalBeeding').on('shown.bs.modal', function() { // listen for user to
 		var chart = Morris.Bar({
 			element : 'morris-bar-chart',
 			data : [ 0, 0 ],
-			xkey : 'beeding_delivery_date',
+			xkey : 'beeding_id',
 			ykeys : [ 'beeding_id', 'beeding_startingprice' ],
 			labels : [ 'Beed entry', 'Price' ],
 			pointSize : 2,
@@ -454,7 +454,7 @@ var thisDate, thisData, parser, price;
 $("#morris-bar-chart").on('click', function() {
 
 	// Find data and date in the actual morris diply below the graph.
-	thisDate = $(".morris-hover-row-label").html();
+	
 	thisDataHtml = $(".morris-hover-point").html().split(":");
 	thisData = thisDataHtml[1].trim();
 
@@ -472,7 +472,6 @@ $("#morris-bar-chart").on('click', function() {
 	var beedinfo = "<ol>";
 	beedinfo += "<br><li><b>Beeding entry</b> : " + thisData;
 	beedinfo += "<br><li><b>Delivery Price</b> : " + price;
-	beedinfo += "<br><li><b>Delivery Date</b> : " + thisDate;
 	beedinfo += "</ol>";
 
 	/* Draw message in #info div */

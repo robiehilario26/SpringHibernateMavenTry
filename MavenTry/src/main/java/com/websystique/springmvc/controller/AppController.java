@@ -36,6 +36,7 @@ import com.websystique.springmvc.model.UserProfile;
 import com.websystique.springmvc.service.EmployeeService;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
+import com.websystique.springmvc.utility.AjaxRequestValidation;
 
 @Controller
 @RequestMapping("/")
@@ -45,6 +46,9 @@ public class AppController {
 	private List<Employee> employeeList = new ArrayList<Employee>();
 	private List<User> userList = new ArrayList<User>();
 
+	@Autowired
+	AjaxRequestValidation ajaxRequestValidation;
+	
 	@Autowired
 	UserService userService;
 
@@ -126,6 +130,13 @@ public class AppController {
 	public Employee ajaxEmployeeDetail(@RequestParam String ssn,
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) {
+		
+		if(!ajaxRequestValidation.isAjax(request))
+		{
+			/* Return null in web browser */
+			 return null;
+		}
+		
 		Employee employee = service.findEmployeeBySsn(ssn);
 		return employee;
 	}

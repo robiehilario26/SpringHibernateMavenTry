@@ -30,12 +30,16 @@ import com.websystique.springmvc.service.DeliveryRequestService;
 import com.websystique.springmvc.service.DeliveryTypeService;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
+import com.websystique.springmvc.utility.AjaxRequestValidation;
 
 @Controller
 @RequestMapping("/")
 public class DeliveryRequestController {
 	private List<DeliveryRequest> deliveryRequests = new ArrayList<DeliveryRequest>();
 
+	@Autowired
+	AjaxRequestValidation ajaxRequestValidation;
+	
 	@Autowired
 	UserService userService;
 
@@ -77,6 +81,13 @@ public class DeliveryRequestController {
 	public DeliveryRequest ajaxRequestDetail(@RequestParam Integer id,
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) {
+		
+		if(!ajaxRequestValidation.isAjax(request))
+		{
+			/* Return null in web browser */
+			 return null;
+		}
+		
 		DeliveryRequest deliveryRequest = deliveryRequestService.findById(id);
 		return deliveryRequest;
 	}

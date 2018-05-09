@@ -30,6 +30,7 @@ import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.model.UserProfile;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
+import com.websystique.springmvc.utility.AjaxRequestValidation;
 
 @Controller
 @RequestMapping("/")
@@ -37,7 +38,10 @@ import com.websystique.springmvc.service.UserService;
 public class UserController {
 
 	private List<User> userList = new ArrayList<User>();
-
+	
+	@Autowired
+	AjaxRequestValidation ajaxRequestValidation;
+	
 	@Autowired
 	UserService userService;
 
@@ -195,6 +199,13 @@ public class UserController {
 	public User ajaxEmployeeDetail(@RequestParam Integer id,
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) {
+		
+		if(!ajaxRequestValidation.isAjax(request))
+		{
+			/* Return null in web browser */
+			 return null;
+		}
+		
 		User user = userService.findById(id);
 		return user;
 	}

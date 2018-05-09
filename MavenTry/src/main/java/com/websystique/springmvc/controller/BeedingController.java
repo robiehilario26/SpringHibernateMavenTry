@@ -29,11 +29,15 @@ import com.websystique.springmvc.service.DeliveryRequestService;
 import com.websystique.springmvc.service.DeliveryTypeService;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
+import com.websystique.springmvc.utility.AjaxRequestValidation;
 
 @Controller
 @RequestMapping("/")
 public class BeedingController {
 
+	@Autowired
+	AjaxRequestValidation ajaxRequestValidation;
+	
 	@Autowired
 	UserService userService;
 
@@ -58,6 +62,10 @@ public class BeedingController {
 	public String deliveryBeeding(ModelMap model) {
 		Beeding beeding = new Beeding();
 		model.addAttribute("beedingRequest", beeding);
+		
+		String userName = getUserDetails();
+		User user = userService.findBySSO(userName);
+		model.addAttribute("userId", user.getId());
 		return "deliveryBeeding";
 	}
 
@@ -115,6 +123,13 @@ public class BeedingController {
 	@ResponseBody
 	public List<Beeding> LisBeedingDetail(@RequestParam Integer id,
 			HttpServletRequest request, HttpServletResponse response) {
+		
+		if(!ajaxRequestValidation.isAjax(request))
+		{
+			/* Return null in web browser */
+			 return null;
+		}
+		
 		List<Beeding> beeding = beedingService.listBeedingRequestByDeliveryId(id);
 		return beeding;
 	}
@@ -129,8 +144,7 @@ public class BeedingController {
 
 		/* Set error message if text field is empty */
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(result, "beeding_delivery_date",
-				"Preferred date cannot be empty.");
+		
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(result,
 				"beeding_startingprice", "Beeding price should be more than 0");

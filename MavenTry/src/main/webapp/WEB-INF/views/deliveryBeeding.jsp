@@ -89,8 +89,10 @@
 										<th>Pick-up Address</th>
 										<th>Destination Address</th>
 										<th>Delivery Cost</th>
+										<th>Delivery Weight(kg)</th>
 										<th>Customer Preferred Date</th>
-										<th width="130px">Action</th>
+										<th>Status</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -120,7 +122,7 @@
 
 
 
-	<!-- Register Modal -->
+	<!-- Beeding Modal -->
 	<div class="modal fade" id="modalAddDeliveryType" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
@@ -131,6 +133,7 @@
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
+
 					</button>
 				</div>
 
@@ -139,9 +142,16 @@
 
 					<div class="panel panel-default">
 						<div class="panel-heading">Delivery Request Chart</div>
+						<div>
+
+							<span class="glyphicon glyphicon-stop text-success">:
+								Green bar represents all you beeding</span> <br /> <span
+								class="glyphicon glyphicon-stop text-danger">: Red bar
+								represents other user beeding</span>
+						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							<div id="morris-area-chart"></div>
+							<div id="morris-bar-chart"></div>
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -149,23 +159,13 @@
 				</div>
 
 				<div class="modal-footer">
-
+					<input type="hidden" value="${userId}" id="userId" />
 					<form:form method="GET" modelAttribute="beedingRequest"
 						name="myform" id="myform">
 						<div class="row">
 
 							<form:input type="hidden" path="beeding_delivery_id"
 								id="beeding_delivery_id" />
-
-							<!-- Input Expected date to be delivered -->
-							<div class="col-md-5 col-md-offset-1">
-								<label for="beeding_delivery_date" class="pull-left">
-									Delivery Date: </label>
-								<form:input type="date" path="beeding_delivery_date"
-									id="beeding_delivery_date" class="form-control"
-									placeholder="Preferred Date to be Delivered" />
-								<form:errors path="beeding_delivery_date" cssClass="error" />
-							</div>
 
 							<!-- Input Delivery price -->
 							<div class="col-md-5 col-md-offset-1 pull-left">
@@ -177,18 +177,22 @@
 								<form:errors path="beeding_startingprice" cssClass="error" />
 							</div>
 
+							<br>
+							<div class="col-md-5 col-md-offset-1 pull-left">
+								<!-- Close button -->
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+
+								<!-- Register button -->
+								<input type="button" class="btn btn-primary" value="Save"
+									id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
+							</div>
 
 						</div>
 
 						<br />
 
-						<!-- Close button -->
-						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
 
-						<!-- Register button -->
-						<input type="button" class="btn btn-primary" value="Save"
-							id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
 
 					</form:form>
 				</div>
@@ -257,8 +261,6 @@
 	<script src="<c:url value="/static/vendor/raphael/raphael.min.js" />"></script>
 
 	<script src="<c:url value="/static/vendor/morrisjs/morris.min.js" />"></script>
-
-	<script src="<c:url value="/static/data/morris-data.js" />"></script>
 
 	<!-- DataTables JavaScript -->
 	<script

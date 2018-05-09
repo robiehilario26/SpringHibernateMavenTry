@@ -52,7 +52,6 @@ public class BeedingServiceImpl implements BeedingService {
 		entity.setBeeding_delivery_id(beeding.getBeeding_delivery_id());
 		entity.setUser_beeder_id(beeding.getUser_beeder_id());
 		entity.setBeeding_startingprice(beeding.getBeeding_startingprice());
-		entity.setBeeding_delivery_date(beeding.getBeeding_delivery_date());
 		entity.setBeeding_status(beeding.getBeeding_status());
 	}
 

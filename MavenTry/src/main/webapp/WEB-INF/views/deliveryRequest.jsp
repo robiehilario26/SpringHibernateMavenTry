@@ -157,13 +157,13 @@
 						</div>
 
 						<!-- Delivery type decription -->
-						<div id ="panel_description" style="display: none">
+						<div id="panel_description" style="display: none">
 							<div class="panel-heading">
-								<div id="description" ></div>
+								<div id="description"></div>
 							</div>
 						</div>
-						
-						
+
+
 						<!-- Input item details-->
 						<div>
 							<label for="item_details">Item Details: </label>

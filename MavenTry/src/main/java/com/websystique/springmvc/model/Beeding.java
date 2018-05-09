@@ -1,21 +1,13 @@
 package com.websystique.springmvc.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "TABLE_BEEDING")
@@ -30,23 +22,16 @@ public class Beeding {
 
 	@Column(name = "USER_BEEDER_ID", nullable = false)
 	private Integer user_beeder_id;
-	
-	@Column(name ="BEEDING_STARTINGPRICE" ,nullable=false)
+
+	@Column(name = "BEEDING_STARTINGPRICE", nullable = false)
 	private Integer beeding_startingprice;
-	
-	@JsonFormat(pattern = "YYYY-MM-dd")
-	@DateTimeFormat(pattern = "YYYY-MM-dd")
-	@Temporal(TemporalType.DATE)
-	@Column(name = "BEEDING_DELIVERY_DATE", nullable=false)
-	private Date beeding_delivery_date;
-	
-	@Column(name ="BEEDING_STATUS", nullable= false)
+
+	@Column(name = "BEEDING_STATUS", nullable = false)
 	private String beeding_status;
-	
-	@OneToOne
+
+	@ManyToOne
 	@JoinColumn(name = "BEEDING_DELIVERY_ID", insertable = false, updatable = false, nullable = false)
 	private DeliveryRequest deliveryRequest;
-	
 
 	public DeliveryRequest getDeliveryRequest() {
 		return deliveryRequest;
@@ -116,14 +101,6 @@ public class Beeding {
 		this.beeding_startingprice = beeding_startingprice;
 	}
 
-	public Date getBeeding_delivery_date() {
-		return beeding_delivery_date;
-	}
-
-	public void setBeeding_delivery_date(Date beeding_delivery_date) {
-		this.beeding_delivery_date = beeding_delivery_date;
-	}
-
 	public String getBeeding_status() {
 		return beeding_status;
 	}
@@ -137,10 +114,7 @@ public class Beeding {
 		return "Beeding [beeding_id=" + beeding_id + ", beeding_delivery_id="
 				+ beeding_delivery_id + ", user_beeder_id=" + user_beeder_id
 				+ ", beeding_startingprice=" + beeding_startingprice
-				+ ", beeding_delivery_date=" + beeding_delivery_date
 				+ ", beeding_status=" + beeding_status + "]";
 	}
-	
-	
 
 }

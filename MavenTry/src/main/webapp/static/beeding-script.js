@@ -23,10 +23,8 @@ function addCargoUser() {
 /* Clear all textfield value */
 function clearTextField() {
 
-	/* Set default to 0 */
-	$("#beeding_delivery_date").val(null);
 	$("#beeding_startingprice").val(null);
-	
+
 	/* Clear error validation message */
 	$("#error").empty();
 
@@ -34,7 +32,7 @@ function clearTextField() {
 
 var global_data = [];
 var global_id;
-var global_array;
+var global_status;
 /*
  * Fetch information via delivertype id using json response using @RequestParam
  */
@@ -59,7 +57,7 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 	/* Disable button to prevent unnecessary submit */
 	$("#btnDeliveryType").prop('disabled', true);
-	
+
 	/* Clear input fields */
 	clearTextField();
 
@@ -164,10 +162,6 @@ function populateDataTable() {
 	buttonBeedingClass += 'data-target="#modalAddDeliveryType"';
 	buttonBeedingClass += 'onClick="searchDeliveryTypeDetailViaAjax(this)"';
 
-	var buttonDeleteClass = 'class="btn btn-danger" data-toggle="modal"';
-	buttonDeleteClass += 'data-target="#modalDeleteDeliveryRequest"';
-	buttonDeleteClass += 'onClick="fetchDeleteId(this)"'
-
 	$
 			.ajax({
 				'url' : '' + myContext + '/beeding/ajaxDeliveryRequestList',
@@ -177,6 +171,7 @@ function populateDataTable() {
 			.done(
 					function(data) {
 						var dataToString = JSON.stringify(data);
+						console.log("DATA : " + dataToString);
 						$('#dataTables-example')
 								.dataTable(
 										{
@@ -196,9 +191,15 @@ function populateDataTable() {
 													{
 														"data" : "deliveryType.delivery_price"
 													},
+													{
+														"data" : "deliveryType.delivery_weight"
+													},
 
 													{
 														"data" : "preferred_date"
+													},
+													{
+														"data" : "delivery_status"
 													},
 
 													{
@@ -217,11 +218,6 @@ function populateDataTable() {
 																	+ ' '
 																	+ buttonBeedingClass
 																	+ ' >Beed</button> ';
-															drawActionButton += ' <button id='
-																	+ buttonID
-																	+ ' '
-																	+ buttonDeleteClass
-																	+ ' >Delete</button> ';
 															return drawActionButton;
 														}
 													} ]
@@ -261,15 +257,13 @@ function validateAndInsertUsingAjax(action, message) {
 
 	/* get the text field form values */
 	var id = $('#beeding_delivery_id').val();
-	var date = $('#beeding_delivery_date').val();
 	var price = $('#beeding_startingprice').val();
 
 	$.ajax({
 
 		type : "GET",
 		url : myContext + '/' + action,
-		data : "beeding_delivery_id=" + id + "&beeding_delivery_date=" + date
-				+ "&beeding_startingprice=" + price,
+		data : "beeding_delivery_id=" + id + "&beeding_startingprice=" + price,
 		contentType : "application/json; charset=utf-8",
 		datatype : "json",
 		crossDomain : "TRUE",
@@ -291,9 +285,6 @@ function validateAndInsertUsingAjax(action, message) {
 				for (i = 0; i < obj.result.length; i++) {
 
 					/* Create html elements */
-
-					userInfo += "<br><li><b>Delivery date</b> : "
-							+ obj.result[i].beeding_delivery_date;
 
 					userInfo += "<br><li><b>Delivery price</b> : "
 							+ obj.result[i].beeding_startingprice;
@@ -363,6 +354,7 @@ function validateAndInsertUsingAjax(action, message) {
 
 }
 
+/* Call this function when modal is pop up. It will draw the morris chart bar */
 $('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
 	// user to open
 	// modal
@@ -380,27 +372,90 @@ $('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
 			// This is the URL to the API
 			data : dataParameter,
 		}).done(function(data) {
-			// When the response to the AJAX request comes back render the chart
+			// When the response to the AJAX request comes back render
+			// the chart
 			// with new data
 			if (data.length > 0) {
+				global_status = "true";
 				chart.setData(data);
 			}
 		}).fail(function() {
-			// If there is no communication between the server, show an error
+			// If there is no communication between the server, show an
+			// error
 			alert("error occured");
 		});
 
-		$("#morris-area-chart").empty(); // clear chart so it doesn't
+		$("#morris-bar-chart").empty(); // clear chart so it doesn't
 		// create multiple if
 		// multiple clicks
 		// Create a Bar Chart with Morris
 		var chart = Morris.Bar({
-			element : 'morris-area-chart',
+			element : 'morris-bar-chart',
 			data : [ 0, 0 ],
-			xkey : 'beeding_delivery_date',
+			barColors : function(row, series, type) {
+
+				// console.log("LABEL " + row.label + " Y " + row.y);
+				// if(row.y <13) return "#AD1D28"; // maroon
+				// else
+				// return "#1AB244"; // green
+				//				
+				// console.log("--> "+row.label, series, type);
+
+				if (row.label == $('#userId').val()) {
+					return "#1AB244"; // green
+				} else
+					return "#AD1D28"; // maroon
+
+				// if(row.label == "13") return "#1AB244"; // green
+				// else return "#fec04c"; // orange
+
+				// if (series.key == 'user_beeder_id' || series.key ==
+				// 'beeding_startingprice') {
+				//							
+				// if (row.y == '13')
+				// {
+				// console.log("ROW user_beeder_id " + row.y +"x: "+
+				// row.x +" label: "+ row.label);
+				// return "#1AB244"; // green
+				// }
+				//								
+				// else
+				// {
+				// return "#fec04c"; // orange
+				// }
+				//								
+				// }
+
+				// if (series.key == 'beeding_startingprice') {
+				// console.log("ROW beeding_startingprice " + row.y +"x:
+				// "+ row.x+" label: "+ row.label);
+				// if (row.y == '13')
+				// return "#1AB244"; // green
+				// else
+				// return "#fec04c"; // orange
+				// }
+				// if(series.key == 'beeding_startingprice') {
+				// if (row.y <= 80000)
+				// return "#1AB244"; // green
+				// else
+				// return "#fec04c"; // orange
+				// }
+
+			},
+
+			// hoverCallback : function(index, options, content) {
+			// var data = options.data[index];
+			// content += '<div>Customer Prefered Date: '
+			// + data.deliveryRequest.preferred_date
+			// + '</div>';
+			// return content;
+			//
+			// },
+			xkey : 'user_beeder_id',
 			ykeys : [ 'user_beeder_id', 'beeding_startingprice' ],
-			labels : [ 'User', 'Price' ],
+			labels : [ 'User: ', 'price: ' ],
 			pointSize : 2,
+			parseTime : false,
 			xLabelAngle : 45,
 			hideHover : 'auto',
 			resize : true,
