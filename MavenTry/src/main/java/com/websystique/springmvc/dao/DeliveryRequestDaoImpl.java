@@ -3,6 +3,7 @@ package com.websystique.springmvc.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -43,9 +44,12 @@ public class DeliveryRequestDaoImpl extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<DeliveryRequest> deliveryRequestList() {
-		Criteria crit = createEntityCriteria();
+		Criteria crit = createEntityCriteria().addOrder(
+				Order.desc("deliver_id"));
 		return (List<DeliveryRequest>) crit.list();
 
 	}
+
+
 
 }

@@ -8,6 +8,10 @@
  * 
  */
 
+/* Global variable */
+var global_data = [];
+var global_id;
+
 /* Add employee */
 function addCargoUser() {
 	/* Clear input fields */
@@ -30,9 +34,7 @@ function clearTextField() {
 
 }
 
-var global_data = [];
-var global_id;
-var global_status;
+
 /*
  * Fetch information via delivertype id using json response using @RequestParam
  */
@@ -78,19 +80,10 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
-
-			console.log("stringResponse " + stringResponse);
+		
+			/* Pass json response to glabal variable */
 			global_data = stringResponse;
-			/* Parse json response to get value of each key */
-			var obj = JSON.parse(stringResponse);
-
-			/* Set modal text field value */
-			// $("#beeding_delivery_date").val(obj.deliveryRequest);
-			var x = JSON.stringify(response, [ 'beeding_id' ]);
-			console.log("DELIVERYREQUEST  " + x);
-			// $("#item_details").val(obj.item_details);
-			// $("#delivery_pickup_address").val(obj.delivery_pickup_address);
-			// $("#delivery_destination").val(obj.delivery_destination);
+			
 			/* Enable button to submit */
 			$("#btnDeliveryType").prop('disabled', false);
 
@@ -171,11 +164,11 @@ function populateDataTable() {
 			.done(
 					function(data) {
 						var dataToString = JSON.stringify(data);
-						console.log("DATA : " + dataToString);
 						$('#dataTables-example')
 								.dataTable(
 										{
 											responsive : true,
+											"order" : [ [ 5, "desc" ] ],
 											"aaData" : data,
 											"columns" : [
 													{
@@ -375,9 +368,11 @@ $('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
 			// When the response to the AJAX request comes back render
 			// the chart
 			// with new data
+					
 			if (data.length > 0) {
-				global_status = "true";
 				chart.setData(data);
+				// Set delivery data text span value
+			    $("#deliveryDate").text(data[0].deliveryRequest.preferred_date);
 			}
 		}).fail(function() {
 			// If there is no communication between the server, show an
@@ -394,55 +389,14 @@ $('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
 			data : [ 0, 0 ],
 			barColors : function(row, series, type) {
 
-				// console.log("LABEL " + row.label + " Y " + row.y);
-				// if(row.y <13) return "#AD1D28"; // maroon
-				// else
-				// return "#1AB244"; // green
-				//				
-				// console.log("--> "+row.label, series, type);
-
+				/* Change Bar chart color base on the current user id session */
 				if (row.label == $('#userId').val()) {
 					return "#1AB244"; // green
 				} else
-					return "#AD1D28"; // maroon
-
-				// if(row.label == "13") return "#1AB244"; // green
-				// else return "#fec04c"; // orange
-
-				// if (series.key == 'user_beeder_id' || series.key ==
-				// 'beeding_startingprice') {
-				//							
-				// if (row.y == '13')
-				// {
-				// console.log("ROW user_beeder_id " + row.y +"x: "+
-				// row.x +" label: "+ row.label);
-				// return "#1AB244"; // green
-				// }
-				//								
-				// else
-				// {
-				// return "#fec04c"; // orange
-				// }
-				//								
-				// }
-
-				// if (series.key == 'beeding_startingprice') {
-				// console.log("ROW beeding_startingprice " + row.y +"x:
-				// "+ row.x+" label: "+ row.label);
-				// if (row.y == '13')
-				// return "#1AB244"; // green
-				// else
-				// return "#fec04c"; // orange
-				// }
-				// if(series.key == 'beeding_startingprice') {
-				// if (row.y <= 80000)
-				// return "#1AB244"; // green
-				// else
-				// return "#fec04c"; // orange
-				// }
-
+					return "#cc0000"; // red
 			},
 
+			//TODO: Reference code for future purposed for hover function
 			// hoverCallback : function(index, options, content) {
 			// var data = options.data[index];
 			// content += '<div>Customer Prefered Date: '
@@ -453,7 +407,7 @@ $('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
 			// },
 			xkey : 'user_beeder_id',
 			ykeys : [ 'user_beeder_id', 'beeding_startingprice' ],
-			labels : [ 'User: ', 'price: ' ],
+			labels : [ 'User', 'Delivery price' ],
 			pointSize : 2,
 			parseTime : false,
 			xLabelAngle : 45,

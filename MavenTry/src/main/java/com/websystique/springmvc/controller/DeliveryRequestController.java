@@ -39,7 +39,7 @@ public class DeliveryRequestController {
 
 	@Autowired
 	AjaxRequestValidation ajaxRequestValidation;
-	
+
 	@Autowired
 	UserService userService;
 
@@ -70,8 +70,6 @@ public class DeliveryRequestController {
 		return "deliveryRequest";
 	}
 
-	
-
 	/*
 	 * This method will provide the medium to get Delivery Request details using
 	 * ajax with annotation @RequestParam.
@@ -81,13 +79,12 @@ public class DeliveryRequestController {
 	public DeliveryRequest ajaxRequestDetail(@RequestParam Integer id,
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) {
-		
-		if(!ajaxRequestValidation.isAjax(request))
-		{
+
+		if (!ajaxRequestValidation.isAjax(request)) {
 			/* Return null in web browser */
-			 return null;
+			return null;
 		}
-		
+
 		DeliveryRequest deliveryRequest = deliveryRequestService.findById(id);
 		return deliveryRequest;
 	}
@@ -128,6 +125,8 @@ public class DeliveryRequestController {
 
 		/* Set delivery requesto to Pending */
 		deliveryRequest.setDelivery_status("Pending");
+
+		deliveryRequest.setUser_beed_choice(0);
 
 		System.out.println("deliveryRequest " + deliveryRequest.toString());
 
@@ -190,10 +189,21 @@ public class DeliveryRequestController {
 	 * with annotation @RequestParam.
 	 */
 	@RequestMapping(value = { "/ajaxDeleteDeliveryRequest" }, method = RequestMethod.GET, produces = "application/json")
-	public String ajaxDeleteDeliveryRequest(@RequestParam Integer id,
+	public String ajaxDeleteDeliveryRequest(@RequestParam Integer id, 
 			ModelMap model) {
 		/* Delete delivery request by id */
 		deliveryRequestService.deleteDeliveryRequest(id);
+		return "redirect:/deliveryRequest";
+	}
+
+	/*
+	 * This method will update an user beeding entry choice by it's id value
+	 * using ajax with annotation @RequestParam.
+	 */
+	@RequestMapping(value = "/ajaxChooseBeedEntry", method = RequestMethod.GET)
+	public String ajaxChooseBeedEntry(@RequestParam Integer id,Integer deliver_id) {
+		System.out.println("beed entry id: " + id + " deliver id: " + deliver_id);
+		deliveryRequestService.updateUserBeedChoice(deliver_id, id);
 		return "redirect:/deliveryRequest";
 	}
 
@@ -218,9 +228,12 @@ public class DeliveryRequestController {
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(result,
 				"delivery_destination", "Destination Address cannot be empty.");
+		
+		ValidationUtils.rejectIfEmptyOrWhitespace(result,
+				"preferred_date", "Preferred Date cannot be empty.");
+		
+		
 
-		
-		
 		if (result.hasErrors()) {
 
 			/* Set status to fail */
@@ -233,8 +246,9 @@ public class DeliveryRequestController {
 			res.setResult(result.getAllErrors());
 
 		} else if (deliveryRequest.getDelivery_type() == 0) {
-			System.out.println("delivery type "+ deliveryRequest.getDelivery_type());
-			
+			System.out.println("delivery type "
+					+ deliveryRequest.getDelivery_type());
+
 			/* Set status to fail */
 			res.setStatus("FAIL");
 

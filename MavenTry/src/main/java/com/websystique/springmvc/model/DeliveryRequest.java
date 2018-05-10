@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +31,9 @@ public class DeliveryRequest {
 	@Column(name = "USER_ID", nullable = false)
 	private int user_id;
 
+	@Column(name = "USER_BEED_CHOICE", nullable = true)
+	private int user_beed_choice;
+
 	@Column(name = "DELIVERY_TYPE", nullable = false)
 	private int delivery_type;
 
@@ -44,7 +48,7 @@ public class DeliveryRequest {
 	@Size(min = 1, max = 100)
 	@Column(name = "ITEM_DETAILS", nullable = false)
 	private String item_details;
-	
+
 	@NotNull
 	@JsonFormat(pattern = "YYYY-MM-dd")
 	@DateTimeFormat(pattern = "YYYY-MM-dd")
@@ -104,8 +108,16 @@ public class DeliveryRequest {
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
-
 	
+
+	public int getUser_beed_choice() {
+		return user_beed_choice;
+	}
+
+	public void setUser_beed_choice(int user_beed_choice) {
+		this.user_beed_choice = user_beed_choice;
+	}
+
 	public int getDelivery_type() {
 		return delivery_type;
 	}
@@ -138,7 +150,6 @@ public class DeliveryRequest {
 		this.item_details = item_details;
 	}
 
-
 	public Date getPreferred_date() {
 		return preferred_date;
 	}
@@ -165,7 +176,5 @@ public class DeliveryRequest {
 				+ preferred_date + ", delivery_status=" + delivery_status
 				+ ", deliveryType=" + deliveryType + "]";
 	}
-
-	
 
 }

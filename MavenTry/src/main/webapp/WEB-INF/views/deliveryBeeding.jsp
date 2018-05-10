@@ -57,7 +57,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Beeding</h1>
+					<h1 class="page-header">Bidding</h1>
 				</div>
 
 
@@ -122,7 +122,7 @@
 
 
 
-	<!-- Beeding Modal -->
+	<!-- Bidding Modal -->
 	<div class="modal fade" id="modalAddDeliveryType" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
@@ -140,18 +140,20 @@
 
 				<div class="modal-body">
 
-					<div class="panel panel-default">
+					<div class="panel panel-success">
 						<div class="panel-heading">Delivery Request Chart</div>
 						<div>
 
-							<span class="glyphicon glyphicon-stop text-success">:
-								Green bar represents all you beeding</span> <br /> <span
-								class="glyphicon glyphicon-stop text-danger">: Red bar
-								represents other user beeding</span>
+							<span class="glyphicon glyphicon-stop text-success">: <b><i>Green
+										bar represents all of your bidding entry.</i></b></span> <br /> <span
+								class="glyphicon glyphicon-stop text-danger">: <b><i>Red
+										bar represents other user bidding entry.</i></b>
+							</span>
 						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
 							<div id="morris-bar-chart"></div>
+							<div align="center"><h4>Delivery Date: <span id="deliveryDate"></span></h4></div>
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -183,7 +185,7 @@
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
 
-								<!-- Register button -->
+								<!-- Beed button -->
 								<input type="button" class="btn btn-primary" value="Save"
 									id="btnDeliveryType" onClick="insertOrUpdateDeliveryType()" />
 							</div>

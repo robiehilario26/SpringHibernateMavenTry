@@ -109,11 +109,10 @@ function fetchDeleteId(obj) {
 	var id = obj.id;
 	/* Set hidden text field value */
 	$("#deleteId").val(id);
-
 }
 
-/* Delete deliveryType by id */
-function deleteViaAjax() {
+/* Update selected Beeding entry by id */
+function deleteDeliveryRequestViaAjax() {
 	var stringResponse;
 
 	/* Disable button to prevent redundant ajax request */
@@ -124,7 +123,7 @@ function deleteViaAjax() {
 
 	/* Set Parameters */
 	var dataParameter = {
-		id : id,
+		id : id
 	};
 	$.ajax({
 		url : '' + myContext + '/ajaxDeleteDeliveryRequest',
@@ -133,7 +132,7 @@ function deleteViaAjax() {
 		datatype : "json",
 		data : dataParameter,
 		error : function(xhr, desc, err) {
-			$("#btnCargoDelete").prop('disabled', false);
+			$("#btnDeliveryTypeDelete").prop('disabled', false);
 			if (xhr.status == 500) {
 				alert('Error: ' + "Server not respond ");
 			}
@@ -151,6 +150,56 @@ function deleteViaAjax() {
 
 			/* Hide modal */
 			$('#modalDeleteDeliveryRequest').modal('hide');
+
+		}
+	});
+
+}
+
+
+/* Update selected Beeding entry by id */
+function beedViaAjax() {
+	var stringResponse;
+
+	/* Disable button to prevent redundant ajax request */
+	$("#btnSelectBeeding").prop('disabled', true);
+
+	/* Get hidden text field value in modal delete */
+	var id = $("#beedId").val();
+
+	/* Set Parameters */
+	var dataParameter = {
+		id : id,
+		deliver_id : global_id
+	};
+	$.ajax({
+		url : '' + myContext + '/ajaxChooseBeedEntry',
+		type : "GET",
+		contentType : "application/json; charset=utf-8",
+		datatype : "json",
+		data : dataParameter,
+		error : function(xhr, desc, err) {
+			$("#btnSelectBeeding").prop('disabled', false);
+			if (xhr.status == 500) {
+				alert('Error: ' + "Server not respond ");
+			}
+			if (xhr.status == 403) {
+				alert('Error: ' + "Access Denied");
+			}
+		},
+		success : function(response) {
+
+			/* Enable button to make ajax request again after response return */
+			$("#btnSelectBeeding").prop('disabled', false);
+
+			/* Populate DataTable */
+			populateDataTable();
+
+			/* Populate Morris Bar Chart */
+			populateBeedingChart()
+
+			/* Hide modal */
+			$('#modalSelectBeeding').modal('hide');
 
 		}
 	});
@@ -183,7 +232,6 @@ function populateDataTable() {
 			.done(
 					function(data) {
 						var dataToString = JSON.stringify(data);
-						console.log("dataToString " + dataToString);
 						$('#dataTables-example')
 								.dataTable(
 										{
@@ -320,7 +368,7 @@ function validateAndInsertUsingAjax(action, message) {
 
 					userInfo += "<br><li><b>Delivery destination</b> : "
 							+ obj.result[i].delivery_destination;
-
+							
 				}
 
 				userInfo += "</ol>";
@@ -395,56 +443,7 @@ $('#modalBeeding').on('shown.bs.modal', function() { // listen for user to
 
 	$(function() {
 
-		/* Set Parameters */
-		var dataParameter = {
-			id : global_id,
-		};
-
-		// Fire off an AJAX request to load the data
-		$.ajax({
-			type : "GET",
-			dataType : 'json',
-			url : '' + myContext + '/ajaxSearchBeedingRequest',
-			// This is the URL to the API
-			data : dataParameter,
-		}).done(function(data) {
-			// When the response to the AJAX request comes back
-			// render
-			// the chart
-			// with new data
-			// If date response lenght is more than 0 it will
-			// set the
-			// chart value
-
-			if (data.length > 0) {
-				chart.setData(data);
-			}
-
-		}).fail(function() {
-			// If there is no communication between the server,
-			// show an
-			// error
-			alert("error occured");
-		});
-
-		// $("#morris-bar-chart").empty(); // clear chart so it
-		// doesn't
-		// create multiple if
-		// multiple clicks
-		// Create a Bar Chart with Morris
-
-		var chart = Morris.Bar({
-			element : 'morris-bar-chart',
-			data : [ 0, 0 ],
-			xkey : 'beeding_id',
-			ykeys : [ 'beeding_id', 'beeding_startingprice' ],
-			labels : [ 'Beed entry', 'Price' ],
-			pointSize : 2,
-			xLabelAngle : 45,
-			hideHover : 'auto',
-			resize : true,
-			stacked : true
-		});
+		populateBeedingChart(); 
 
 	});
 });
@@ -454,9 +453,11 @@ var thisDate, thisData, parser, price;
 $("#morris-bar-chart").on('click', function() {
 
 	// Find data and date in the actual morris diply below the graph.
-	
+
 	thisDataHtml = $(".morris-hover-point").html().split(":");
 	thisData = thisDataHtml[1].trim();
+
+	$("#beedId").val(thisData);
 
 	var fetchClass = document.querySelectorAll("[class='morris-hover-point']");
 	for (var i = 0; i < fetchClass.length; i++) {
@@ -498,7 +499,7 @@ $('#delivery_type').on('change', function() {
 			alert('Error: ' + "Server not respond");
 		},
 		success : function(response) {
-			
+
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
 
@@ -520,3 +521,65 @@ $('#delivery_type').on('change', function() {
 		}
 	});
 })
+
+function populateBeedingChart() {
+	var userBeedChoice;
+
+	/* Set Parameters */
+	var dataParameter = {
+		id : global_id,
+	};
+
+	// Fire off an AJAX request to load the data
+	$.ajax({
+		type : "GET",
+		dataType : 'json',
+		url : '' + myContext + '/ajaxSearchBeedingRequest',
+		// This is the URL to the API
+		data : dataParameter,
+	}).done(function(data) {
+		// When the response to the AJAX request comes back
+		// render
+		// the chart
+		// with new data
+		// If date response lenght is more than 0 it will
+		// set the
+		// chart value
+
+		if (data.length > 0) {
+			// Set beed choice
+			userBeedChoice = data[0].deliveryRequest.user_beed_choice;
+			// Populate chart data
+			chart.setData(data);
+		}
+
+	}).fail(function() {
+		// If there is no communication between the server,
+		// show an
+		// error
+		alert("error occured");
+	});
+	
+	$("#morris-bar-chart").empty(); // clear chart so it
+	
+	var chart = Morris.Bar({
+		element : 'morris-bar-chart',
+		data : [ 0, 0 ],
+		barColors : function(row, series, type) {
+
+			/* Change Bar chart color base on the current user id session */
+			if (row.label == userBeedChoice) {
+				return "#1AB244"; // green
+			} else
+				return "#7a92a3"; // maroon
+		},
+		xkey : 'beeding_id',
+		ykeys : [ 'beeding_id', 'beeding_startingprice' ],
+		labels : [ 'Beed entry', 'Delivery Price' ],
+		pointSize : 2,
+		xLabelAngle : 45,
+		hideHover : 'auto',
+		resize : true,
+		stacked : true
+	});
+}

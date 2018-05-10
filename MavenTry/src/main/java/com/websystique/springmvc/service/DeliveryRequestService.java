@@ -17,5 +17,7 @@ public interface DeliveryRequestService {
 	List<DeliveryRequest> deliveryRequestList(Integer id);
 	
 	List<DeliveryRequest> deliveryRequestList();
+	
+	void updateUserBeedChoice(int delivey_id, int beed_id);
 
 }

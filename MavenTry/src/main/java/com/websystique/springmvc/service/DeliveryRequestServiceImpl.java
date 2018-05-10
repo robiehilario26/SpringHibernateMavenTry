@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.h2.command.ddl.CreateAggregate;
+import org.hibernate.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -57,5 +59,13 @@ public class DeliveryRequestServiceImpl implements DeliveryRequestService {
 	public List<DeliveryRequest> deliveryRequestList() {
 		return dao.deliveryRequestList();
 	}
+
+	@Override
+	public void updateUserBeedChoice(int delivey_id, int beed_id) {
+		DeliveryRequest entity = dao.findById(delivey_id);
+		entity.setUser_beed_choice(beed_id);
+		
+	}
+
 
 }

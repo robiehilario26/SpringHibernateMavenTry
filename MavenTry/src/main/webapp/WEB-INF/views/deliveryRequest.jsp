@@ -251,7 +251,7 @@
 						<!-- Close button -->
 
 						<input type="button" id="btnDeliveryTypeDelete"
-							class="btn btn-danger" onClick="deleteViaAjax()" value="Delete" />
+							class="btn btn-danger" onClick="deleteDeliveryRequestViaAjax()" value="Delete" />
 
 					</div>
 
@@ -261,32 +261,39 @@
 	</div>
 
 
-	<!-- Beeding Modal -->
+	<!-- Bidding Modal -->
 	<div class="modal fade" id="modalBeeding" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h3 class="modal-title" id="exampleModalLongTitle"></h3>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
+					<button type="button" class="pull-right btn btn-warning btn-circle" data-dismiss="modal"
+							><i class="fa fa-times"></i>
 					</button>
 				</div>
-
+ 
 
 				<div class="modal-body">
 
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<span>Click the Beeding you preferred on Chart:</span>
+							<span>Click the Bidding you preferred on Chart:</span>
+						</div>
+						<div>
+
+							<span class="glyphicon glyphicon-stop text-success">: <b><i>Green
+										bar represents your choice of bidding entry.</i></b></span> <br /> <span
+								class="glyphicon glyphicon-stop text-primary">: <b><i>Blue
+										bar represents all available user bidding entry.</i></b>
+							</span>
 						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
 							<div id="morris-bar-chart"></div>
 							<div align="center">
 								<h4>
-									<i>Delivery date</i>
+									<i>Beed entry</i>
 								</h4>
 							</div>
 						</div>
@@ -294,23 +301,14 @@
 					</div>
 					<div id="error" class="error"></div>
 				</div>
-
-				<div class="modal-footer">
-					<br />
-					<!-- Close button -->
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Close</button>
-
-
-
-				</div>
+				
 
 			</div>
 		</div>
 	</div>
 
 
-	<!-- Select Beeding Modal -->
+	<!-- Select Bidding Modal -->
 	<div class="modal fade" id="modalSelectBeeding" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true" data-keyboard="false" data-backdrop="static">
@@ -319,15 +317,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+					<button type="button" class="pull-right btn btn-warning btn-circle" data-dismiss="modal">
+					<i class="fa fa-times"></i>
+					</button>
 					</div>
 
 					<div class="modal-body">
 						<!-- Hidden input field for id -->
-						<input type="hidden" id="deleteId" />
+						<input type="hidden" id="beedId" />
 
 						<h5>Select this beed entry?</h5>
 						<div id="beedInfo"></div>
@@ -335,8 +332,8 @@
 
 					<div class="modal-footer">
 
-						<input type="button" id="btnSelectBeeding" class="btn btn-primary"
-							onClick="deleteViaAjax()" value="Save" />
+						<button id="btnSelectBeeding" class="btn btn-info btn-circle"
+							onClick="beedViaAjax()"><i class="fa fa-check"></i></button>
 
 					</div>
 

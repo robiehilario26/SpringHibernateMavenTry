@@ -15,6 +15,6 @@ public interface DeliveryRequestDao {
 	List<DeliveryRequest> deliveryRequestList(Integer id);
 	
 	List<DeliveryRequest> deliveryRequestList();
-
+	
 
 }
