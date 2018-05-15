@@ -1,7 +1,12 @@
 package com.websystique.springmvc.model;
 
+import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,13 +22,15 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.testng.annotations.Optional;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "TABLE_DELIVER")
-public class DeliveryRequest {
+public class DeliveryRequest implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,18 +67,31 @@ public class DeliveryRequest {
 	@Column(name = "DELIVERY_STATUS", nullable = false)
 	private String delivery_status;
 
-	@ManyToOne
-	@JoinColumn(name = "DELIVERY_TYPE", insertable = false, updatable = false, nullable = false)
+	
+	 @ManyToOne(optional = false)
+	// @JoinColumn(name = "DELIVERY_TYPE", insertable=false, updatable=false)
+	 @JoinColumn(name = "DELIVERY_TYPE", insertable=false, updatable=false)
+	// @JoinTable(name = "TABLE_MAINTENANCE", joinColumns = { @JoinColumn(name =
+	// "ID") })
 	private DeliveryType deliveryType;
+	 
+	 
+	// @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	// private DeliveryType deliveryType;
+	//
+	// public DeliveryType getDeliveryType() {
+	// return deliveryType;
+	// }
+	//
+	// public void setDeliveryType(DeliveryType deliveryType) {
+	// this.deliveryType = deliveryType;
+	// }
 
-	public DeliveryType getDeliveryType() {
-		return deliveryType;
-	}
-
-	public void setDeliveryType(DeliveryType deliveryType) {
-		this.deliveryType = deliveryType;
-	}
-
+//	@ManyToOne(optional = false)
+//	@JoinColumn(name = "M_ID")
+//	private DeliveryType deliveryType;
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -92,6 +113,17 @@ public class DeliveryRequest {
 			return false;
 		return true;
 	}
+	
+
+	public DeliveryType getDeliveryType() {
+		return deliveryType;
+	}
+
+	public void setDeliveryType(DeliveryType deliveryType) {
+		this.deliveryType = deliveryType;
+	}
+
+	
 
 	public int getDeliver_id() {
 		return deliver_id;
@@ -108,7 +140,6 @@ public class DeliveryRequest {
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
-	
 
 	public int getUser_beed_choice() {
 		return user_beed_choice;

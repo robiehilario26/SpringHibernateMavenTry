@@ -74,6 +74,8 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
+			
+			console.log("DATA: "+stringResponse);
 
 			/* Parse json response to get value of each key */
 			var obj = JSON.parse(stringResponse);
@@ -84,6 +86,18 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 			$("#delivery_pickup_address").val(obj.delivery_pickup_address);
 			$("#delivery_destination").val(obj.delivery_destination);
 			$("#preferred_date").val(obj.preferred_date);
+			
+			
+			/* Create Description message */
+			var deliveryDescription = "<b>Description: </b>";
+			deliveryDescription += "Delivery Cost: "
+			deliveryDescription += '<b>' + obj.deliveryType.delivery_price + '</b>.';
+			deliveryDescription += " Delivery Maximum weight(kg): "
+			deliveryDescription += '<b>' + obj.deliveryType.delivery_weight + '</b>.';
+
+			/* Draw message in div */
+			$('#description').html(deliveryDescription);
+			$('#panel_description').show('slow');
 
 			/* Enable button to submit */
 			$("#btnDeliveryType").prop('disabled', false);
@@ -281,7 +295,7 @@ function populateDataTable() {
 																	+ buttonID
 																	+ ' '
 																	+ buttonBeedingClass
-																	+ ' >Beeding Chart</button> ';
+																	+ ' >Bidding Chart</button> ';
 															return drawActionButton;
 														}
 													} ]

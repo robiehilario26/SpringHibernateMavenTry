@@ -1,24 +1,35 @@
 package com.websystique.springmvc.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name = "TABLE_MAINTENANCE")
-public class DeliveryType {
+public class DeliveryType implements Serializable {
 
 	@Id
-	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ID")
 	private int id;
 
 	@Size(min = 1, max = 100)
@@ -34,8 +45,21 @@ public class DeliveryType {
 	@Digits(integer = 8, fraction = 2)
 	@Column(name = "DELIVERY_WEIGHT", nullable =false)
 	private BigDecimal delivery_weight;
+
+
+
 	
-	
+	public DeliveryType() {
+		
+	}
+
+
+	public DeliveryType(String mainte_delivery_type, BigDecimal delivery_price) {
+		super();
+		this.mainte_delivery_type = mainte_delivery_type;
+		this.delivery_price = delivery_price;
+	}
+
 
 	@Override
 	public int hashCode() {

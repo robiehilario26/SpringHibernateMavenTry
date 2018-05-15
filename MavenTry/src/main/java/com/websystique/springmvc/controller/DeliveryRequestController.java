@@ -31,6 +31,7 @@ import com.websystique.springmvc.service.DeliveryTypeService;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
 import com.websystique.springmvc.utility.AjaxRequestValidation;
+import com.websystique.springmvc.utility.validateJsonResponse;
 
 @Controller
 @RequestMapping("/")
@@ -57,6 +58,9 @@ public class DeliveryRequestController {
 
 	@Autowired
 	DeliveryTypeService deliveryTypeService;
+
+	@Autowired
+	validateJsonResponse validateJson;
 
 	@RequestMapping(value = "/deliveryRequest")
 	public String deliveryRequest(ModelMap model) {
@@ -128,13 +132,30 @@ public class DeliveryRequestController {
 
 		deliveryRequest.setUser_beed_choice(0);
 
-		System.out.println("deliveryRequest " + deliveryRequest.toString());
+		/*
+		 * NOTE: This is just a temporary solution for setting the value of join
+		 * value due to the json response validation get all the entity
+		 * including the joingColumn therefore to prevent null values on
+		 * joinColumn it needs to set the deliveryType by manually setting up by
+		 * getting "DeliveryRequest deliveryType entity value(int)
+		 */
+		DeliveryType deliveryType = new DeliveryType();
+		deliveryType.setId(deliveryRequest.getDelivery_type());
+		deliveryRequest.setDeliveryType(deliveryType);
+
+		// deliveryRequest.setDeliveryType(deliveryRequest.getDelivery_type());
 
 		/* Create new json response */
 		JsonResponse res = new JsonResponse();
 
+		/* Call service method for validating the input values */
+		validateJson.jsonResponse(res, result, deliveryRequest,
+				deliveryRequests);
+
+		System.out.println("deliveryRequest " + deliveryRequest.toString());
+
 		/* Call method for validating the input values */
-		jsonResponse(res, result, deliveryRequest);
+		// jsonResponse(res, result, deliveryRequest);
 
 		/* If result is success it will insert into the employee table */
 		if (res.getStatus().equalsIgnoreCase("success")) {
@@ -164,15 +185,28 @@ public class DeliveryRequestController {
 		deliveryRequest.setUser_id(user.getId());
 
 		/* Set delivery requesto to Pending */
-		// deliveryRequest.setDelivery_status("Pending");
+		deliveryRequest.setDelivery_status("Pending");
 
-		System.out.println("deliveryRequest " + deliveryRequest.toString());
+		/*
+		 * NOTE: This is just a temporary solution for setting the value of join
+		 * value due to the json response validation get all the entity
+		 * including the joingColumn therefore to prevent null values on
+		 * joinColumn it needs to set the deliveryType by manually setting up by
+		 * getting "DeliveryRequest deliveryType entity value(int)
+		 */
+		DeliveryType deliveryType = new DeliveryType();
+		deliveryType.setId(deliveryRequest.getDelivery_type());
+		deliveryRequest.setDeliveryType(deliveryType);
 
 		/* Create new json response */
 		JsonResponse res = new JsonResponse();
 
+		/* Call service method for validating the input values */
+		validateJson.jsonResponse(res, result, deliveryRequest,
+				deliveryRequests);
+
 		/* Call method for validating the input values */
-		jsonResponse(res, result, deliveryRequest);
+		// jsonResponse(res, result, deliveryRequest);
 
 		/* If result is success it will insert into the employee table */
 		if (res.getStatus().equalsIgnoreCase("success")) {
@@ -189,7 +223,7 @@ public class DeliveryRequestController {
 	 * with annotation @RequestParam.
 	 */
 	@RequestMapping(value = { "/ajaxDeleteDeliveryRequest" }, method = RequestMethod.GET, produces = "application/json")
-	public String ajaxDeleteDeliveryRequest(@RequestParam Integer id, 
+	public String ajaxDeleteDeliveryRequest(@RequestParam Integer id,
 			ModelMap model) {
 		/* Delete delivery request by id */
 		deliveryRequestService.deleteDeliveryRequest(id);
@@ -201,8 +235,10 @@ public class DeliveryRequestController {
 	 * using ajax with annotation @RequestParam.
 	 */
 	@RequestMapping(value = "/ajaxChooseBeedEntry", method = RequestMethod.GET)
-	public String ajaxChooseBeedEntry(@RequestParam Integer id,Integer deliver_id) {
-		System.out.println("beed entry id: " + id + " deliver id: " + deliver_id);
+	public String ajaxChooseBeedEntry(@RequestParam Integer id,
+			Integer deliver_id) {
+		System.out.println("beed entry id: " + id + " deliver id: "
+				+ deliver_id);
 		deliveryRequestService.updateUserBeedChoice(deliver_id, id);
 		return "redirect:/deliveryRequest";
 	}
@@ -228,11 +264,21 @@ public class DeliveryRequestController {
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(result,
 				"delivery_destination", "Destination Address cannot be empty.");
-		
-		ValidationUtils.rejectIfEmptyOrWhitespace(result,
-				"preferred_date", "Preferred Date cannot be empty.");
-		
-		
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "preferred_date",
+				"Preferred Date cannot be empty.");
+
+		if (deliveryRequest.getDelivery_type() == 0) {
+			System.out.println("delivery type "
+					+ deliveryRequest.getDelivery_type());
+
+			/* Set status to fail */
+			res.setStatus("FAIL");
+
+			/* Set error message if delivery type is empty */
+			result.rejectValue("delivery_type", "Delivery Type cannot be empty");
+			res.setResult(result.getAllErrors());
+		}
 
 		if (result.hasErrors()) {
 
@@ -245,16 +291,6 @@ public class DeliveryRequestController {
 			 */
 			res.setResult(result.getAllErrors());
 
-		} else if (deliveryRequest.getDelivery_type() == 0) {
-			System.out.println("delivery type "
-					+ deliveryRequest.getDelivery_type());
-
-			/* Set status to fail */
-			res.setStatus("FAIL");
-
-			/* Set error message if delivery type is empty */
-			result.rejectValue("delivery_type", "Delivery Type cannot be empty");
-			res.setResult(result.getAllErrors());
 		}
 
 		else {

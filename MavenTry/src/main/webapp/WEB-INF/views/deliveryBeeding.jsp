@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Beeding</title>
+<title>Bidding</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -153,7 +153,15 @@
 						<!-- /.panel-heading -->
 						<div class="panel-body">
 							<div id="morris-bar-chart"></div>
-							<div align="center"><h4>Delivery Date: <span id="deliveryDate"></span></h4></div>
+							<div align="center" id="preferred_date">
+								<h4>
+									Delivery Date: <span id="deliveryDate"></span>
+								</h4>
+							</div>
+
+							<div align="center" id="no_bidding">
+								<h4>No one bid on this entry yet.</h4>
+							</div>
 						</div>
 						<!-- /.panel-body -->
 					</div>

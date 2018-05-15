@@ -58,9 +58,6 @@ public class DeliveryController {
 		setTruckType();
 		model.addAttribute("truckType", cargoType);
 
-		// List<CargoUser> users = cargoUserService.cargoList();
-		// model.addAttribute("users", users);
-
 		CargoUser cargoUser = new CargoUser();
 		model.addAttribute("cargoUser", cargoUser);
 		return "cargoUser";

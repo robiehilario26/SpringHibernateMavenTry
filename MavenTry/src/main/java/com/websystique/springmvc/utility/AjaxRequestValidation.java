@@ -7,5 +7,4 @@ public interface AjaxRequestValidation {
 
 	 boolean isAjax(HttpServletRequest request);
 	
-	
 }

@@ -146,6 +146,7 @@
 
 
 						<!-- Input Delivery type -->
+											
 						<div>
 							<label for="delivery_type">Delivery type: </label>
 							<form:select path="delivery_type" id="delivery_type"

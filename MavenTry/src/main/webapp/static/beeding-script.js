@@ -34,7 +34,6 @@ function clearTextField() {
 
 }
 
-
 /*
  * Fetch information via delivertype id using json response using @RequestParam
  */
@@ -45,6 +44,9 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 	/* Clear error validation message */
 	$("#error").empty();
+	
+	/* Clear morris bar chart */
+	$("#morris-bar-chart").empty(); // clear chart so it
 
 	/* Get id value in hidden input text field */
 	$("#beeding_delivery_id").val(id);
@@ -52,7 +54,7 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 	global_id = id;
 
 	/* Set text value of button */
-	$('#btnDeliveryType').val("Beed");
+	$('#btnDeliveryType').val("Bid");
 
 	/* Change class of attr of button */
 	$("#btnDeliveryType").attr('class', 'btn btn-success');
@@ -80,10 +82,12 @@ function searchDeliveryTypeDetailViaAjax(elem) {
 
 			/* Convert response into String format */
 			stringResponse = JSON.stringify(response);
-		
+
+			console.log("DATA: " + stringResponse);
+
 			/* Pass json response to glabal variable */
 			global_data = stringResponse;
-			
+
 			/* Enable button to submit */
 			$("#btnDeliveryType").prop('disabled', false);
 
@@ -210,7 +214,7 @@ function populateDataTable() {
 																	+ buttonID
 																	+ ' '
 																	+ buttonBeedingClass
-																	+ ' >Beed</button> ';
+																	+ ' >Bid</button> ';
 															return drawActionButton;
 														}
 													} ]
@@ -226,9 +230,9 @@ function insertOrUpdateDeliveryType() {
 	var action, message;
 	var getButtonName = $("#btnDeliveryType").val();
 
-	if (getButtonName == "Beed") {
+	if (getButtonName == "Bid") {
 		action = "ajaxAddBeedingRequest";
-		message = "Beed request has been added to the list successfully.";
+		message = "Bid request has been added to the list successfully.";
 	} else {
 		action = "ajaxUpdateDeliveryRequest";
 		message = "Delivery request has been updated successfully.";
@@ -348,74 +352,102 @@ function validateAndInsertUsingAjax(action, message) {
 }
 
 /* Call this function when modal is pop up. It will draw the morris chart bar */
-$('#modalAddDeliveryType').on('shown.bs.modal', function() { // listen for
-	// user to open
-	// modal
-	$(function() {
+$('#modalAddDeliveryType')
+		.on(
+				'shown.bs.modal',
+				function() { // listen for
+					// user to open
+					// modal
+					$(function() {
 
-		/* Set Parameters */
-		var dataParameter = {
-			id : global_id,
-		};
-		// Fire off an AJAX request to load the data
-		$.ajax({
-			type : "GET",
-			dataType : 'json',
-			url : '' + myContext + '/ajaxSearchBeedingRequest',
-			// This is the URL to the API
-			data : dataParameter,
-		}).done(function(data) {
-			// When the response to the AJAX request comes back render
-			// the chart
-			// with new data
-					
-			if (data.length > 0) {
-				chart.setData(data);
-				// Set delivery data text span value
-			    $("#deliveryDate").text(data[0].deliveryRequest.preferred_date);
-			}
-		}).fail(function() {
-			// If there is no communication between the server, show an
-			// error
-			alert("error occured");
-		});
+						/* Set Parameters */
+						var dataParameter = {
+							id : global_id,
+						};
+						// Fire off an AJAX request to load the data
+						$
+								.ajax(
+										{
+											type : "GET",
+											dataType : 'json',
+											url : ''
+													+ myContext
+													+ '/ajaxSearchBeedingRequest',
+											// This is the URL to the API
+											data : dataParameter,
+										})
+								.done(
+										function(data) {
+											// When the response to the AJAX
+											// request comes back render
+											// the chart
+											// with new data
 
-		$("#morris-bar-chart").empty(); // clear chart so it doesn't
-		// create multiple if
-		// multiple clicks
-		// Create a Bar Chart with Morris
-		var chart = Morris.Bar({
-			element : 'morris-bar-chart',
-			data : [ 0, 0 ],
-			barColors : function(row, series, type) {
+											if (data.length > 0) {
+												// Populate chart data
+												chart.setData(data);
+												// Set delivery data text span
+												// value
+												$("#deliveryDate").text(data[0].deliveryRequest.preferred_date);
+												$("#preferred_date").show(); // Show preferred date div
+												$("#no_bidding").hide(); // Hide div
+											} else {
+												$("#morris-bar-chart").empty(); // clear chart so it
+												$("#no_bidding").show(); // Show div
+												$("#preferred_date").hide(); // Hide preferred date div
+											}
+										}).fail(function() {
+									// If there is no communication between the
+									// server, show an
+									// error
+									alert("error occured");
+								});
 
-				/* Change Bar chart color base on the current user id session */
-				if (row.label == $('#userId').val()) {
-					return "#1AB244"; // green
-				} else
-					return "#cc0000"; // red
-			},
+						//$("#morris-bar-chart").empty(); // clear chart so it
+						// doesn't
+						// create multiple if
+						// multiple clicks
+						// Create a Bar Chart with Morris
+						var chart = Morris
+								.Bar({
+									element : 'morris-bar-chart',
+									data : [ 0, 0 ],
+									barColors : function(row, series, type) {
 
-			//TODO: Reference code for future purposed for hover function
-			// hoverCallback : function(index, options, content) {
-			// var data = options.data[index];
-			// content += '<div>Customer Prefered Date: '
-			// + data.deliveryRequest.preferred_date
-			// + '</div>';
-			// return content;
-			//
-			// },
-			xkey : 'user_beeder_id',
-			ykeys : [ 'user_beeder_id', 'beeding_startingprice' ],
-			labels : [ 'User', 'Delivery price' ],
-			pointSize : 2,
-			parseTime : false,
-			xLabelAngle : 45,
-			hideHover : 'auto',
-			resize : true,
-			stacked : true
-		});
+										/*
+										 * Change Bar chart color base on the
+										 * current user id session
+										 */
+										if (row.label == $('#userId').val()) {
+											return "#1AB244"; // green
+										} else
+											return "#cc0000"; // red
+									},
 
-	});
+									// TODO: Reference code for future purposed
+									// for hover function
+									// hoverCallback : function(index, options,
+									// content) {
+									// var data = options.data[index];
+									// content += '<div>Customer Prefered Date:
+									// '
+									// + data.deliveryRequest.preferred_date
+									// + '</div>';
+									// return content;
+									//
+									// },
+									xkey : 'user_beeder_id',
+									ykeys : [ 'user_beeder_id',
+											'beeding_startingprice' ],
+									labels : [ 'User', 'Delivery price' ],
+									pointSize : 2,
+									parseTime : false,
+									xLabelAngle : 45,
+									hideHover : 'auto',
+									resize : true,
+									stacked : true
+								});
 
-});
+					});
+
+				});
