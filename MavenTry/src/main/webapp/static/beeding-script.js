@@ -382,7 +382,7 @@ $('#modalAddDeliveryType')
 											// request comes back render
 											// the chart
 											// with new data
-
+ 
 											if (data.length > 0) {
 												// Populate chart data
 												chart.setData(data);

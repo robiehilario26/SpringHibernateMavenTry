@@ -31,6 +31,7 @@ import com.websystique.springmvc.model.UserProfile;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
 import com.websystique.springmvc.utility.AjaxRequestValidation;
+import com.websystique.springmvc.utility.validateJsonResponse;
 
 @Controller
 @RequestMapping("/")
@@ -56,24 +57,35 @@ public class UserController {
 
 	@Autowired
 	PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
+	
+	@Autowired
+	validateJsonResponse validateJson;
 
 	@RequestMapping(value = "/ajaxAddUser", method = RequestMethod.GET, headers = "Accept=*/*", produces = "application/json")
 	public @ResponseBody JsonResponse AddUser(
 			@ModelAttribute(value = "user") User user, BindingResult result) {
 
 		System.out.println("user GET " + user.toString());
-
+				
 		/* Create new json response */
 		JsonResponse res = new JsonResponse();
 
 		/* Call method for validating the input values */
-		userJsonResponse(res, result, user);
+		//userJsonResponse(res, result, user);
+		
+		/* Call service method for validating the input values */
+		validateJson.jsonResponse(res, result, user,
+				userList,true,"usernameId",userService.isUserSSOUnique(user.getId(), user.getUsernameId()));
 
 		/* If result is success it will insert into the employee table */
 		if (res.getStatus().equalsIgnoreCase("success")) {
 			System.out.println("user success GET " + user.toString());
+			
+			/* Set to null to be able to save new User data */
+			user.setId(null);
+			
 			/* Add Employee details into database */
-			userService.saveUser(user);
+			//userService.saveUser(user);
 
 		}
 		return res;
@@ -95,7 +107,11 @@ public class UserController {
 		JsonResponse res = new JsonResponse();
 
 		/* Call method for validating the input values */
-		userJsonResponse(res, result, user);
+		//userJsonResponse(res, result, user);
+		
+		/* Call service method for validating the input values */
+		validateJson.jsonResponse(res, result, user,
+				userList,true,"usernameId",userService.isUserSSOUnique(user.getId(), user.getUsernameId()));
 
 		/* If result is success it will insert into the employee table */
 		if (res.getStatus().equalsIgnoreCase("success")) {
@@ -138,6 +154,9 @@ public class UserController {
 
 		if (!userService.isUserSSOUnique(user.getId(), user.getUsernameId())) {
 
+			System.out.println("!userService.isUserSSOUnique(user.getId() "+ !userService.isUserSSOUnique(user.getId(), user.getUsernameId().toString()) );
+			
+			
 			/* Set status to fail */
 			res.setStatus("FAIL");
 

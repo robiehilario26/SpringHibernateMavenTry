@@ -25,7 +25,7 @@ function clearTextField() {
 
 	/* Set default to 0 */
 	$("#id").val("0");
-	$("#delivery_type").val(null);
+	$("#mainte_delivery_type").val(null);
 	$("#delivery_weight").val("0");
 	$("#delivery_price").val("0");
 

@@ -24,7 +24,7 @@ function addUser() {
 function clearTextField() {
 
 	/* Set default to 0 / null */
-	$("#id").val(null);
+	$("#id").val("0");
 	$("#firstName").val(null);
 	$("#lastName").val(null);
 	$("#email").val(null);

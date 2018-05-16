@@ -18,7 +18,12 @@ public class validateJsonResponseImpl implements validateJsonResponse {
 
 	@Override
 	public <T> JsonResponse jsonResponse(JsonResponse res,
-			BindingResult result, Object object, List<T> modelList) {
+			BindingResult result, Object object, List<T> modelList,
+			boolean hasUniquValidation, String uniqueParameter,
+			boolean uniqueServiceValidation) {
+
+		System.out.println("jsonResponse: " + object.toString());
+
 		Object someObject = object;
 
 		for (Field field : someObject.getClass().getDeclaredFields()) {
@@ -30,6 +35,7 @@ public class validateJsonResponseImpl implements validateJsonResponse {
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
+
 			if (value == null || value == "") {
 				System.out.println("null list: " + field.getName() + "="
 						+ value);
@@ -37,6 +43,19 @@ public class validateJsonResponseImpl implements validateJsonResponse {
 				ValidationUtils.rejectIfEmptyOrWhitespace(result,
 						field.getName(), field.getName() + " cannot be empty.");
 
+			}
+
+		}
+		System.out.println("DATA: hasUniquValidation: " + hasUniquValidation
+				+ " uniqueServiceValidation: " + !uniqueServiceValidation
+				+ " uniqueParameter: " + uniqueParameter);
+		if (hasUniquValidation) {
+			if (!uniqueServiceValidation) {
+				System.out.println("HEREEEEEEEEEEEE");
+				res.setStatus("FAIL");
+				result.rejectValue(uniqueParameter, uniqueParameter
+						+ " already exists. Please fill in different value");
+				res.setResult(result.getAllErrors());
 			}
 		}
 
@@ -52,7 +71,7 @@ public class validateJsonResponseImpl implements validateJsonResponse {
 			res.setResult(result.getAllErrors());
 
 		}
-		
+
 		else {
 
 			modelList.clear(); /* Clear array list */

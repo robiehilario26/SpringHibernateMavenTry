@@ -9,5 +9,5 @@ import com.websystique.springmvc.model.JsonResponse;
 public interface validateJsonResponse {
 
 	<T> JsonResponse jsonResponse(JsonResponse res,
-			BindingResult result, Object object, List<T> modelList);
+			BindingResult result, Object object, List<T> modelList, boolean hasUniquValidation, String uniqueParameter, boolean uniqueServiceValidation);
 }

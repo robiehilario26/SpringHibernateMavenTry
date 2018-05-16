@@ -3,13 +3,10 @@ package com.websystique.springmvc.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.websystique.springmvc.model.DeliveryType;
-import com.websystique.springmvc.model.User;
 
 @Repository("deliveryDao")
 public class DeliveryDaoImpl extends AbstractDao<Integer, DeliveryType>
@@ -29,23 +26,8 @@ public class DeliveryDaoImpl extends AbstractDao<Integer, DeliveryType>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<DeliveryType> listDeliveryType() {
-//		Criteria criteria = createEntityCriteria();
-//		return (List<DeliveryType>) criteria.list();
-		Criteria criteria = createEntityCriteria().addOrder(
-				Order.asc("id"));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);// To avoid
-																		// duplicates.
-		List<DeliveryType> deliveryTypes = (List<DeliveryType>) criteria.list();
-
-		// No need to fetch userProfiles since we are not showing them on list
-		// page. Let them lazy load.
-		// Uncomment below lines for eagerly fetching of userProfiles if you
-		// want.
-
-		for (DeliveryType deliveryType : deliveryTypes) {
-			Hibernate.initialize(deliveryType.getMainte_delivery_type());
-		}
-		return deliveryTypes;
+		Criteria criteria = createEntityCriteria();
+		return (List<DeliveryType>) criteria.list();
 	}
 
 	@Override

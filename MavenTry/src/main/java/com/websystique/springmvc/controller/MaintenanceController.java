@@ -21,6 +21,7 @@ import com.websystique.springmvc.model.DeliveryType;
 import com.websystique.springmvc.model.JsonResponse;
 import com.websystique.springmvc.service.DeliveryTypeService;
 import com.websystique.springmvc.utility.AjaxRequestValidation;
+import com.websystique.springmvc.utility.validateJsonResponse;
 
 @Controller
 @RequestMapping("/")
@@ -31,6 +32,9 @@ public class MaintenanceController {
 
 	@Autowired
 	DeliveryTypeService deliveryTypeService;
+	
+	@Autowired
+	validateJsonResponse validateJson;
 
 	private List<DeliveryType> deliveryTypes = new ArrayList<DeliveryType>();
 
@@ -94,7 +98,13 @@ public class MaintenanceController {
 		JsonResponse res = new JsonResponse();
 
 		/* Validate all the input. it return "SUCCESS" or "FAIL" status */
-		jsonResponse(res, result, deliveryType);
+		//jsonResponse(res, result, deliveryType);
+		
+		/* Call service method for validating the input values */
+		validateJson.jsonResponse(res, result, deliveryType,
+				deliveryTypes,true,"mainte_delivery_type",deliveryTypeService.isDeliveryTypeUnique(deliveryType.getId(),
+						deliveryType.getMainte_delivery_type()));
+
 
 		if (res.getStatus().equalsIgnoreCase("success")) {
 			/*
@@ -118,7 +128,12 @@ public class MaintenanceController {
 
 		JsonResponse res = new JsonResponse();
 		/* Validate all the input. it return "SUCCESS" or "FAIL" status */
-		jsonResponse(res, result, deliveryType);
+		//jsonResponse(res, result, deliveryType);
+		
+		/* Call service method for validating the input values */
+		validateJson.jsonResponse(res, result, deliveryType,
+				deliveryTypes,true,"mainte_delivery_type",deliveryTypeService.isDeliveryTypeUnique(deliveryType.getId(),
+						deliveryType.getMainte_delivery_type()));
 
 		if (res.getStatus().equalsIgnoreCase("success")) {
 			/*
