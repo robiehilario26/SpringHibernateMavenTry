@@ -3,10 +3,10 @@ package com.websystique.springmvc.utility;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 
-@Repository("ajaxRequestValidation")
+@Service("ajaxRequestValidation")
 @Transactional
 public class AjaxRequestValidationImpl implements AjaxRequestValidation {
 

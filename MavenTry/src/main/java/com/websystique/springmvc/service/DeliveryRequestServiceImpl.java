@@ -5,12 +5,12 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.websystique.springmvc.dao.DeliveryRequestDao;
 import com.websystique.springmvc.model.DeliveryRequest;
 
-@Repository("deliveryRequestService")
+@Service("deliveryRequestService")
 @Transactional
 public class DeliveryRequestServiceImpl implements DeliveryRequestService {
 
