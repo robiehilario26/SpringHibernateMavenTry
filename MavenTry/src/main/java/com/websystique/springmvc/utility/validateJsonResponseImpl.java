@@ -1,18 +1,17 @@
 package com.websystique.springmvc.utility;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
 
 import com.websystique.springmvc.model.JsonResponse;
 
-@Repository("validateJsonResponse")
+@Service("validateJsonResponse")
 @Transactional
 public class validateJsonResponseImpl implements validateJsonResponse {
 
