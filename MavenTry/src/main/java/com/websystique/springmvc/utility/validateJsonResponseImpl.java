@@ -22,8 +22,6 @@ public class validateJsonResponseImpl implements validateJsonResponse {
 			boolean hasUniquValidation, String uniqueParameter,
 			boolean uniqueServiceValidation) {
 
-		System.out.println("jsonResponse: " + object.toString());
-
 		Object someObject = object;
 
 		for (Field field : someObject.getClass().getDeclaredFields()) {
@@ -46,12 +44,11 @@ public class validateJsonResponseImpl implements validateJsonResponse {
 			}
 
 		}
-		System.out.println("DATA: hasUniquValidation: " + hasUniquValidation
-				+ " uniqueServiceValidation: " + !uniqueServiceValidation
-				+ " uniqueParameter: " + uniqueParameter);
-		if (hasUniquValidation) {
-			if (!uniqueServiceValidation) {
-				System.out.println("HEREEEEEEEEEEEE");
+
+		/* Check boolean value */
+		if (hasUniquValidation) { // if true
+			/* check the data using parameter if id is unique or not */
+			if (!uniqueServiceValidation) { // if true
 				res.setStatus("FAIL");
 				result.rejectValue(uniqueParameter, uniqueParameter
 						+ " already exists. Please fill in different value");
