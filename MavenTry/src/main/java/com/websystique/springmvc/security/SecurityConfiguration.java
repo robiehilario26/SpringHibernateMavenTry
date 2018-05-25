@@ -16,6 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+
+import com.websystique.springmvc.configuration.CsrfHeaderFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -59,18 +64,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 						"/ajaxEditCargoUser", "/delete-employee-by-ajax",
 						"/deliveryType*", "/ajaxAddUser", "/listV1",
 						"deliveryRequest", "deliveryBeeding",
-						"/ajaxAddDeliveryType", "/ajaxEditDeliveryType")
+						"/ajaxAddDeliveryType", "/ajaxEditDeliveryType","/restUser/**", "/restController")
 				// Roles
 				.access("hasRole('ADMIN')").and().formLogin()
 				.loginPage("/login").loginProcessingUrl("/login")
-				.usernameParameter("ssoId").passwordParameter("password").and()
+				.usernameParameter("usernameId").passwordParameter("password").and()
 				.rememberMe().rememberMeParameter("remember-me")
 				.tokenRepository(tokenRepository).tokenValiditySeconds(86400)
 				.and().csrf().and().exceptionHandling()
-				.accessDeniedPage("/Access_Denied");
+				.accessDeniedPage("/Access_Denied").and()
+			      .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class).csrf().csrfTokenRepository(csrfTokenRepository());
+		
+		// Disable spring security
+		// http.csrf().disable(); 
 
 	}
-
+	
+	private CsrfTokenRepository csrfTokenRepository() {
+		  HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+		  repository.setHeaderName("X-XSRF-TOKEN");
+		  return repository;
+		}
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

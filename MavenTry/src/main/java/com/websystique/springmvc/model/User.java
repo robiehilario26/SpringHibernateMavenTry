@@ -55,6 +55,23 @@ public class User implements Serializable {
 	@JoinTable(name = "APP_USER_USER_PROFILE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
 	private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
 	
+	
+	public User() {
+		id = 0;
+	}
+
+	public User(Integer id, String usernameId, String password,
+			String firstName, String lastName, String email,
+			Set<UserProfile> userProfiles) {
+		super();
+		this.id = id;
+		this.usernameId = usernameId;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.userProfiles = userProfiles;
+	}
 
 	@Override
 	public int hashCode() {

@@ -162,8 +162,8 @@
 						<!-- Input User name -->
 						<div>
 							<label for="ssoId">Username: </label>
-							<form:input path="usernameId" id="usernameId" class="form-control"
-								placeholder="Username" />
+							<form:input path="usernameId" id="usernameId"
+								class="form-control" placeholder="Username" />
 							<form:errors path="usernameId" cssClass="error" />
 						</div>
 
@@ -179,8 +179,8 @@
 							<!-- Select Role Type -->
 							<label for="userProfiles">Account Type: </label>
 							<form:select name="userProfiles" id="userProfiles"
-								path="userProfiles" items="${roles}"
-								itemValue="id" itemLabel="type" class="form-control" />
+								path="userProfiles" items="${roles}" itemValue="id"
+								itemLabel="type" class="form-control" />
 							<form:errors path="userProfiles" cssClass="error" />
 						</div>
 
@@ -206,7 +206,7 @@
 	</div>
 
 
-<!-- Delete Modal -->
+	<!-- Delete Modal -->
 	<div class="modal fade" id="modalDeleteUser" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
