@@ -2,6 +2,8 @@ package com.websystique.springmvc.restController;
 
 import java.util.List;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,8 @@ public class UserRestController {
 
 	@Autowired
 	UserProfileService userProfileService;
+	
+	private static Logger log = Logger.getLogger(UserRestController.class);
 	
 	// -------------------Retrieve All
 	// Users--------------------------------------------------------
@@ -65,6 +69,12 @@ public class UserRestController {
 		// " already exist");
 		// return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 		// }
+		
+//		UserProfile userProfile = new UserProfile();
+//		
+//		userProfile.setId(1);
+//		userProfile.setType("USER");
+		
 
 		userService.saveUser(user);
 		System.out.println("Fetch Data: " + user);
@@ -110,6 +120,8 @@ public class UserRestController {
 		// currentUser.setEmail(user.getEmail());
 
 		System.out.println("USER: " + user);
+//		BasicConfigurator.configure();
+//		log.info(user);
 		userService.updateUser(user);
 		return new ResponseEntity<User>(currentUser, HttpStatus.OK);
 	}
