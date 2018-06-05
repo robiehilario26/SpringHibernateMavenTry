@@ -140,7 +140,7 @@
 		<!-- ID-->
 		  <input type="text" name="userId" class="form-control" ng-model="userInfo.id"/>
 
-        <!-- FIRST NAME -->
+        <!-- FIRST NAME --> 
         <div class="form-group">
             <label>First Name</label>
             <input type="text" name="fname" class="form-control" ng-model="userInfo.firstName" required>
@@ -159,7 +159,7 @@
             <label>Email</label>
             <input type="email" name="email" class="form-control" ng-model="userInfo.email" required>
             <p ng-show="form.userForm.email.$invalid && !form.userForm.email.$pristine" class="help-block">Enter a valid email.</p>
-        </div>
+        </div> 
 
 		<!-- USERNAME -->
         <div class="form-group">
@@ -180,13 +180,12 @@
 	<!-- USER PROFILES -->
         <div class="form-group" ng-controller="UserController as ctrl1">
             <label>User Profile</label>
-            <select id="userProfile" name="userProfile" class="form-control"
-        ng-model ="userInfo.userProfiles.id">                                
-            <option ng:repeat="profile in ctrl1.profiles" value="{{profile.id}}">     
-                {{profile.type}}
-            </option>
-    	</select>
+            
+		<select ng-model="userInfo.userProfiles.id" ng-options="userProfile.id as userProfile.type for userProfile in ctrl1.profiles" class="form-control"></select>
+				
         </div> 
+
+			
 
     </div>
     <div class="modal-footer">
