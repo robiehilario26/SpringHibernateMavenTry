@@ -23,7 +23,7 @@ import com.websystique.springmvc.converter.RoleToUserProfileConverter;
 @ComponentScan(basePackages = "com.websystique.springmvc")
 public class AppConfig extends WebMvcConfigurerAdapter {
 
-	@Autowired
+	@Autowired 
 	RoleToUserProfileConverter roleToUserProfileConverter;
 	
 	/**
