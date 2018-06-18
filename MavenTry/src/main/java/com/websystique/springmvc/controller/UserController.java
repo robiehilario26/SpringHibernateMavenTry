@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.websystique.springmvc.model.JsonResponse;
 import com.websystique.springmvc.model.User;
@@ -39,10 +40,10 @@ import com.websystique.springmvc.utility.validateJsonResponse;
 public class UserController {
 
 	private List<User> userList = new ArrayList<User>();
-	
+
 	@Autowired
 	AjaxRequestValidation ajaxRequestValidation;
-	
+
 	@Autowired
 	UserService userService;
 
@@ -57,7 +58,7 @@ public class UserController {
 
 	@Autowired
 	PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
-	
+
 	@Autowired
 	validateJsonResponse validateJson;
 
@@ -66,26 +67,34 @@ public class UserController {
 			@ModelAttribute(value = "user") User user, BindingResult result) {
 
 		System.out.println("user GET " + user.toString());
-				
+
 		/* Create new json response */
 		JsonResponse res = new JsonResponse();
 
 		/* Call method for validating the input values */
-		//userJsonResponse(res, result, user);
-		
+		// userJsonResponse(res, result, user);
+
 		/* Call service method for validating the input values */
-		validateJson.jsonResponse(res, result, user,
-				userList,true,"usernameId",userService.isUserSSOUnique(user.getId(), user.getUsernameId()));
+		validateJson
+				.jsonResponse(
+						res,
+						result,
+						user,
+						userList,
+						true,
+						"usernameId",
+						userService.isUserSSOUnique(user.getId(),
+								user.getUsernameId()));
 
 		/* If result is success it will insert into the employee table */
 		if (res.getStatus().equalsIgnoreCase("success")) {
 			System.out.println("user success GET " + user.toString());
-			
+
 			/* Set to null to be able to save new User data */
 			user.setId(null);
-			
+
 			/* Add Employee details into database */
-			//userService.saveUser(user);
+			// userService.saveUser(user);
 
 		}
 		return res;
@@ -107,11 +116,19 @@ public class UserController {
 		JsonResponse res = new JsonResponse();
 
 		/* Call method for validating the input values */
-		//userJsonResponse(res, result, user);
-		
+		// userJsonResponse(res, result, user);
+
 		/* Call service method for validating the input values */
-		validateJson.jsonResponse(res, result, user,
-				userList,true,"usernameId",userService.isUserSSOUnique(user.getId(), user.getUsernameId()));
+		validateJson
+				.jsonResponse(
+						res,
+						result,
+						user,
+						userList,
+						true,
+						"usernameId",
+						userService.isUserSSOUnique(user.getId(),
+								user.getUsernameId()));
 
 		/* If result is success it will insert into the employee table */
 		if (res.getStatus().equalsIgnoreCase("success")) {
@@ -154,9 +171,10 @@ public class UserController {
 
 		if (!userService.isUserSSOUnique(user.getId(), user.getUsernameId())) {
 
-			System.out.println("!userService.isUserSSOUnique(user.getId() "+ !userService.isUserSSOUnique(user.getId(), user.getUsernameId().toString()) );
-			
-			
+			System.out.println("!userService.isUserSSOUnique(user.getId() "
+					+ !userService.isUserSSOUnique(user.getId(), user
+							.getUsernameId().toString()));
+
 			/* Set status to fail */
 			res.setStatus("FAIL");
 
@@ -218,13 +236,12 @@ public class UserController {
 	public User ajaxEmployeeDetail(@RequestParam Integer id,
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) {
-		
-		if(!ajaxRequestValidation.isAjax(request))
-		{
+
+		if (!ajaxRequestValidation.isAjax(request)) {
 			/* Return null in web browser */
-			 return null;
+			return null;
 		}
-		
+
 		User user = userService.findById(id);
 		return user;
 	}
@@ -252,4 +269,7 @@ public class UserController {
 	public List<UserProfile> initializeProfiles() {
 		return userProfileService.findAll();
 	}
+
+	
+
 }

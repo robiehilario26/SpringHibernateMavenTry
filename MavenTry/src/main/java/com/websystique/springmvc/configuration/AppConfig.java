@@ -14,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 
 import com.websystique.springmvc.converter.RoleToUserProfileConverter;
 
@@ -29,15 +31,15 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	/**
      * Configure ViewResolvers to deliver preferred views.
      */
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
-
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".jsp");
-		registry.viewResolver(viewResolver);
-	}
+//	@Override
+//	public void configureViewResolvers(ViewResolverRegistry registry) {
+//
+//		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+//		viewResolver.setViewClass(JstlView.class);
+//		viewResolver.setPrefix("/WEB-INF/views/");
+//		viewResolver.setSuffix(".jsp");
+//		registry.viewResolver(viewResolver);
+//	}
 	
 	
 	/* Comment as for now. for referrence of orignal code */
@@ -49,13 +51,40 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 //		viewResolver.setSuffix(".jsp");
 //		return viewResolver;
 //	}
-
+	
+	
+	@Bean
+	public JasperReportsViewResolver getJasperReportsViewResolver() {
+	   JasperReportsViewResolver resolver = new JasperReportsViewResolver();
+	   resolver.setPrefix("classpath:/jasperreports/");
+	   resolver.setSuffix(".jasper");
+	   resolver.setReportDataKey("datasource");
+	   resolver.setViewNames("rpt_*");
+	   resolver.setViewClass(JasperReportsMultiFormatView.class);
+	   resolver.setOrder(0);
+	   System.out.println("classpath:/jasperreports/ call");
+	   return resolver;
+	} 
+	
+	@Bean
+	public InternalResourceViewResolver getInternalResourceViewResolver() {
+	  InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+	  System.out.println("/WEB-INF/views/ call");
+	  resolver.setPrefix("/WEB-INF/views/");
+	  resolver.setSuffix(".jsp");
+	  resolver.setOrder(1);
+	  return resolver;
+	}
+	
 	@Bean
 	public MessageSource messageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		messageSource.setBasename("messages");
 		return messageSource;
 	}
+	
+	
+
 
 	/**
 	 * Configure ResourceHandlers to serve static resources like CSS/ Javascript

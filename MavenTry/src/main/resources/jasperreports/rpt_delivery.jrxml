@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_delivery" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11db954b-7fea-4221-a6d1-958fc36a863d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[Select * from table_deliver]]>
+	</queryString>
+	<field name="deliver_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="delivery_pickup_address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="delivery_destination" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_details" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="27" y="2" width="100" height="20" uuid="743ab8c4-91aa-47c8-9a21-c2963692fff5"/>
+				<text><![CDATA[deliver_id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="2" width="100" height="20" uuid="ceca38a1-27fc-46c5-b6ee-50f8c1f233a0"/>
+				<text><![CDATA[delivery_pickup_address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="2" width="100" height="20" uuid="7b0ea99d-d3b7-477c-a43c-ccccfa8c1e39"/>
+				<text><![CDATA[delivery_destination]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="2" width="100" height="20" uuid="06195df6-24b7-4fa7-8e43-4b9a07307ec6"/>
+				<text><![CDATA[item_details]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="27" y="1" width="100" height="20" uuid="56b173f9-3c38-4b16-98ee-b433929d1795"/>
+				<textFieldExpression><![CDATA[$F{deliver_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="1" width="100" height="20" uuid="75c109bf-9ee9-4db6-a642-4e8ade8d23dc"/>
+				<textFieldExpression><![CDATA[$F{delivery_destination}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="433" y="0" width="100" height="20" uuid="ffecb1d7-bea2-4b99-80c0-083580023bad"/>
+				<textFieldExpression><![CDATA[$F{item_details}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="1" width="100" height="20" uuid="c1f57981-c5fd-4db9-87ad-6b574d32356a"/>
+				<textFieldExpression><![CDATA[$F{delivery_pickup_address}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

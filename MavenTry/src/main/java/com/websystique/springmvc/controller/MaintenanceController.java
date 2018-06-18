@@ -6,6 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.websystique.springmvc.model.DeliveryType;
 import com.websystique.springmvc.model.JsonResponse;
@@ -26,13 +30,13 @@ import com.websystique.springmvc.utility.validateJsonResponse;
 @Controller
 @RequestMapping("/")
 public class MaintenanceController {
-	
+
 	@Autowired
 	AjaxRequestValidation ajaxRequestValidation;
 
 	@Autowired
 	DeliveryTypeService deliveryTypeService;
-	
+
 	@Autowired
 	validateJsonResponse validateJson;
 
@@ -69,15 +73,12 @@ public class MaintenanceController {
 	@ResponseBody
 	public DeliveryType ListDeliveryTypeDetail(@RequestParam Integer id,
 			HttpServletRequest request, HttpServletResponse response) {
-	
 
-		if(!ajaxRequestValidation.isAjax(request))
-		{
+		if (!ajaxRequestValidation.isAjax(request)) {
 			/* Return null in web browser */
-			 return null;
+			return null;
 		}
-	
-	
+
 		DeliveryType deliveryType = deliveryTypeService.findById(id);
 		return deliveryType;
 	}
@@ -86,25 +87,25 @@ public class MaintenanceController {
 	 * This method will provide the medium to add a new delivery type. It
 	 * validate all the input before inserting to database
 	 */
-	
+
 	@RequestMapping(value = "/ajaxAddDeliveryType", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public JsonResponse addDeliveryType(
 			@ModelAttribute(value = "delivery") DeliveryType deliveryType,
 			BindingResult result) {
 
-		System.out.println("deliveryType "+deliveryType.toString());
-		
+		System.out.println("deliveryType " + deliveryType.toString());
+
 		JsonResponse res = new JsonResponse();
 
 		/* Validate all the input. it return "SUCCESS" or "FAIL" status */
-		//jsonResponse(res, result, deliveryType);
-		
-		/* Call service method for validating the input values */
-		validateJson.jsonResponse(res, result, deliveryType,
-				deliveryTypes,true,"mainte_delivery_type",deliveryTypeService.isDeliveryTypeUnique(deliveryType.getId(),
-						deliveryType.getMainte_delivery_type()));
+		// jsonResponse(res, result, deliveryType);
 
+		/* Call service method for validating the input values */
+		validateJson.jsonResponse(res, result, deliveryType, deliveryTypes,
+				true, "mainte_delivery_type", deliveryTypeService
+						.isDeliveryTypeUnique(deliveryType.getId(),
+								deliveryType.getMainte_delivery_type()));
 
 		if (res.getStatus().equalsIgnoreCase("success")) {
 			/*
@@ -128,12 +129,13 @@ public class MaintenanceController {
 
 		JsonResponse res = new JsonResponse();
 		/* Validate all the input. it return "SUCCESS" or "FAIL" status */
-		//jsonResponse(res, result, deliveryType);
-		
+		// jsonResponse(res, result, deliveryType);
+
 		/* Call service method for validating the input values */
-		validateJson.jsonResponse(res, result, deliveryType,
-				deliveryTypes,true,"mainte_delivery_type",deliveryTypeService.isDeliveryTypeUnique(deliveryType.getId(),
-						deliveryType.getMainte_delivery_type()));
+		validateJson.jsonResponse(res, result, deliveryType, deliveryTypes,
+				true, "mainte_delivery_type", deliveryTypeService
+						.isDeliveryTypeUnique(deliveryType.getId(),
+								deliveryType.getMainte_delivery_type()));
 
 		if (res.getStatus().equalsIgnoreCase("success")) {
 			/*
@@ -231,6 +233,24 @@ public class MaintenanceController {
 		}
 
 		return res;
+	}
+
+	@RequestMapping(value = "/helloReport4", method = RequestMethod.GET)
+	public ModelAndView getRpt4(ModelMap modelMap, ModelAndView modelAndView) {
+
+	
+		
+//		List<DeliveryType> deliveryTypes = deliveryTypeService
+//				.listDeliveryType();
+		
+		JRDataSource JRdataSource = new JRBeanCollectionDataSource(deliveryTypeService
+				.listDeliveryType(),false);
+		modelMap.put("datasource", JRdataSource);
+		modelMap.put("format", "pdf");
+		modelAndView = new ModelAndView("rpt_mainte", modelMap);
+		System.out.println("deliveryTypes: "
+				+ deliveryTypes.toString());
+		return modelAndView;
 	}
 
 }

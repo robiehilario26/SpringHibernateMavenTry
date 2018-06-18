@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_mainte" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="02de03df-51dd-43be-8c2b-b9b330862ed5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[Select * from table_maintenance]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="mainte_delivery_type" class="java.lang.String"/>
+	<field name="delivery_price" class="java.math.BigDecimal"/>
+	<field name="delivery_weight" class="java.math.BigDecimal"/>
+		
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="37" y="2" width="100" height="20" uuid="ffc9c38c-ccc2-4114-8fa8-143661114b68"/>
+				<text><![CDATA[id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="139" y="2" width="100" height="20" uuid="af82444c-f4a0-4a49-a497-6536b267049c"/>
+				<text><![CDATA[mainte_delivery_type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="2" width="100" height="20" uuid="adf9a57d-d995-430e-bf7a-5ee9cefff166"/>
+				<text><![CDATA[delivery_price]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="2" width="100" height="20" uuid="20b85362-1cfe-4e1b-9013-88ae23ff6cba"/>
+				<text><![CDATA[delivery_weight]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="37" y="13" width="100" height="20" uuid="450bfe35-2926-4a46-a609-d12653be4624"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="164" y="13" width="100" height="20" uuid="e6d8c40a-201d-41ef-97fd-8c5a300177f7"/>
+				<textFieldExpression><![CDATA[$F{mainte_delivery_type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="13" width="100" height="20" uuid="64af2a29-20da-4635-b170-118687bd1405"/>
+				<textFieldExpression><![CDATA[$F{delivery_price}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="445" y="16" width="100" height="20" uuid="a904f607-0a8c-4861-a70e-42be3f662fd7"/>
+				<textFieldExpression><![CDATA[$F{delivery_weight}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
