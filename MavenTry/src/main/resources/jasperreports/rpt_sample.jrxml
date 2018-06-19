@@ -6,12 +6,13 @@
 	<queryString>
 		<![CDATA[SELECT * FROM `app_user`]]>
 	</queryString>
-	<field name="id" class="java.lang.Long"/>
+
 	<field name="usernameId" class="java.lang.String"/>
 	<field name="password" class="java.lang.String"/>
 	<field name="firstName" class="java.lang.String"/>
 	<field name="lastName" class="java.lang.String">
-	<field name="email" class="java.lang.String">
+	
+
 		
 	<group name="id">
 		<groupExpression><![CDATA[$F{id}]]></groupExpression>
