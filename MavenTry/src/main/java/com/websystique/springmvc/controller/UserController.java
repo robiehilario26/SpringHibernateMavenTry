@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -268,6 +271,17 @@ public class UserController {
 	@ModelAttribute("roles")
 	public List<UserProfile> initializeProfiles() {
 		return userProfileService.findAll();
+	}
+	
+	/*Generate JasperReport test*/
+	@RequestMapping(value = "/helloReport5", method = RequestMethod.GET)
+	public ModelAndView getRpt5(ModelMap modelMap, ModelAndView modelAndView) {
+
+		JRDataSource JRdataSource = new JRBeanCollectionDataSource(userService.findAllUsers(),false);
+		modelMap.put("datasource", JRdataSource);
+		modelMap.put("format", "pdf");
+		modelAndView = new ModelAndView("rpt_sample", modelMap);
+		return modelAndView;
 	}
 
 	

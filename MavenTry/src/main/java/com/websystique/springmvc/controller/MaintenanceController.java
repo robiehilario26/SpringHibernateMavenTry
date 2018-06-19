@@ -235,22 +235,18 @@ public class MaintenanceController {
 		return res;
 	}
 
+	/*Generate JasperReport test*/
 	@RequestMapping(value = "/helloReport4", method = RequestMethod.GET)
 	public ModelAndView getRpt4(ModelMap modelMap, ModelAndView modelAndView) {
 
-	
-		
-//		List<DeliveryType> deliveryTypes = deliveryTypeService
-//				.listDeliveryType();
-		
 		JRDataSource JRdataSource = new JRBeanCollectionDataSource(deliveryTypeService
 				.listDeliveryType(),false);
 		modelMap.put("datasource", JRdataSource);
 		modelMap.put("format", "pdf");
 		modelAndView = new ModelAndView("rpt_mainte", modelMap);
-		System.out.println("deliveryTypes: "
-				+ deliveryTypes.toString());
 		return modelAndView;
 	}
+	
+	
 
 }
