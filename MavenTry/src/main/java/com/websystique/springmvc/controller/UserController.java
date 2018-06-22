@@ -273,17 +273,7 @@ public class UserController {
 		return userProfileService.findAll();
 	}
 	
-	/*Generate JasperReport test*/
-	@RequestMapping(value = "/helloReport5", method = RequestMethod.GET)
-	public ModelAndView getRpt5(ModelMap modelMap, ModelAndView modelAndView) {
-
-		JRDataSource JRdataSource = new JRBeanCollectionDataSource(userService.findAllUsers(),false);
-		modelMap.put("datasource", JRdataSource);
-		modelMap.put("format", "pdf");
-		modelAndView = new ModelAndView("rpt_sample", modelMap);
-		return modelAndView;
-	}
-
+	
 	
 
 }

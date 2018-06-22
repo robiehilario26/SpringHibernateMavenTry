@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_beeding" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b0f275f3-17d2-42f1-8615-7d4e4a654261">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	
+	<queryString>
+		<![CDATA[select
+        this_.deliver_id as deliver_id,
+        this_.DELIVERY_TYPE as delivery_type,
+        this_.DELIVERY_DESTINATION as delivery_destination,
+        this_.DELIVERY_PICKUP_ADDRESS as delivery_pickup_address,
+        this_.DELIVERY_STATUS as delivery_status,
+        this_.ITEM_DETAILS as item_details,
+        this_.PREFERRED_DATE as preferred_date,
+        this_.USER_BEED_CHOICE as user_beed_choice,
+        this_.USER_ID as user_id,
+        deliveryty2_.ID as id,
+        deliveryty2_.DELIVERY_PRICE as mainte_delivery_price,
+        deliveryty2_.DELIVERY_WEIGHT as mainte_delivery_weight,
+        deliveryty2_.MAINTE_DELIVERY_TYPE as mainte_delivery_type
+    from
+        TABLE_DELIVER this_
+    inner join
+        TABLE_MAINTENANCE deliveryty2_
+            on this_.DELIVERY_TYPE=deliveryty2_.ID
+    order by
+        this_.deliver_id desc]]>
+	</queryString>
+	<field name="deliver_id" class="java.lang.Integer"/>
+	<field name="delivery_pickup_address" class="java.lang.String"/>
+	<field name="delivery_status" class="java.lang.String"/>
+	<field name="item_details" class="java.lang.String"/>
+	<field name="DeliveryRequest.deliveryType.id" class="java.lang.Integer"/>
+	
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="27" y="2" width="100" height="20" uuid="7bdf99ed-bdf6-432a-b7c2-758fc972faff"/>
+				<text><![CDATA[deliver_id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="266" y="2" width="100" height="20" uuid="69ef97d0-5653-4f03-9275-e291d8fe63d5"/>
+				<text><![CDATA[delivery_pickup_address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="2" width="100" height="20" uuid="e2cd850b-50b6-4457-be40-9ae0b7e89624"/>
+				<text><![CDATA[delivery_status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="2" width="100" height="20" uuid="f508aee5-31bc-43b4-82eb-1fe4a7c827f8"/>
+				<text><![CDATA[item_details]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="27" y="0" width="100" height="20" uuid="9bc9d7a2-0a0a-4231-bd88-53618bd4e265"/>
+				<textFieldExpression><![CDATA[$F{deliver_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="266" y="0" width="100" height="20" uuid="0ed14df8-a122-4edc-aef8-730934191a7e"/>
+				<textFieldExpression><![CDATA[$F{delivery_pickup_address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="388" y="0" width="100" height="20" uuid="069464cd-b396-4848-b779-04fe1a73ad4d"/>
+				<textFieldExpression><![CDATA[$F{delivery_status}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="151" y="0" width="100" height="20" uuid="520e356c-6520-48b7-a1ca-adaf948153dd"/>
+				<textFieldExpression><![CDATA[$F{item_details}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -6,6 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.websystique.springmvc.model.Beeding;
 import com.websystique.springmvc.model.DeliveryRequest;
@@ -37,7 +41,7 @@ public class BeedingController {
 
 	@Autowired
 	AjaxRequestValidation ajaxRequestValidation;
-	
+
 	@Autowired
 	UserService userService;
 
@@ -62,7 +66,7 @@ public class BeedingController {
 	public String deliveryBeeding(ModelMap model) {
 		Beeding beeding = new Beeding();
 		model.addAttribute("beedingRequest", beeding);
-		
+
 		String userName = getUserDetails();
 		User user = userService.findBySSO(userName);
 		model.addAttribute("userId", user.getId());
@@ -93,7 +97,7 @@ public class BeedingController {
 
 		// /* Get username id */
 		beeding.setUser_beeder_id(user.getId());
-		
+
 		/* Set beeding status to pending */
 		beeding.setBeeding_status("Pending");
 
@@ -114,7 +118,7 @@ public class BeedingController {
 		}
 		return res;
 	}
-	
+
 	/*
 	 * This method will provide the medium to get beeding request details using
 	 * ajax with annotation @RequestParam.
@@ -123,14 +127,14 @@ public class BeedingController {
 	@ResponseBody
 	public List<Beeding> LisBeedingDetail(@RequestParam Integer id,
 			HttpServletRequest request, HttpServletResponse response) {
-		
-		if(!ajaxRequestValidation.isAjax(request))
-		{
+
+		if (!ajaxRequestValidation.isAjax(request)) {
 			/* Return null in web browser */
-			 return null;
+			return null;
 		}
-		
-		List<Beeding> beeding = beedingService.listBeedingRequestByDeliveryId(id);
+
+		List<Beeding> beeding = beedingService
+				.listBeedingRequestByDeliveryId(id);
 		return beeding;
 	}
 
@@ -143,8 +147,6 @@ public class BeedingController {
 			Beeding beeding) {
 
 		/* Set error message if text field is empty */
-
-		
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(result,
 				"beeding_startingprice", "Beeding price should be more than 0");
@@ -182,6 +184,23 @@ public class BeedingController {
 				.getAuthentication();
 		String username = authentication.getName();
 		return username;
+	}
+
+	/* Generate JasperReport test */
+	@RequestMapping(value = "/helloReport5", method = RequestMethod.GET)
+	public ModelAndView getRpt5(ModelMap modelMap, ModelAndView modelAndView) {
+
+		List<DeliveryRequest> deliveryRequests = deliveryRequestService
+				.deliveryRequestList();
+		
+		JRDataSource JRdataSource = new JRBeanCollectionDataSource(
+				deliveryRequests, false);
+		modelMap.put("datasource", JRdataSource);
+		modelMap.put("format", "pdf");
+		modelAndView = new ModelAndView("rpt_beeding", modelMap);
+		
+		System.out.println("Beeding data: "+ deliveryRequestService.deliveryRequestList() );
+		return modelAndView;
 	}
 
 }

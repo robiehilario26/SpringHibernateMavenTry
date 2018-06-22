@@ -71,14 +71,12 @@
 			<version>${springsecurity.version}</version>
 		</dependency>
 
-
 		<!-- Groovy -->
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
 			<version>2.0.1</version>
 		</dependency>
-
 
 		<!-- Hibernate -->
 		<dependency>

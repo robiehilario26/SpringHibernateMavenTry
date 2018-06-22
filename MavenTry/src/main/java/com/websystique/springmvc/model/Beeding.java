@@ -15,6 +15,7 @@ public class Beeding {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "BEEDING_ID")
 	private Integer beeding_id;
 
 	@Column(name = "BEEDING_DELIVERY_ID", nullable = false)
